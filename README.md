@@ -15,6 +15,10 @@
 
 - Python 3.8
 
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=darkmatter2048/WindowsCleaner&type=Date)](https://star-history.com/#darkmatter2048/WindowsCleaner&Date)
+
 [Bilibili:阳刚の少年](https://space.bilibili.com/1847808902?spm_id_from=333.1007.0.0)
 
 [<img src="readme/d.png" alt="Example Image" style="width: 200px;"/>](readme/develop.jpg)
