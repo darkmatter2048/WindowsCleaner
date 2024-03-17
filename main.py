@@ -1,11 +1,105 @@
 import sys
 from PyQt6.QtWidgets import QApplication, QMainWindow, QMessageBox
 from ui import Ui_MainWindow
-from PyQt6.QtCore import Qt,QPoint
-from PyQt6.QtGui import QMouseEvent, QIcon
+from PyQt6.QtCore import Qt, QPoint, QThread, pyqtSignal
+from PyQt6.QtGui import QMouseEvent, QIcon, QMovie
 import os
 import shutil
 import psutil
+import ctypes
+import subprocess
+
+def get_v():
+    # 获取C盘的使用情况
+    usage = psutil.disk_usage('C:\\')  # 请注意在Windows上使用双反斜杠来表示路径
+
+    # 获取已用空间（以MB为单位）
+    used_space_mb = round(usage.used / (1024 ** 2), 2)  # 转换为MB
+    print(f"已用空间: {used_space_mb} MB")
+    return used_space_mb
+
+
+def boost_main():
+    boost_prefetch('C:\\Windows\\Prefetch')
+    clean_temp_folder()
+
+def clean_main():
+    boost_prefetch('C:\\Windows\\SoftwareDistribution\\Download')
+    boost_prefetch('C:\\Windows\\Prefetch')
+    clean_temp_folder()
+    clean_history()
+
+def boost_prefetch(folder_path):
+    # 获取管理员权限
+    if not os.access(folder_path, os.W_OK):
+        raise PermissionError("You don't have permission to delete files in this folder.")
+
+    # 遍历文件夹并删除文件
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
+        try:
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+            print(f"Deleted: {file_path}")
+        except Exception as e:
+            print(f"Failed to delete: {file_path}, Error: {e}")
+
+def clean_temp_folder():
+    temp_folder = os.environ.get('TEMP')
+    '''
+    if not os.access(temp_folder, os.W_OK):
+        raise PermissionError("You don't have permission to delete files in this folder.")
+    '''
+    boost_prefetch(temp_folder)
+    '''
+    for root, dirs, files in os.walk(temp_folder):
+        for file in files:
+            try:
+                os.remove(os.path.join(root, file))
+                print("Delete successfully")
+            except Exception as e:
+                print(f"Failed to delete {os.path.join(root, file)}: {e}")
+    print("Temporary files cleaned successfully")
+    '''
+
+# 检查是否有管理员权限
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+# 删除所有还原点的函数
+def delete_restore_points():
+    # 使用命令行工具删除还原点
+    os.system('vssadmin Delete Shadows /all /quiet')
+
+def clean_history():
+    # 检查是否有管理员权限
+    if is_admin():
+        # 删除所有还原点
+        delete_restore_points()
+        print("所有系统还原点已被删除。")
+    else:
+        # 如果没有管理员权限，请求提升权限
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
+
+class CleanThread(QThread):
+    operationCompleted = pyqtSignal()
+
+    def run(self):
+        clean_main()
+        self.operationCompleted.emit()
+
+class BoostThread(QThread):
+    operationCompleted = pyqtSignal()
+
+    def run(self):
+        boost_main()
+        self.operationCompleted.emit()
+
 
 class Cleaner(QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -23,7 +117,8 @@ class Cleaner(QMainWindow, Ui_MainWindow):
         self.setWindowTitle("Windows Cleaner")
         self.ui.pushButton.clicked.connect(self.boost)
         self.ui.pushButton_2.clicked.connect(self.clean)
-        self.flag = False
+        self.movie = QMovie('resource/loading.gif')
+        self.ui.label_3.setScaledContents(True)  # 将标签内容自适应大小
 
     def mousePressEvent(self, event: QMouseEvent):
         if event.button() == Qt.MouseButton.LeftButton:
@@ -38,61 +133,36 @@ class Cleaner(QMainWindow, Ui_MainWindow):
         if event.button() == Qt.MouseButton.LeftButton:
             self.draggable = False
 
-    def get_v(self):
-        # 获取C盘的使用情况
-        usage = psutil.disk_usage('C:\\')  # 请注意在Windows上使用双反斜杠来表示路径
-
-        # 获取已用空间（以MB为单位）
-        used_space_mb = round(usage.used / (1024 ** 2), 2)  # 转换为MB
-        print(f"已用空间: {used_space_mb} MB")
-        return used_space_mb
-
     def boost(self):
         print("优化加速")
-        self.ui.label_3.setText("优化加速中······")
-        v0 = self.get_v()
-        self.boost_prefetch('C:\\Windows\\Prefetch')
-        self.clean_temp_folder()
-        v1 = self.get_v()
-        self.ui.label_3.setText(f"加速完成！\n清理出{format(v0 - v1,'.2f')}MB空间")
+        self.v0 = get_v()
 
-    def boost_prefetch(self, folder_path):
-        # 获取管理员权限
-        if not os.access(folder_path, os.W_OK):
-            raise PermissionError("You don't have permission to delete files in this folder.")
+        self.ui.pushButton_2.setEnabled(False)
+        self.ui.pushButton.setEnabled(False)
 
-        # 遍历文件夹并删除文件
-        for filename in os.listdir(folder_path):
-            file_path = os.path.join(folder_path, filename)
-            try:
-                if os.path.isfile(file_path):
-                    os.remove(file_path)
-                elif os.path.isdir(file_path):
-                    shutil.rmtree(file_path)
-                print(f"Deleted: {file_path}")
-            except Exception as e:
-                print(f"Failed to delete: {file_path}, Error: {e}")
+        self.ui.label_3.setMovie(self.movie)
+        self.movie.start()
 
-    def clean_temp_folder(self):
-        temp_folder = os.environ.get('TEMP')
-        for root, dirs, files in os.walk(temp_folder):
-            for file in files:
-                try:
-                    os.remove(os.path.join(root, file))
-                    print("Delete successfully")
-                except Exception as e:
-                    print(f"Failed to delete {os.path.join(root, file)}: {e}")
-        print("Temporary files cleaned successfully")
+        self.thread = BoostThread()
+        self.thread.operationCompleted.connect(self.on_operation_completed)
+        self.thread.finished.connect(self.stop_animation)
+        self.thread.start()
 
     def clean(self):
         print("深度清理")
-        self.ui.label_3.setText("深度清理中······")
-        v0 = self.get_v()
-        self.boost_prefetch('C:\\Windows\\SoftwareDistribution\\Download')
-        self.boost_prefetch('C:\\Windows\\Prefetch')
-        self.clean_temp_folder()
-        v1 = self.get_v()
-        self.ui.label_3.setText(f"加速完成！\n清理出{format(v0 - v1, '.2f')}MB空间")
+        self.v0 = get_v()
+
+        self.ui.pushButton_2.setEnabled(False)
+        self.ui.pushButton.setEnabled(False)
+
+        self.ui.label_3.setMovie(self.movie)
+        self.movie.start()
+
+        self.thread = CleanThread()
+        self.thread.operationCompleted.connect(self.on_operation_completed)
+        self.thread.finished.connect(self.stop_animation)
+        self.thread.start()
+
         # 执行磁盘清理命令
         messageBox = QMessageBox()
         #messageBox.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)  # 设置置顶
@@ -120,12 +190,25 @@ class Cleaner(QMainWindow, Ui_MainWindow):
         if response == QMessageBox.StandardButton.Ok:
             print("You clicked OK")
             try:
-                os.system('start ms-settings:storagesense')
+                os.popen('start ms-settings:storagesense')
             except Exception as e:
                 print(f"error{e}")
         else:
             print("You clicked Cancel")
 
+    def on_operation_completed(self):
+        pass
+
+    def stop_animation(self):
+        self.movie.stop()
+        self.ui.label_3.clear()
+        self.ui.pushButton_2.setEnabled(True)
+        self.ui.pushButton.setEnabled(True)
+        self.v1 = get_v()
+        if int(self.v0-self.v1) > 1024:
+            self.ui.label_3.setText(f"加速完成！\n清理出{format((self.v0 - self.v1)/1024, '.2f')}GB空间")
+        else:
+            self.ui.label_3.setText(f"加速完成！\n清理出{format(self.v0 - self.v1, '.2f')}MB空间")
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
