@@ -6,8 +6,27 @@ from PyQt6.QtGui import QMouseEvent, QIcon, QMovie
 import os
 import shutil
 import psutil
-import ctypes
 import subprocess
+import ctypes
+
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+def run_as_admin(file_path):
+    if is_admin():
+        # 程序已经拥有管理员权限，继续执行
+        print("Running as administrator")
+        app = QApplication(sys.argv)
+        form = Cleaner()
+        form.show()
+        sys.exit(app.exec())
+    else:
+        # 请求管理员权限
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, file_path, None, 1)
+
 
 def get_v():
     # 获取C盘的使用情况
@@ -22,14 +41,24 @@ def get_v():
 def boost_main():
     boost_prefetch('C:\\Windows\\Prefetch')
     clean_temp_folder()
+    clean_system_logs()
+    clean_browser_cache()
 
 def clean_main():
     boost_prefetch('C:\\Windows\\SoftwareDistribution\\Download')
     boost_prefetch('C:\\Windows\\Prefetch')
     clean_temp_folder()
-    clean_history()
+    clean_system_logs()
+    clean_browser_cache()
+    delete_restore_points()
 
 def boost_prefetch(folder_path):
+    if os.path.exists(folder_path):
+        print(f"The path {folder_path} exists.")
+    else:
+        print(f"The path {folder_path} does not exist.")
+        return
+
     # 获取管理员权限
     if not os.access(folder_path, os.W_OK):
         raise PermissionError("You don't have permission to delete files in this folder.")
@@ -48,43 +77,34 @@ def boost_prefetch(folder_path):
 
 def clean_temp_folder():
     temp_folder = os.environ.get('TEMP')
-    '''
-    if not os.access(temp_folder, os.W_OK):
-        raise PermissionError("You don't have permission to delete files in this folder.")
-    '''
     boost_prefetch(temp_folder)
-    '''
-    for root, dirs, files in os.walk(temp_folder):
-        for file in files:
-            try:
-                os.remove(os.path.join(root, file))
-                print("Delete successfully")
-            except Exception as e:
-                print(f"Failed to delete {os.path.join(root, file)}: {e}")
-    print("Temporary files cleaned successfully")
-    '''
 
-# 检查是否有管理员权限
-def is_admin():
-    try:
-        return ctypes.windll.shell32.IsUserAnAdmin()
-    except:
-        return False
+def clean_browser_cache():
+    browser_cache_folders = {
+        "Chrome": os.path.join(os.getenv("LOCALAPPDATA"), "Google\\Chrome\\User Data\\Default\\Cache"),
+        "Firefox": os.path.join(os.getenv("APPDATA"), "Mozilla\\Firefox\\Profiles"),
+        "Edge": os.path.join(os.getenv("LOCALAPPDATA"), "Microsoft\\Edge\\User Data\\Default\\Cache")
+    }
+    print(browser_cache_folders)
+
+    for browser, folder in browser_cache_folders.items():
+        print(f"清理 {browser} 浏览器缓存：{folder}")
+        boost_prefetch(folder)
+
+def clean_system_logs():
+    log_folder = os.path.join(os.getenv("SystemRoot"), "Logs")
+    print(f"清理系统日志文件夹：{log_folder}")
+    boost_prefetch(log_folder)
 
 # 删除所有还原点的函数
 def delete_restore_points():
-    # 使用命令行工具删除还原点
-    os.system('vssadmin Delete Shadows /all /quiet')
+    try:
+        print("清理旧的系统还原点...")
+        subprocess.run("vssadmin Delete Shadows /all /quiet", shell=True, check=True)
+        print("成功清理旧的系统还原点")
+    except subprocess.CalledProcessError as e:
+        print("error：", e.returncode)
 
-def clean_history():
-    # 检查是否有管理员权限
-    if is_admin():
-        # 删除所有还原点
-        delete_restore_points()
-        print("所有系统还原点已被删除。")
-    else:
-        # 如果没有管理员权限，请求提升权限
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
 
 class CleanThread(QThread):
     operationCompleted = pyqtSignal()
@@ -160,12 +180,17 @@ class Cleaner(QMainWindow, Ui_MainWindow):
 
         self.thread = CleanThread()
         self.thread.operationCompleted.connect(self.on_operation_completed)
-        self.thread.finished.connect(self.stop_animation)
+        self.thread.finished.connect(self.after_clean)
         self.thread.start()
 
+    def on_operation_completed(self):
+        pass
+
+    def after_clean(self):
+        self.stop_animation()
         # 执行磁盘清理命令
         messageBox = QMessageBox()
-        #messageBox.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)  # 设置置顶
+        # messageBox.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)  # 设置置顶
         messageBox.setWindowTitle('是否继续清理？')
         messageBox.setWindowIcon(QIcon('resource/clean.png'))
         messageBox.setText(f"是否使用'磁盘清理'工具继续清理？")
@@ -181,7 +206,7 @@ class Cleaner(QMainWindow, Ui_MainWindow):
             print("You clicked Cancel")
 
         messageBox = QMessageBox()
-        #messageBox.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)  # 设置置顶
+        # messageBox.setWindowFlag(Qt.WindowType.WindowStaysOnTopHint)  # 设置置顶
         messageBox.setWindowTitle('是否继续清理？')
         messageBox.setWindowIcon(QIcon('resource/clean.png'))
         messageBox.setText(f"是否从'存储'删除临时文件？\n注意：此操作可能并不适用于所有Windows版本。")
@@ -196,9 +221,6 @@ class Cleaner(QMainWindow, Ui_MainWindow):
         else:
             print("You clicked Cancel")
 
-    def on_operation_completed(self):
-        pass
-
     def stop_animation(self):
         self.movie.stop()
         self.ui.label_3.clear()
@@ -211,7 +233,6 @@ class Cleaner(QMainWindow, Ui_MainWindow):
             self.ui.label_3.setText(f"加速完成！\n清理出{format(self.v0 - self.v1, '.2f')}MB空间")
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    form = Cleaner()
-    form.show()
-    sys.exit(app.exec())
+    # 以管理员权限运行
+    file_path = sys.argv[0]
+    run_as_admin(file_path)
