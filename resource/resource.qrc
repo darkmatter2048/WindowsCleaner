@@ -1,7 +1,0 @@
-<RCC>
-  <qresource prefix="resource">
-    <file>booster.png</file>
-    <file>sclean.png</file>
-    <file>clean.png</file>
-  </qresource>
-</RCC>
