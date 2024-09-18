@@ -1,0 +1,20 @@
+{
+    "includePath": [
+        "H:\\Documents\\Example123",
+        "H:\\Projects\\Temp\\UnusedData",
+        "H:\\Temp\\Logs\\Unused"
+    ],
+    "version": 4,
+    "language": "zh_cn",
+    "theme": 0,
+    "themeColor": "#009faa",
+    "AutoRunEnabled": "False",
+    "closeEvent": 0,
+    "update": 0,
+    "AutoCleanEnabled": "False",
+    "AutoCleanMode": 0,
+    "AutoCleanTime": 1,
+    "AutoCleanRoom": 1,
+    "AutoUpdate": "2024-09-15",
+    "LastCleanTime": "2024-09-16"
+}

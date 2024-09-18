@@ -1,0 +1,12 @@
+<RCC>
+  <qresource prefix="imgs">
+    <file>imgs/support.png</file>
+    <file>imgs/booster.png</file>
+    <file>imgs/clean.png</file>
+    <file>imgs/loading.gif</file>
+    <file>imgs/logo.png</file>
+    <file>imgs/logo_circle.png</file>
+    <file>imgs/sclean.png</file>
+    <file>imgs/web.ico</file>
+  </qresource>
+</RCC>
