@@ -31,7 +31,7 @@
 
 - Python 3.8
 
-[Bilibili:阳刚の少年](https://space.bilibili.com/1847808902?spm_id_from=333.1007.0.0)
+### [Bilibili:Mr_Jacek](https://space.bilibili.com/1847808902?spm_id_from=333.1007.0.0)
 
 ## 🤝支持 Windows Cleaner的开发
 
