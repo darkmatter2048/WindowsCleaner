@@ -11,7 +11,10 @@ import shutil
 import psutil
 import subprocess
 import ctypes
-from plyer import notification
+try:
+    from plyer import notification
+except Exception as e:
+    print(f"发生错误：{e}")
 from datetime import datetime
 import time
 

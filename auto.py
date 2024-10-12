@@ -12,7 +12,10 @@ import shutil
 import psutil
 import subprocess
 import ctypes
-from plyer import notification
+try:
+    from plyer import notification
+except Exception as e:
+    print(f"发生错误：{e}")
 from datetime import datetime
 import time
 
@@ -145,7 +148,10 @@ def check_disk():
         title = 'Windows Cleaner 4.0'  # 弹窗的标题
         icon = r'WCMain\resource\imgs\icon.ico'  # 可选参数，传入ico图标文件的路径，显示在弹窗上
         timeout = 10  # 弹窗的显示时间，以秒（s）作为单位
-        notification.notify(title=title, message=message, timeout=timeout, app_icon=icon)
+        try:
+            notification.notify(title=title, message=message, timeout=timeout, app_icon=icon)
+        except Exception as e:
+            print(f"发生错误：{e}")
     time.sleep(300)
 
 
@@ -222,7 +228,10 @@ class auto_page(QWidget, Ui_AutoClean):
         title = 'Windows Cleaner 4.0'  # 弹窗的标题
         icon = r'WCMain\resource\imgs\icon.ico'  # 可选参数，传入ico图标文件的路径，显示在弹窗上
         timeout = 10  # 弹窗的显示时间，以秒（s）作为单位
-        notification.notify(title=title, message=message, timeout=timeout, app_icon=icon)
+        try:
+            notification.notify(title=title, message=message, timeout=timeout, app_icon=icon)
+        except Exception as e:
+            print(f"发生错误：{e}")
         if self.settings_data["AutoCleanMode"] == 0:
             now = datetime.now()
             formatted_date = now.strftime('%Y-%m-%d')  # 格式：年-月-日

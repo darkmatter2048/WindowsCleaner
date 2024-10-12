@@ -16,7 +16,10 @@ import json
 import winreg
 import requests
 from datetime import datetime
-from plyer import notification
+try:
+    from plyer import notification
+except Exception as e:
+    print(f"发生错误：{e}")
 import os
 
 # 获取当前脚本的目录
@@ -101,6 +104,35 @@ class Demo(SplitFluentWindow):
         self.initWindow() 
 
     def update(self):
+        try:
+            if self.checked == True:
+                return
+            else:
+                self.checked = True
+                if self.settings_data['update'] == 1:
+                    info = download_version()
+                    if info["version"] > self.settings_data["version"]:
+                        self.show_tooltip()
+                    else:
+                        print("已经是最新版本")
+                elif self.settings_data['update'] == 2:
+                    result = WeatherLate(self.settings_data["AutoUpdate"])
+                    if result > 7:
+                        info = download_version()
+                        if info["version"] > self.settings_data["version"]:
+                            self.show_tooltip()
+                        else:
+                            print("已经是最新版本")
+                        now = datetime.now()
+                        formatted_date = now.strftime('%Y-%m-%d')  # 格式：年-月-日
+                        self.settings_data["AutoUpdate"] = formatted_date
+                        with open('WCMain/settings.json', 'w') as file:
+                            json.dump(self.settings_data, file, indent=4)    
+                    else:
+                        print("天数不足")
+        except Exception as e:
+            print(f"更新时发生错误: {e}")
+        '''
         if self.checked:
             return
         else:
@@ -125,7 +157,9 @@ class Demo(SplitFluentWindow):
                     with open('WCMain/settings.json', 'w') as file:
                         json.dump(self.settings_data, file, indent=4)    
                 else:
-                    print("天数不足")        
+                    print("天数不足") 
+        '''             
+                     
 
 
     def show_tooltip(self):
@@ -215,5 +249,8 @@ if __name__ == "__main__":
         title = 'Windows Cleaner 4.0'  # 弹窗的标题
         icon = r'WCMain\resource\imgs\icon.ico'  # 可选参数，传入ico图标文件的路径，显示在弹窗上
         timeout = 10  # 弹窗的显示时间，以秒（s）作为单位
-        notification.notify(title=title, message=message, timeout=timeout, app_icon=icon)    
+        try:
+            notification.notify(title=title, message=message, timeout=timeout, app_icon=icon)
+        except Exception as e:
+            print(f"发生错误：{e}")   
     app.exec_()
