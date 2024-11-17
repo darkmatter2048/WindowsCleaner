@@ -2,12 +2,10 @@ name: 编译 WC
 run-name: 编译
 on:
   workflow_dispatch:
-
 jobs:
-  build:
+  Build:
     runs-on: windows-latest
     permissions: write-all
-
     steps:
     - uses: actions/checkout@v4
     - name: 设置 Python 3.8
@@ -17,8 +15,7 @@ jobs:
     - name: 安装依赖
       run: |
         python -m pip install --upgrade pip
-        pip install -f requirements.txt
-        
+        pip install -f requirements.txt       
     - name: 编译
       run: |
         pyinstaller main.spec
@@ -27,7 +24,6 @@ jobs:
         copy /WCMain dist/main/_internal/WCMain
     - name: 上传文件
         uses: actions/upload-artifact@v4
-        # if: ${{ inputs.upload-artifacts }}
         with:
           name: WindowsCleaner
           path: dist/main
