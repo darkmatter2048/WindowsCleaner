@@ -1,11 +1,12 @@
-name: 编译
-
+name: 编译 WC
+run-name: 编译
 on:
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: windows-latest
+    permissions: write-all
 
     steps:
     - uses: actions/checkout@v4
@@ -23,10 +24,10 @@ jobs:
         pyinstaller main.spec
     - name: 移动文件
       run:
-        copy \WCMain dist\main\_internal
+        copy /WCMain dist/main/_internal/WCMain
     - name: 上传文件
         uses: actions/upload-artifact@v4
         # if: ${{ inputs.upload-artifacts }}
         with:
           name: WindowsCleaner
-          path: dist\main
+          path: dist/main
