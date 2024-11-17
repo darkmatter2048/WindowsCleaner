@@ -28,8 +28,10 @@
 一路Next即可，如果想以后方便打开可以勾选上`创建桌面快捷方式`选项。
 
 ### 从源代码构建
-
-- Python 3.8
+- 克隆此仓库
+- 安装 Python 3.8
+- 安装依赖`pip install -r requirements.txt`
+- 运行`python main.py`
 
 ### [Bilibili:Mr_Jacek](https://space.bilibili.com/1847808902?spm_id_from=333.1007.0.0)
 
