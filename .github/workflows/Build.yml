@@ -15,7 +15,7 @@ jobs:
     - name: 安装依赖
       run: |
         python -m pip install --upgrade pip
-        pip install -f requirements.txt       
+        pip install -r requirements.txt       
         pyinstaller main.spec
     - name: 移动文件
       run:
