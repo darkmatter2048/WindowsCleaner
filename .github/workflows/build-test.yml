@@ -29,7 +29,7 @@ jobs:
         copy \WCMain dist\main\_internal
     - name: 上传文件
         uses: actions/upload-artifact@v4
-        if: ${{ inputs.upload-artifacts }}
+        # if: ${{ inputs.upload-artifacts }}
         with:
           name: WindowsCleaner
           path: dist\main
