@@ -1,5 +1,5 @@
-name: 编译 WC
-run-name: 编译
+name: Build
+run-name: Build
 on:
   workflow_dispatch:
 jobs:
