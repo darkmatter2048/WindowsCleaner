@@ -42,7 +42,7 @@
     - 编译`pyinstaller main.spec`
     - 将`WCMain`文件夹复制到`dist\_internal`下，运行`main.exe`即可
 #### GitHub Actions（推荐）
-    - 直接运行，运行结束后下载编译产物全部解压即可使用
+    - 全自动编译，直接运行，运行结束后下载编译产物全部解压即可使用
 
 ### [Bilibili:Mr_Jacek](https://space.bilibili.com/1847808902?spm_id_from=333.1007.0.0)
 
