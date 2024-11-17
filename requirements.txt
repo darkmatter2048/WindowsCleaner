@@ -2,4 +2,3 @@ PyQt-Fluent-Widgets[full]==1.6.3
 plyer
 requests
 psutil
-pyinstaller
