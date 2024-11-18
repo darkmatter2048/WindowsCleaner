@@ -19,11 +19,13 @@ jobs:
     - name: 设置 Nuitka 并编译
       uses: Nuitka/Nuitka-Action@v1.1
       with:
+        nuitka-version: main
         windows-icon-from-ico: icon.ico
         script-name: main.py
         mode: standalone
         windows-console-mode: disable
         enable-plugins: pyqt5
+        output-dir: dist
         company-name: DaYe
         product-name: WindowsCleaner
         file-version: 5.0.0
