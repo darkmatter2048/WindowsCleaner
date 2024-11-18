@@ -12,11 +12,25 @@ jobs:
       uses: actions/setup-python@v3
       with:
         python-version: "3.8"
-    - name: 安装依赖 & 编译
+    - name: 安装依赖
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt -U nuitka ordered-set   
-        python -m nuitka --standalone --remove-output --windows-console-mode="disable" --enable-plugins="pyqt5" --output-dir="dist" --main="main.py" --windows-icon-from-ico="icon.ico" --company-name="DaYe" --product-name="WindowsCleaner" --file-version="5.0.0" --product-version="5.0" --file-description="WindowsCleaner" --copyright="DaYe" --trademarks="DaYe"
+        pip install -r requirements.txt
+    - name: 设置 Nuitka 并编译
+      uses: Nuitka/Nuitka-Action@v1.1
+      with:
+        windows-icon-from-ico: icon.ico
+        script-name: main.py
+        mode: standalone
+        windows-console-mode: disable
+        enable-plugins: pyqt5
+        company-name: DaYe
+        product-name: WindowsCleaner
+        file-version: 5.0.0
+        product-version: 5.0
+        file-description: WindowsCleaner
+        copyright: DaYe
+        trademarks: DaYe
     - name: 移动文件
       run:
         move WCMain/settings.json dist/main.dist/WCMain/settings.json
