@@ -29,20 +29,20 @@
 
 ### 手动编译
 #### 源码运行
-    - 克隆此仓库
-    - 安装 Python 3.8
-    - 安装依赖`pip install -r requirements.txt`
-    - 运行`python main.py`
+- 克隆此仓库
+- 安装 Python 3.8
+- 安装依赖`pip install -r requirements.txt`
+- 运行`python main.py`
 #### 本地编译
-    - 先完成源码运行
-    - 安装PyInstaller
-    ```
-    pip install pyinstaller
-    ```
-    - 编译`pyinstaller main.spec`
-    - 将`WCMain`文件夹复制到`dist\_internal`下，运行`main.exe`即可
+- 先完成源码运行
+- 安装 Nuitka
+```pip
+pip install nuitka
+```
+- 编译`python -m nuitka --standalone --remove-output --windows-console-mode="disable" --enable-plugins="pyqt5" --output-dir="dist" --main="main.py" --windows-icon-from-ico="icon.ico" --company-name="DaYe" --product-name="WindowsCleaner" --file-version="5.0.0" --product-version="5.0" --file-description="WindowsCleaner" --copyright="DaYe" --trademarks="DaYe"`
+- 将`WCMain`文件夹复制到`dist\main.dist`下，运行`main.exe`即可
 #### GitHub Actions（推荐）
-    - 全自动编译，直接运行，运行结束后下载编译产物全部解压即可使用
+- 全自动编译，直接运行，运行结束后下载编译产物全部解压即可使用
 
 ### [Bilibili:Mr_Jacek](https://space.bilibili.com/1847808902?spm_id_from=333.1007.0.0)
 
