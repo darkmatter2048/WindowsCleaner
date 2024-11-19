@@ -7,7 +7,8 @@ jobs:
     runs-on: windows-latest
     permissions: write-all
     steps:
-    - uses: actions/checkout@v4
+    - name: 仓库检出
+      uses: actions/checkout@v4
     - name: 设置 Python 3.8
       uses: actions/setup-python@v3
       with:
