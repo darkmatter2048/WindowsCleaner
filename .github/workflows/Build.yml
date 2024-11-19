@@ -33,9 +33,9 @@ jobs:
         file-description: WindowsCleaner
         copyright: DaYe
         trademarks: DaYe
-    - name: 移动文件
-      run:
-        move WCMain/settings.json dist/main.build/WCMain/settings.json
+    #- name: 移动文件
+      #run:
+        #move WCMain/settings.json dist/main.build/WCMain/settings.json
     - name: 上传文件
       uses: actions/upload-artifact@v4
       with:
