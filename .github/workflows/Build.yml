@@ -22,9 +22,10 @@ jobs:
         nuitka-version: main
         windows-icon-from-ico: icon.ico
         script-name: main.py
-        #mode: standalone
+        mode: standalone
         windows-console-mode: disable
         enable-plugins: pyqt5
+        jobs: 8
         output-dir: dist
         company-name: DaYe
         product-name: WindowsCleaner
