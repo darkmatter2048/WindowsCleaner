@@ -21,7 +21,7 @@ jobs:
       with:
         nuitka-version: main
         windows-icon-from-ico: icon.ico
-        script-name: main.py
+        main: main.py
         mode: standalone
         windows-console-mode: disable
         enable-plugins: pyqt5
