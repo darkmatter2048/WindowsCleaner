@@ -21,7 +21,7 @@ jobs:
       uses: Nuitka/Nuitka-Action@v1.1
       with:
         nuitka-version: main
-        mingw64: on
+        msvc: latest
         windows-icon-from-ico: icon.ico
         main: main.py
         standalone: on
