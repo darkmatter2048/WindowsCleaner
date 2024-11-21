@@ -19,6 +19,16 @@ except Exception as e:
 from datetime import datetime
 import time
 
+
+def get_settings():
+    # 获取当前脚本的目录
+    script_directory = os.path.dirname(os.path.abspath(__file__))
+    settings_path = f'{script_directory}\WCMain\settings.json'
+
+    with open(settings_path, 'r') as f:
+        settings_data = json.load(f)
+    return settings_data
+
 # 获取当前脚本的目录
 script_directory = os.path.dirname(os.path.abspath(__file__))
 settings_path = f'{script_directory}\WCMain\settings.json'
@@ -240,6 +250,7 @@ class auto_page(QWidget, Ui_AutoClean):
                 json.dump(self.settings_data, file, indent=4)
 
     def save_paths(self):
+        self.settings_data = get_settings()
         print("changed")
         # 字符串表示的列表
         list_str = f"{self.textEdit.toPlainText()}"
@@ -255,16 +266,19 @@ class auto_page(QWidget, Ui_AutoClean):
             json.dump(self.settings_data, file, indent=4)
 
     def spinBox_changed(self):
+        self.settings_data = get_settings()
         self.settings_data["AutoCleanTime"] = self.spinBox.value()
         with open('WCMain/settings.json', 'w') as file:
             json.dump(self.settings_data, file, indent=4) 
 
     def spinBox_2_changed(self):
+        self.settings_data = get_settings()
         self.settings_data["AutoCleanRoom"] = self.spinBox_2.value()
         with open('WCMain/settings.json', 'w') as file:
             json.dump(self.settings_data, file, indent=4)             
 
     def ModeChanged(self, index):
+        self.settings_data = get_settings()
         if index == 0:
             print("定期清理")
             self.spinBox.setEnabled(True)
@@ -282,6 +296,7 @@ class auto_page(QWidget, Ui_AutoClean):
             json.dump(self.settings_data, file, indent=4)     
 
     def onCheckedChanged(self, isChecked: bool):
+        self.settings_data = get_settings()
         if isChecked==True:
             self.settings_data["AutoCleanEnabled"] = "True"
             self.comboBox.setEnabled(True)

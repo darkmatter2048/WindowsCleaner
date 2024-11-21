@@ -194,7 +194,7 @@ class Demo(SplitFluentWindow):
     def initWindow(self):
         self.setFixedSize(396,532)   # 288+28,520
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
-        self.setWindowTitle('WindowsCleaner v4.0')
+        self.setWindowTitle('WindowsCleaner v5.0')
         self.setWindowIcon(QIcon(':/imgs/imgs/clean.png'))
         # 窗口居右下
         rect = QApplication.desktop().availableGeometry()

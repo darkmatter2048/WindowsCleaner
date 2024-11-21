@@ -11,6 +11,17 @@ import os
 import sys
 import requests
 
+
+def get_settings():
+    # 获取当前脚本的目录
+    script_directory = os.path.dirname(os.path.abspath(__file__))
+    settings_path = f'{script_directory}\WCMain\settings.json'
+
+    with open(settings_path, 'r') as f:
+        settings_data = json.load(f)
+    return settings_data
+
+
 # 获取当前脚本的目录
 script_directory = os.path.dirname(os.path.abspath(__file__))
 settings_path = f'{script_directory}\WCMain\settings.json'
@@ -67,24 +78,28 @@ class settings_page(QWidget, Settings_UI_Form):
         self.comboBox_6.currentIndexChanged.connect(self.AutoUpdateChanged)
               
     def AutoUpdateChanged(self, index):
+        self.settings_data = get_settings()
         self.settings_data['update'] = self.comboBox_6.currentIndex()
         with open('WCMain/settings.json', 'w') as file:
             json.dump(self.settings_data, file, indent=4)
         self.showTeachingTip()
 
     def ThemeChanged(self, index):
+        self.settings_data = get_settings()
         self.settings_data['theme'] = self.comboBox_7.currentIndex()
         with open('WCMain/settings.json', 'w') as file:
             json.dump(self.settings_data, file, indent=4)
         self.showTeachingTip()
 
     def CloseEventChanged(self, index):
+        self.settings_data = get_settings()
         self.settings_data['closeEvent'] = self.comboBox_5.currentIndex()
         with open('WCMain/settings.json', 'w') as file:
             json.dump(self.settings_data, file, indent=4)
         self.showTeachingTip()    
 
     def ChangeThemeColor(self):
+        self.settings_data = get_settings()
         current_color = QColor(self.settings_data['themeColor'])  
         w = ColorDialog(current_color, "Choose Background Color", enableAlpha=False, parent=self)
         c_color = None
@@ -92,6 +107,7 @@ class settings_page(QWidget, Settings_UI_Form):
         w.exec()
         
     def mf(self, color):
+        self.settings_data = get_settings()
         print(color.name())
         #self.label_11.setStyleSheet(f"background-color: {color.name()};") 
         self.settings_data['themeColor'] = color.name()
@@ -101,6 +117,7 @@ class settings_page(QWidget, Settings_UI_Form):
         #self.showTeachingTip()
 
     def AutoRun(self):
+        self.settings_data = get_settings()
         if self.AutoRun_2.isChecked():
             print("setAutoRun")
             self.settings_data['AutoRunEnabled'] = "True"

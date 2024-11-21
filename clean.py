@@ -20,6 +20,7 @@ import time
 
 import os
 
+current_file = "清理内存和临时文件，减少电脑卡顿"
 # 获取当前脚本的目录
 script_directory = os.path.dirname(os.path.abspath(__file__))
 settings_path = f'{script_directory}\WCMain\settings.json'
@@ -74,15 +75,65 @@ def clean_main():
     global settings_data
     boost_prefetch('C:\\Windows\\SoftwareDistribution\\Download')
     boost_prefetch('C:\\Windows\\Prefetch')
+    boost_prefetch('C:\\Windows\\Temp')
+    boost_prefetch('C:\\Windows\\System32\\LogFiles')
+    boost_prefetch('C:\\Windows\\System32\\DriverStore\\FileRepository')
     clean_temp_folder()
     clean_system_logs()
-    clean_browser_cache()
+    clean_application_cache()
+    try:
+        clean_browser_cache()
+    except Exception as e:
+        print("浏览器缓存清理失败")    
     delete_restore_points()
+    clean_tmp_files()
     user_list = settings_data["includePath"]
     for path in user_list:
         boost_prefetch(path)
 
+def clean_application_cache():
+    # 获取当前用户的用户名
+    username = os.getlogin()
+    # 构建应用程序缓存目录的路径
+    cache_dir = f'C:\\Users\\{username}\\AppData\\Local\\Packages'
+    # 遍历缓存目录下的所有文件夹
+    for root, dirs, files in os.walk(cache_dir):
+        for dir in dirs:
+            # 构建每个应用程序缓存文件夹的路径
+            app_cache_dir = os.path.join(root, dir)
+            # 如果文件夹名称以"Cache"或"cache"结尾，则删除该文件夹
+            if dir.lower().endswith('cache'):
+                try:
+                    shutil.rmtree(app_cache_dir)
+                    print(f"Deleted {app_cache_dir}")
+                except Exception as e:
+                    print(f"Failed to delete {app_cache_dir}. Reason: {e}")
+
+
+def clean_tmp_files():
+    global current_file
+    # 定义要遍历的文件夹路径
+    folder_path = "C:\\"  # C盘根目录
+    # 获取管理员权限
+    if not os.access(folder_path, os.W_OK):
+        raise PermissionError("You don't have permission to delete files in this folder.")
+    # 遍历文件夹及其子文件夹
+    for root, dirs, files in os.walk(folder_path):
+        for file in files:
+            # 检查文件是否为.tmp文件
+            if file.endswith(".tmp") or file.endswith(".cache"):
+                # 获取文件的完整路径
+                file_path = os.path.join(root, file)
+                # 删除文件
+                try:
+                    current_file = file_path
+                    os.remove(file_path)
+                    print(f"已删除：{file_path}")
+                except Exception as e:
+                    print(f"Failed to delete: {file_path}, Error: {e}")    
+
 def boost_prefetch(folder_path):
+    global current_file
     if os.path.exists(folder_path):
         print(f"The path {folder_path} exists.")
     else:
@@ -98,6 +149,7 @@ def boost_prefetch(folder_path):
         file_path = os.path.join(folder_path, filename)
         try:
             if os.path.isfile(file_path):
+                current_file = file_path
                 os.remove(file_path)
             elif os.path.isdir(file_path):
                 shutil.rmtree(file_path)
@@ -112,7 +164,6 @@ def clean_temp_folder():
 def clean_browser_cache():
     browser_cache_folders = {
         "Chrome": os.path.join(os.getenv("LOCALAPPDATA"), "Google\\Chrome\\User Data\\Default\\Cache"),
-        "Firefox": os.path.join(os.getenv("APPDATA"), "Mozilla\\Firefox\\Profiles"),
         "Edge": os.path.join(os.getenv("LOCALAPPDATA"), "Microsoft\\Edge\\User Data\\Default\\Cache")
     }
     print(browser_cache_folders)
@@ -183,7 +234,7 @@ class clean_page(QWidget, Ui_Form):
         self.run_flash()
 
     def on_operation_completed(self):
-        pass
+        print("完成")
 
     def run_flash(self):
         self.thread = FlashThread()
@@ -192,7 +243,10 @@ class clean_page(QWidget, Ui_Form):
         self.thread.start()
 
     def update_ui(self, index):
+        global current_file
         self.progressBar.setValue(index)   
+        file_name = os.path.basename(current_file)
+        self.label_3.setText(f"{file_name}")
 
     def boost(self):
         print("优化加速")
@@ -229,6 +283,8 @@ class clean_page(QWidget, Ui_Form):
             print(f"找不到驱动器 {drive_letter}")
 
     def after_clean(self):
+        global current_file
+        current_file = "清理内存和临时文件，减少电脑卡顿"
         self.v1 = get_v()
         if int(self.v0-self.v1) > 1024:
             message = f"加速完成！\n清理出{format((self.v0 - self.v1)/1024, '.2f')}GB空间"
@@ -240,6 +296,8 @@ class clean_page(QWidget, Ui_Form):
         self.show_work()
 
     def deep_after_clean(self):
+        global current_file
+        current_file = "清理内存和临时文件，减少电脑卡顿"
         self.v1 = get_v()
         if int(self.v0-self.v1) > 1024:
             message = f"加速完成！\n清理出{format((self.v0 - self.v1)/1024, '.2f')}GB空间"
