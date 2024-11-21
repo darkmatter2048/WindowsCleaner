@@ -27,9 +27,26 @@
 ### 安装
 一路Next即可，如果想以后方便打开可以勾选上`创建桌面快捷方式`选项。
 
-### 从源代码构建
+### 手动编译
+#### 源码运行
+- 克隆此仓库
+- 安装 Python 3.8
+- 安装依赖`pip install -r requirements.txt`
+- 运行`python main.py`
+#### 本地编译
+- 先完成源码运行
+- 安装 Nuitka
+```pip
+pip install nuitka
+```
+- 编译`python -m nuitka --mingw64  --assume-yes-for-downloads --standalone --remove-output --windows-console-mode="disable" --enable-plugins="pyqt5" --output-dir="dist" --main="main.py" --windows-icon-from-ico="icon.ico"`
+> [!tip]
+>
+> 如果您的电脑安装了 Visual Studio 以及 msvc 编译器，可以将编译参数中的`--mingw64`选项删除，否则 Nuitka 会直接从 Github 下载 Mingw64，不论电脑上是否安装！
 
-- Python 3.8
+- 将`WCMain`文件夹复制到`dist\main.dist`下，运行`main.exe`即可
+#### GitHub Actions（推荐）
+- 全自动编译，直接运行，运行结束后下载编译产物全部解压即可使用(注：编译时间非常长，大概编译一次需要20-30分钟
 
 ### [Bilibili:Mr_Jacek](https://space.bilibili.com/1847808902?spm_id_from=333.1007.0.0)
 
