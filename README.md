@@ -39,10 +39,14 @@
 ```pip
 pip install nuitka
 ```
-- 编译`python -m nuitka --standalone --remove-output --windows-console-mode="disable" --enable-plugins="pyqt5" --output-dir="dist" --main="main.py" --windows-icon-from-ico="icon.ico" --company-name="DaYe" --product-name="WindowsCleaner" --file-version="5.0.0" --product-version="5.0" --file-description="WindowsCleaner" --copyright="DaYe" --trademarks="DaYe"`
+- 编译`python -m nuitka --mingw64  --assume-yes-for-downloads --standalone --remove-output --windows-console-mode="disable" --enable-plugins="pyqt5" --output-dir="dist" --main="main.py" --windows-icon-from-ico="icon.ico"`
+> [!tip]
+>
+> 如果您的电脑安装了 Visual Studio 以及 msvc 编译器，可以将编译参数中的`--mingw64`选项删除，否则 Nuitka 会直接从 Github 下载 Mingw64，不论电脑上是否安装！
+
 - 将`WCMain`文件夹复制到`dist\main.dist`下，运行`main.exe`即可
 #### GitHub Actions（推荐）
-- 全自动编译，直接运行，运行结束后下载编译产物全部解压即可使用
+- 全自动编译，直接运行，运行结束后下载编译产物全部解压即可使用(注：编译时间非常长，大概编译一次需要20-30分钟
 
 ### [Bilibili:Mr_Jacek](https://space.bilibili.com/1847808902?spm_id_from=333.1007.0.0)
 
