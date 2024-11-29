@@ -103,6 +103,7 @@ def boost_prefetch(folder_path):
             elif os.path.isdir(file_path):
                 shutil.rmtree(file_path)
             print(f"Deleted: {file_path}")
+            logger.info(f"Deleted: {file_path}")
         except Exception as e:
             print(f"Failed to delete: {file_path}, Error: {e}")
             logger.error(f"Failed to delete: {file_path}, Error: {e}")

@@ -182,21 +182,26 @@ def clean_browser_cache():
 
     for browser, folder in browser_cache_folders.items():
         print(f"清理 {browser} 浏览器缓存：{folder}")
+        logger.info(f"清理 {browser} 浏览器缓存：{folder}")
         boost_prefetch(folder)
 
 def clean_system_logs():
     log_folder = os.path.join(os.getenv("SystemRoot"), "Logs")
     print(f"清理系统日志文件夹：{log_folder}")
+    logger.info(f"清理系统日志文件夹：{log_folder}")
     boost_prefetch(log_folder)
 
 # 删除所有还原点的函数
 def delete_restore_points():
     try:
         print("清理旧的系统还原点...")
+        logger.info("清理旧的系统还原点...")
         subprocess.run("vssadmin Delete Shadows /all /quiet", shell=True, check=True)
         print("成功清理旧的系统还原点")
+        logger.info("成功清理旧的系统还原点")
     except subprocess.CalledProcessError as e:
         print("error：", e.returncode)
+        logger.error("error：", e.returncode)
 
 
 class CleanThread(QThread):
@@ -293,6 +298,7 @@ class clean_page(QWidget, Ui_Form):
             #print(f"C 盘使用百分比: {percent}%")
         else:
             print(f"找不到驱动器 {drive_letter}")
+            logger.error(f"找不到驱动器 {drive_letter}")
 
     def after_clean(self):
         global current_file
@@ -300,8 +306,10 @@ class clean_page(QWidget, Ui_Form):
         self.v1 = get_v()
         if int(self.v0-self.v1) > 1024:
             message = f"加速完成！\n清理出{format((self.v0 - self.v1)/1024, '.2f')}GB空间"
+            logger.info(message)
         else:
             message = f"加速完成！\n清理出{format(self.v0 - self.v1, '.2f')}MB空间"
+            logger.info(message)
         self.pushButton.setEnabled(True)
         self.widget_2.setEnabled(True)
         self.showTeachingTip(content=message)
@@ -313,8 +321,10 @@ class clean_page(QWidget, Ui_Form):
         self.v1 = get_v()
         if int(self.v0-self.v1) > 1024:
             message = f"加速完成！\n清理出{format((self.v0 - self.v1)/1024, '.2f')}GB空间"
+            logger.info(message)
         else:
             message = f"加速完成！\n清理出{format(self.v0 - self.v1, '.2f')}MB空间"
+            logger.info(message)
         self.pushButton.setEnabled(True)
         self.widget_2.setEnabled(True)
         self.showTeachingTip(content=message)
