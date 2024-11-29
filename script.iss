@@ -32,8 +32,8 @@ OutputBaseFilename=windowscleaner_v5.0_amd64_setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-WizardImageFile=E:\Files\logo\New\ad3.bmp
-WizardSmallImageFile=E:\Files\logo\New\sad.bmp
+//WizardImageFile=E:\Files\logo\New\ad3.bmp
+//WizardSmallImageFile=E:\Files\logo\New\sad.bmp
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
