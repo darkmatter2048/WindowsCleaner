@@ -2,6 +2,12 @@ name: 编译
 run-name: 编译
 on:
   workflow_dispatch:
+    inputs:
+      inno:
+        description: '生成安装包'
+        type: boolean
+        default: false
+      
 jobs:
   Build:
     runs-on: windows-2022
@@ -28,3 +34,13 @@ jobs:
       with:
         name: WindowsCleaner
         path: dist
+    - name: 生成安装包
+      if: ${{ inputs.inno }}
+      uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
+      with:
+          path: script.iss
+          options: /O+
+    - name: 上传文件
+      uses: actions/upload-artifact@v4
+      with:
+        path: releases/*.exe
