@@ -27,7 +27,7 @@ DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputDir=E:\Files\PythonFiles\WindowsCleaner5\releases
+OutputDir=releases
 OutputBaseFilename=windowscleaner_v5.0_amd64_setup
 Compression=lzma
 SolidCompression=yes

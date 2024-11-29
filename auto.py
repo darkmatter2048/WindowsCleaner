@@ -18,6 +18,10 @@ except Exception as e:
     print(f"发生错误：{e}")
 from datetime import datetime
 import time
+# 导入日志模块
+from logger import get_logger
+# 获取日志记录器实例
+logger = get_logger()
 
 
 def get_settings():
@@ -44,6 +48,7 @@ def WeatherLate(date_str):
         return days_difference
     except ValueError as e:
         print(f"日期格式错误: {e}")
+        logger.error(f"日期格式错误: {e}")
         return None
 
 def get_v():
@@ -53,6 +58,7 @@ def get_v():
     # 获取已用空间（以MB为单位）
     used_space_mb = round(usage.used / (1024 ** 2), 2)  # 转换为MB
     print(f"已用空间: {used_space_mb} MB")
+    logger.debug(f"已用空间: {used_space_mb} MB")
     return used_space_mb
 
 
@@ -77,13 +83,16 @@ def clean_main():
 def boost_prefetch(folder_path):
     if os.path.exists(folder_path):
         print(f"The path {folder_path} exists.")
+        logger.info(f"The path {folder_path} exists.")
     else:
         print(f"The path {folder_path} does not exist.")
+        logger.error(f"The path {folder_path} does not exist.")
         return
 
     # 获取管理员权限
     if not os.access(folder_path, os.W_OK):
         raise PermissionError("You don't have permission to delete files in this folder.")
+        logger.error("You don't have permission to delete files in this folder.")
 
     # 遍历文件夹并删除文件
     for filename in os.listdir(folder_path):
@@ -96,6 +105,7 @@ def boost_prefetch(folder_path):
             print(f"Deleted: {file_path}")
         except Exception as e:
             print(f"Failed to delete: {file_path}, Error: {e}")
+            logger.error(f"Failed to delete: {file_path}, Error: {e}")
 
 def clean_temp_folder():
     temp_folder = os.environ.get('TEMP')
@@ -111,21 +121,26 @@ def clean_browser_cache():
 
     for browser, folder in browser_cache_folders.items():
         print(f"清理 {browser} 浏览器缓存：{folder}")
+        logger.info(f"清理 {browser} 浏览器缓存：{folder}")
         boost_prefetch(folder)
 
 def clean_system_logs():
     log_folder = os.path.join(os.getenv("SystemRoot"), "Logs")
     print(f"清理系统日志文件夹：{log_folder}")
+    logger.info(f"清理系统日志文件夹：{log_folder}")
     boost_prefetch(log_folder)
 
 # 删除所有还原点的函数
 def delete_restore_points():
     try:
         print("清理旧的系统还原点...")
+        logger.info("清理旧的系统还原点...")
         subprocess.run("vssadmin Delete Shadows /all /quiet", shell=True, check=True)
         print("成功清理旧的系统还原点")
+        logger.info("成功清理旧的系统还原点")
     except subprocess.CalledProcessError as e:
         print("error：", e.returncode)
+        logger.error("error：", e.returncode)
 
 
 class CleanThread(QThread):
@@ -153,8 +168,10 @@ def check_disk():
         v1 = get_v()
         if int(v0-v1) > 1024:
             message = f"加速完成！\n清理出{format((v0 - v1)/1024, '.2f')}GB空间"
+            logger.info(message)
         else:
             message = f"加速完成！\n清理出{format(v0 - v1, '.2f')}MB空间"
+            logger.info(message)
         title = 'Windows Cleaner 4.0'  # 弹窗的标题
         icon = r'WCMain\resource\imgs\icon.ico'  # 可选参数，传入ico图标文件的路径，显示在弹窗上
         timeout = 10  # 弹窗的显示时间，以秒（s）作为单位
@@ -162,6 +179,7 @@ def check_disk():
             notification.notify(title=title, message=message, timeout=timeout, app_icon=icon)
         except Exception as e:
             print(f"发生错误：{e}")
+            logger.error(f"发生错误：{e}")
     time.sleep(300)
 
 

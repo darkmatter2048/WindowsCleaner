@@ -12,6 +12,9 @@ from about import about_page
 from support import support_page
 from auto import auto_page
 
+# 导入日志模块
+from logger import get_logger
+
 import json
 import winreg
 import requests
@@ -21,6 +24,9 @@ try:
 except Exception as e:
     print(f"发生错误：{e}")
 import os
+
+# 获取日志记录器实例
+logger = get_logger()
 
 # 获取当前脚本的目录
 script_directory = os.path.dirname(os.path.abspath(__file__))
@@ -37,6 +43,7 @@ def WeatherLate(date_str):
         return days_difference
     except ValueError as e:
         print(f"日期格式错误: {e}")
+        logger.error(f"日期格式错误: {e}")
         return None
 
 def download_version():
@@ -50,9 +57,11 @@ def download_version():
         data = response.json()
         print('获取的 JSON 数据：')
         print(data)
+        logger.info('获取的 JSON 数据：', data)
         return data
     else:
         print(f'下载失败，状态码: {response.status_code}')
+        logger.error(f'下载失败，状态码: {response.status_code}')
 
 class Demo(SplitFluentWindow):
 
@@ -115,6 +124,7 @@ class Demo(SplitFluentWindow):
                         self.show_tooltip()
                     else:
                         print("已经是最新版本")
+                        logger.debug("已经是最新版本")
                 elif self.settings_data['update'] == 2:
                     result = WeatherLate(self.settings_data["AutoUpdate"])
                     if result > 7:
@@ -123,6 +133,7 @@ class Demo(SplitFluentWindow):
                             self.show_tooltip()
                         else:
                             print("已经是最新版本")
+                            logger.debug("已经是最新版本")
                         now = datetime.now()
                         formatted_date = now.strftime('%Y-%m-%d')  # 格式：年-月-日
                         self.settings_data["AutoUpdate"] = formatted_date
@@ -130,8 +141,10 @@ class Demo(SplitFluentWindow):
                             json.dump(self.settings_data, file, indent=4)    
                     else:
                         print("天数不足")
+                        logger.debug("天数不足")
         except Exception as e:
             print(f"更新时发生错误: {e}")
+            logger.error(f"更新时发生错误: {e}")
         '''
         if self.checked:
             return
@@ -252,5 +265,6 @@ if __name__ == "__main__":
         try:
             notification.notify(title=title, message=message, timeout=timeout, app_icon=icon)
         except Exception as e:
-            print(f"发生错误：{e}")   
+            print(f"发生错误：{e}")
+            logger.error(f"发生错误：{e}")
     app.exec_()

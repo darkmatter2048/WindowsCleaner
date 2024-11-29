@@ -19,6 +19,11 @@ from datetime import datetime
 import time
 
 import os
+# 导入日志模块
+from logger import get_logger
+
+# 获取日志记录器实例
+logger = get_logger()
 
 current_file = "清理内存和临时文件，减少电脑卡顿"
 # 获取当前脚本的目录
@@ -39,10 +44,13 @@ def get_drive_info(drive_letter):
                     return usage.total, usage.used, usage.free, usage.percent
                 else:
                     print(f"挂载点 {part.mountpoint} 不存在")
+                    logger.error(f"挂载点 {part.mountpoint} 不存在")
             except PermissionError:
                 print(f"权限错误: 无法访问挂载点 {part.mountpoint}")
+                logger.error(f"权限错误: 无法访问挂载点 {part.mountpoint}")
             except Exception as e:
                 print(f"获取磁盘使用情况时发生错误: {e}")
+                logger.error(f"获取磁盘使用情况时发生错误: {e}")
 
 def WeatherLate(date_str):
     now = datetime.now()
@@ -53,6 +61,7 @@ def WeatherLate(date_str):
         return days_difference
     except ValueError as e:
         print(f"日期格式错误: {e}")
+        logger.error(f"日期格式错误: {e}")
         return None
 
 def get_v():
@@ -84,7 +93,8 @@ def clean_main():
     try:
         clean_browser_cache()
     except Exception as e:
-        print("浏览器缓存清理失败")    
+        print("浏览器缓存清理失败")
+        logger.error("浏览器缓存清理失败")
     delete_restore_points()
     clean_tmp_files()
     user_list = settings_data["includePath"]
@@ -106,8 +116,10 @@ def clean_application_cache():
                 try:
                     shutil.rmtree(app_cache_dir)
                     print(f"Deleted {app_cache_dir}")
+                    logger.info(f"Deleted {app_cache_dir}")
                 except Exception as e:
                     print(f"Failed to delete {app_cache_dir}. Reason: {e}")
+                    logger.error(f"Failed to delete {app_cache_dir}. Reason: {e}")
 
 
 def clean_tmp_files():
