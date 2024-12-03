@@ -32,8 +32,8 @@ OutputBaseFilename=windowscleaner_v5.0_amd64_setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
-WizardImageFile=E:\Files\logo\New\ad3.bmp
-WizardSmallImageFile=E:\Files\logo\New\sad.bmp
+//WizardImageFile=E:\Files\logo\New\ad3.bmp
+//WizardSmallImageFile=E:\Files\logo\New\sad.bmp
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -41,7 +41,7 @@ Name: "armenian"; MessagesFile: "compiler:Languages\Armenian.isl"
 Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortuguese.isl"
 Name: "bulgarian"; MessagesFile: "compiler:Languages\Bulgarian.isl"
 Name: "catalan"; MessagesFile: "compiler:Languages\Catalan.isl"
-Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.isl"
+Name: "chinesesimplified"; MessagesFile: "Lang\ChineseSimplified.isl"
 Name: "corsican"; MessagesFile: "compiler:Languages\Corsican.isl"
 Name: "czech"; MessagesFile: "compiler:Languages\Czech.isl"
 Name: "danish"; MessagesFile: "compiler:Languages\Danish.isl"
