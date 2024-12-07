@@ -1,5 +1,8 @@
 <RCC>
   <qresource prefix="imgs">
+    <file>imgs/project_data.png</file>
+    <file>imgs/recovery-disk.png</file>
+    <file>imgs/Senior.png</file>
     <file>imgs/support.png</file>
     <file>imgs/booster.png</file>
     <file>imgs/clean.png</file>

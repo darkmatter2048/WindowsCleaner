@@ -228,10 +228,16 @@ class clean_page(QWidget, Ui_Form):
         self.progressBar.setTextVisible(True)
 
         self.pushButton.clicked.connect(self.boost)
-        self.widget_2.clicked.connect(self.clean)   
+        self.widget_2.clicked.connect(self.clean) 
+        self.widget_3.clicked.connect(self.RunSpaceSniffer) 
 
         self.show_work()
         self.run_flash()
+
+    def RunSpaceSniffer(self):
+        import subprocess
+        exe_path = "WCMain/SpaceSniffer.exe"
+        process = subprocess.Popen([exe_path])
 
     def on_operation_completed(self):
         print("完成")
