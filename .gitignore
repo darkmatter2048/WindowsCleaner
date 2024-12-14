@@ -3,4 +3,8 @@
 /__pycache__
 /build
 /dist
+<<<<<<< HEAD
 /env
+=======
+/logs
+>>>>>>> af2e1ddd2a66b14df2fb802b908e6c50b5af94a7
