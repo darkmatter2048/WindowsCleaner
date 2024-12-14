@@ -112,6 +112,11 @@ class Demo(SplitFluentWindow):
         self.initNavigation()
         self.initWindow() 
 
+        self.cleanpage.widget_5.clicked.connect(self.switch)
+
+    def switch(self):
+        self.switchTo(self.seniorpage)    
+
     def update(self):
         try:
             if self.checked == True:
@@ -178,7 +183,7 @@ class Demo(SplitFluentWindow):
     def show_tooltip(self):
         # 使用 QTimer 让提示信息在系统托盘图标上显示
         QTimer.singleShot(1000, lambda: self.tray_icon.showMessage(
-            'Windows Cleaner 4.0',
+            'Windows Cleaner',
             'WindowsCleaner有新版本啦,快去更新吧！',
             QSystemTrayIcon.Information,
             2000
@@ -258,7 +263,7 @@ if __name__ == "__main__":
     if settings_data["AutoRunEnabled"] != "True":  
         w.show()
     else:
-        message = f"Windows Cleaner 4.0已启动！\n单击系统托盘图标进入主页。"
+        message = f"Windows Cleaner已启动！\n单击系统托盘图标进入主页。"
         title = 'Windows Cleaner 4.0'  # 弹窗的标题
         icon = r'WCMain\resource\imgs\icon.ico'  # 可选参数，传入ico图标文件的路径，显示在弹窗上
         timeout = 10  # 弹窗的显示时间，以秒（s）作为单位

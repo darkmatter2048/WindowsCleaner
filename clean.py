@@ -247,6 +247,7 @@ class clean_page(QWidget, Ui_Form):
         self.pushButton.clicked.connect(self.boost)
         self.widget_2.clicked.connect(self.clean) 
         self.widget_3.clicked.connect(self.RunSpaceSniffer)
+        self.widget_4.clicked.connect(self.RunAppDataCleaner)
 
         self.show_work()
         self.run_flash()
@@ -255,6 +256,11 @@ class clean_page(QWidget, Ui_Form):
         import subprocess
         exe_path = "WCMain/SpaceSniffer.exe"
         process = subprocess.Popen([exe_path])
+
+    def RunAppDataCleaner(self):
+        import subprocess
+        exe_path = "WCMain/AppDataCleaner.exe"
+        process = subprocess.Popen([exe_path])    
 
     def on_operation_completed(self):
         print("完成")
@@ -360,7 +366,7 @@ class clean_page(QWidget, Ui_Form):
         
     def showTeachingTip(self, content="设置成功！重启软件后生效。"):
         TeachingTip.create(
-            target=self.label_11,
+            target=self.widget,
             icon=InfoBarIcon.SUCCESS,
             title='Success',
             content=content,
