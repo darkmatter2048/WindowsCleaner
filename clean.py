@@ -229,7 +229,7 @@ class clean_page(QWidget, Ui_Form):
 
         self.pushButton.clicked.connect(self.boost)
         self.widget_2.clicked.connect(self.clean) 
-        self.widget_3.clicked.connect(self.RunSpaceSniffer) 
+        self.widget_3.clicked.connect(self.RunSpaceSniffer)
 
         self.show_work()
         self.run_flash()
@@ -346,7 +346,7 @@ class clean_page(QWidget, Ui_Form):
             tailPosition=TeachingTipTailPosition.TOP,
             duration=2000,
             parent=self
-        )            
+        )         
 
     def info_bar(self):
         InfoBar.success(
