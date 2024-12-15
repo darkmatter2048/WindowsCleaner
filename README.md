@@ -35,18 +35,27 @@
 - 运行`python main.py`
 #### 本地编译
 - 先完成源码运行
+- 安装 Visual Studio 以及 msvc 编译器
 - 安装 Nuitka
 ```pip
 pip install nuitka
 ```
-- 编译`python -m nuitka --mingw64  --assume-yes-for-downloads --standalone --remove-output --windows-console-mode="disable" --enable-plugins="pyqt5" --output-dir="dist" --main="main.py" --windows-icon-from-ico="icon.ico"`
+- 编译
+```python
+python -m nuitka --standalone --remove-output --windows-console-mode=“disable” --enable-plugins=“pyqt5” --output-dir=“dist” --main=“main.py” --windows-icon-from-ico=“icon.ico”
+```
 > [!tip]
 >
-> 如果您的电脑安装了 Visual Studio 以及 msvc 编译器，可以将编译参数中的`--mingw64`选项删除，否则 Nuitka 会直接从 Github 下载 Mingw64，不论电脑上是否安装！
+> 如果您的电脑未安装 Visual Studio 以及 msvc 编译器，Nuitka 会直接从 Github 下载 Mingw64，不论电脑上是否安装 Mingw64！
+
+##### 编译安装包
+1. 电脑安装 Inno Setup
+2. 使用 Inno Setup 打开`scipt.iss`，点击编译即可
+3. 生成的安装程序在`releases`目录下
 
 - 将`WCMain`文件夹复制到`dist\main.dist`下，运行`main.exe`即可
 #### GitHub Actions（推荐）
-- 全自动编译，直接运行，运行结束后下载编译产物全部解压即可使用(注：编译时间非常长，大概编译一次需要20-30分钟
+- 全自动编译，直接运行（或勾选“生成安装包”生成安装程序），运行结束后下载编译产物全部解压即可使用(注：编译时间非常长，大概编译一次需要20-30分钟）/或下载带`Setup`字样的压缩包，解压后运行安装程序安装即可
 
 ### [Bilibili:Mr_Jacek](https://space.bilibili.com/1847808902?spm_id_from=333.1007.0.0)
 
