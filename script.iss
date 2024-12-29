@@ -34,6 +34,8 @@ SolidCompression=yes
 WizardStyle=modern
 WizardImageFile=Setup\ad3.bmp
 WizardSmallImageFile=Setup\sad.bmp
+LicenseFile=Setup\readme.txt
+PrivilegesRequired=admin
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

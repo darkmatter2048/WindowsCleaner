@@ -13,7 +13,7 @@ LOG_FILE = os.path.join(LOG_DIR, "app.log")
 # 配置日志
 def setup_logger():
     # 创建一个logger
-    logger = logging.getLogger("WCLog")
+    logger = logging.getLogger("WCLog", mode='w') # 以覆盖模式打开文件，仅保留此次运行的日志，避免日志文件过大
     logger.setLevel(logging.DEBUG)  # 设置日志级别为DEBUG
 
     # 创建一个handler，用于写入日志文件
