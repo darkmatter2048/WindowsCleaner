@@ -9,12 +9,16 @@ if not os.path.exists(LOG_DIR):
 # 日志文件路径
 LOG_FILE = os.path.join(LOG_DIR, "app.log")
 
-
 # 配置日志
 def setup_logger():
     # 创建一个logger
-    logger = logging.getLogger("WCLog", mode='w') # 以覆盖模式打开文件，仅保留此次运行的日志，避免日志文件过大
+    logger = logging.getLogger("WCLog") 
     logger.setLevel(logging.DEBUG)  # 设置日志级别为DEBUG
+
+    # 检查日志文件是否存在，如果存在则清空它
+    if os.path.exists(LOG_FILE):
+        with open(LOG_FILE, 'w'):
+            pass
 
     # 创建一个handler，用于写入日志文件
     file_handler = logging.FileHandler(LOG_FILE)
