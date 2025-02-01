@@ -63,10 +63,11 @@ python -m nuitka --standalone --remove-output --windows-console-mode=“disable�
 
 [<img src="https://wc.dyblog.online/images/d.png" alt="Develop Image" style="width: 200px;"/>](https://dyblog.online/donate)
 
-## 贡献者
+## 🎖 贡献者
 
-- [darkmatter2048](https://github.com/darkmatter2048) (项目发起者)
-- [TC999](https://github.com/TC999) （开发清理日志等功能以及AppDataCleaner）
+<a href="https://github.com/darkmatter2048/WindowsCleaner/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=darkmatter2048/WindowsCleaner" />
+</a>
 
 ## 星标历史
 
