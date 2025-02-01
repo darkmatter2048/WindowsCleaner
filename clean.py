@@ -319,6 +319,7 @@ class clean_page(QWidget, Ui_Form):
         self.PermissionError_bar()
         self.pushButton.setEnabled(True)
         self.widget_2.setEnabled(True)
+        self.pushButton.setText("立即加速")
 
     def run_flash(self):
         self.thread = FlashThread()
