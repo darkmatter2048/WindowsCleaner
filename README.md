@@ -1,8 +1,14 @@
 <div align=center>
 <img src="logo.png" width="150" height="150">
+
 <h1>Windows Cleaner</h1>
+
+<img src="https://img.shields.io/badge/Author-DaYe-orange" alt="Author" />
+<img src="https://img.shields.io/github/languages/count/darkmatter2048/WindowsCleaner" alt="languages-count" />
+<img src="https://img.shields.io/github/languages/top/darkmatter2048/WindowsCleaner?color=yellow" alt="languages-top" />
+<img src="https://img.shields.io/github/last-commit/darkmatter2048/WindowsCleaner" alt="last-commit" />
+
 <h3>专治C盘爆红及各种不服！</h3>
-完全开源免费的C盘清理工具
 </div>
 
 ## 🎨 运行截图 GUI
@@ -15,7 +21,7 @@
 
 ## 🤔 使用方法 How to use
 
-### 📦 下载安装包
+### 下载安装包📦
 
 [Windows Cleaner官网：https://wc.dyblog.online](https://wc.dyblog.online)
 
@@ -27,12 +33,12 @@
 一路Next即可，如果想以后方便打开可以勾选上`创建桌面快捷方式`选项。
 
 ## 💻 从源代码构建 How to build
-#### 源码运行
+### 源码运行
 - 克隆此仓库
 - 安装 Python 3.8
 - 安装依赖`pip install -r requirements.txt`
 - 运行`python main.py`
-#### 本地编译
+### 本地编译
 - 先完成源码运行
 - 安装 Visual Studio 以及 msvc 编译器
 - 安装 Nuitka
@@ -47,7 +53,7 @@ python -m nuitka --standalone --remove-output --windows-console-mode=“disable�
 >
 > 如果您的电脑未安装 Visual Studio 以及 msvc 编译器，Nuitka 会直接从 Github 下载 Mingw64，不论电脑上是否安装 Mingw64！
 
-##### 编译安装包
+### 编译安装包
 1. 电脑安装 Inno Setup
 2. 使用 Inno Setup 打开`scipt.iss`，点击编译即可
 3. 生成的安装程序在`releases`目录下
