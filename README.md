@@ -5,18 +5,17 @@
 完全开源免费的C盘清理工具
 </div>
 
-## 🎨运行截图 GUI
+## 🎨 运行截图 GUI
 | ![show1](readme/s_light.png) | ![show2](readme/s_dark.png) |
 |:----------------------:|:----------------------:|
 
-## 🖥系统要求 System Requirements
+## 🖥 支持的操作系统
 
-- Windows操作系统：Windows 10 或以上
-- Windows: Windows 10 or above
+- <img src="readme/windows.svg" width="16" height="16" />Windows 10,11
 
-## 使用方法
+## 🤔 使用方法 How to use
 
-### 下载安装包
+### 📦 下载安装包
 
 [Windows Cleaner官网：https://wc.dyblog.online](https://wc.dyblog.online)
 
@@ -24,10 +23,10 @@
 
 密码:4ar1
 
-### 安装
+### 安装 
 一路Next即可，如果想以后方便打开可以勾选上`创建桌面快捷方式`选项。
 
-### 手动编译
+## 💻 从源代码构建 How to build
 #### 源码运行
 - 克隆此仓库
 - 安装 Python 3.8
@@ -57,19 +56,24 @@ python -m nuitka --standalone --remove-output --windows-console-mode=“disable�
 #### GitHub Actions（推荐）
 - 全自动编译，直接运行（或勾选“生成安装包”生成安装程序），运行结束后下载编译产物全部解压即可使用(注：编译时间非常长，大概编译一次需要20-30分钟）/或下载带`Setup`字样的压缩包，解压后运行安装程序安装即可
 
-### [Bilibili:Mr_Jacek](https://space.bilibili.com/1847808902?spm_id_from=333.1007.0.0)
+## 📝未来计划 Future Ideas
 
-## 🤝支持 Windows Cleaner的开发
+- [ ] 增加内存优化功能
+- [ ] 完善高级清理功能
+- [ ] 支持更多语言
 
-[<img src="https://wc.dyblog.online/images/d.png" alt="Develop Image" style="width: 200px;"/>](https://dyblog.online/donate)
 
-## 🎖 贡献者
+## 🎖 贡献者 Contributors
 
 <a href="https://github.com/darkmatter2048/WindowsCleaner/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=darkmatter2048/WindowsCleaner" />
 </a>
 
-## 星标历史
+## 🤝支持 Windows Cleaner的开发
+
+[<img src="https://wc.dyblog.online/images/d.png" alt="Develop Image" style="width: 200px;"/>](https://dyblog.online/donate)
+
+## ⭐ 星标历史 Star History
 
 <a href="https://star-history.com/#darkmatter2048/WindowsCleaner&Date">
  <picture>
