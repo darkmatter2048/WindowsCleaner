@@ -9,4 +9,6 @@ class support_page(QWidget, Ui_Form):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
+
+        self.label_2.setUrl("https://afdian.com/a/donate_daye")
     

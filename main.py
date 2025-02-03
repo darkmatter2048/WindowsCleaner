@@ -63,6 +63,31 @@ def download_version():
         print(f'下载失败，状态码: {response.status_code}')
         logger.error(f'下载失败，状态码: {response.status_code}')
 
+def add_to_startup():
+    # 获取当前 Python 程序的路径
+    executable_path = sys.executable
+    program_name = os.path.splitext(os.path.basename(executable_path))[0]
+
+    try:
+        key = winreg.HKEY_CURRENT_USER
+        sub_key = r'Software\Microsoft\Windows\CurrentVersion\Run'
+        with winreg.OpenKey(key, sub_key, 0, winreg.KEY_SET_VALUE) as registry_key:
+            winreg.SetValueEx(registry_key, program_name, 0, winreg.REG_SZ, executable_path)
+        print(f'{program_name} has been added to startup.')
+    except Exception as e:
+        print(f'Error adding to startup: {e}')
+        
+def remove_from_startup():
+    program_name = os.path.splitext(os.path.basename(sys.executable))[0]
+    try:
+        key = winreg.HKEY_CURRENT_USER
+        sub_key = r'Software\Microsoft\Windows\CurrentVersion\Run'
+        with winreg.OpenKey(key, sub_key, 0, winreg.KEY_SET_VALUE) as registry_key:
+            winreg.DeleteValue(registry_key, program_name)
+        print(f'{program_name} has been removed from startup.')
+    except Exception as e:
+        print(f'Error removing from startup: {e}')
+
 class Demo(SplitFluentWindow):
 
     def __init__(self):
@@ -113,9 +138,23 @@ class Demo(SplitFluentWindow):
         self.initWindow() 
 
         self.cleanpage.widget_5.clicked.connect(self.switch)
+        self.settingspage.AutoRun_2.stateChanged.connect(self.AutoRun)
 
     def switch(self):
         self.switchTo(self.seniorpage)    
+
+    def AutoRun(self):
+        #self.settings_data = get_settings()
+        if self.settingspage.AutoRun_2.isChecked():
+            print("setAutoRun")
+            self.settings_data['AutoRunEnabled'] = "True"
+            add_to_startup()
+        else:
+            print("No")
+            self.settings_data['AutoRunEnabled'] = "False"
+            remove_from_startup()
+        with open('WCMain/settings.json', 'w') as file:
+            json.dump(self.settings_data, file, indent=4)    
 
     def update(self):
         try:
@@ -208,9 +247,9 @@ class Demo(SplitFluentWindow):
                 self.hide()
             else:
                 self.close()
-                          
+                           
     def initWindow(self):
-        self.setFixedSize(396,550)   # 288+28,520
+        self.setFixedSize(396,566)   # 288+28,520
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
         self.setWindowTitle('WindowsCleaner v5.0')
         self.setWindowIcon(QIcon(':/imgs/imgs/clean.png'))
@@ -264,7 +303,7 @@ if __name__ == "__main__":
         w.show()
     else:
         message = f"Windows Cleaner已启动！\n单击系统托盘图标进入主页。"
-        title = 'Windows Cleaner 4.0'  # 弹窗的标题
+        title = 'Windows Cleaner 5.0'  # 弹窗的标题
         icon = r'WCMain\resource\imgs\icon.ico'  # 可选参数，传入ico图标文件的路径，显示在弹窗上
         timeout = 10  # 弹窗的显示时间，以秒（s）作为单位
         try:

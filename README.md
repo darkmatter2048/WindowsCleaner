@@ -19,7 +19,10 @@
 
 - <img src="readme/windows.svg" width="16" height="16" />Windows 10,11
 
-## 🤔 使用方法 How to use
+<details>
+<summary>
+使用方法 How to use
+</summary>
 
 ### 下载安装包📦
 
@@ -31,6 +34,7 @@
 
 ### 安装 
 一路Next即可，如果想以后方便打开可以勾选上`创建桌面快捷方式`选项。
+</details>
 
 ## 💻 从源代码构建 How to build
 ### 源码运行
@@ -64,10 +68,12 @@ python -m nuitka --standalone --remove-output --windows-console-mode=“disable�
 
 ## 📝未来计划 Future Ideas
 
-- [ ] 增加内存优化功能
+- [x] 增加内存优化功能
 - [ ] 完善高级清理功能
 - [ ] 支持更多语言
-
+- [x] 修复误删.NET和图片应用缓存的Bug
+- [x] 更换UI字体
+- [x] 修复开机自启Bug
 
 ## 🎖 贡献者 Contributors
 
