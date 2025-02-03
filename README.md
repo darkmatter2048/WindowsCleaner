@@ -71,7 +71,6 @@ python -m nuitka --standalone --remove-output --windows-console-mode=“disable�
 - [x] 增加内存优化功能
 - [ ] 完善高级清理功能
 - [ ] 支持更多语言
-- [x] 修复误删.NET和图片应用缓存的Bug
 - [x] 更换UI字体
 - [x] 修复开机自启Bug
 
