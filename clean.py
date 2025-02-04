@@ -104,24 +104,75 @@ def boost_main():
 
 def clean_main():
     global settings_data
-    boost_prefetch("C:\\Windows\\SoftwareDistribution\\Download")
-    boost_prefetch("C:\\Windows\\Prefetch")
-    boost_prefetch("C:\\Windows\\Temp")
-    boost_prefetch("C:\\Windows\\System32\\LogFiles")
-    boost_prefetch("C:\\Windows\\System32\\DriverStore\\FileRepository")
-    clean_temp_folder()
-    clean_system_logs()
-    clean_application_cache()
+    try:
+        boost_prefetch("C:\\Windows\\SoftwareDistribution\\Download")
+    except Exception as e:
+        print("软件分发缓存清理失败")
+        logger.error("软件分发缓存清理失败.是我在捣鬼>_<")
+    try:    
+        boost_prefetch("C:\\Windows\\Prefetch")
+    except Exception as e:
+        print("预取文件清理失败")
+        logger.error("预取文件清理失败.是我在捣鬼>_>")
+    try:    
+        boost_prefetch("C:\\Windows\\Temp")
+    except Exception as e:
+        print("临时文件清理失败")
+        logger.error("临时文件清理失败.是我在捣鬼<_<")
+    '''    
+    try:
+        boost_prefetch("C:\\Windows\\System32\\Winevt\\Logs")
+    except Exception as e:
+        print("系统日志清理失败")
+        logger.error("系统日志清理失败.是我在捣鬼>_<")    
+    '''    
+    try:
+        boost_prefetch("C:\\Windows\\System32\\LogFiles")
+    except Exception as e:
+        print("系统日志清理失败")
+        logger.error("系统日志清理失败.是我在捣鬼>_<")
+    try:    
+        boost_prefetch("C:\\Windows\\System32\\DriverStore\\FileRepository")
+    except Exception as e:
+        print("驱动程序缓存清理失败")
+        logger.error("驱动程序缓存清理失败.是我在捣鬼>_<")
+    try:        
+        clean_temp_folder()
+    except Exception as e:
+        print("临时文件清理失败")
+        logger.error("临时文件清理失败.是我在捣鬼>_<")
+    try:    
+        clean_system_logs()
+    except Exception as e:
+        print("系统日志清理失败")
+        logger.error("系统日志清理失败.是我在捣鬼>_<")
+    try:    
+        clean_application_cache()
+    except Exception as e:
+        print("应用程序缓存清理失败")
+        logger.error("应用程序缓存清理失败.是我在捣鬼>_<")        
     try:
         clean_browser_cache()
     except Exception as e:
         print("浏览器缓存清理失败")
         logger.error("浏览器缓存清理失败")
-    delete_restore_points()
-    clean_tmp_files()
-    user_list = settings_data["includePath"]
-    for path in user_list:
-        boost_prefetch(path)
+    try:    
+        delete_restore_points()
+    except Exception as e:
+        print("还原点清理失败")
+        logger.error("还原点清理失败.是我在捣鬼>_<")
+    try:    
+        clean_tmp_files()
+    except Exception as e:
+        print("临时文件清理失败")
+        logger.error("临时文件清理失败_2.是我在捣鬼>_<")
+    try:    
+        user_list = settings_data["includePath"]
+        for path in user_list:
+            boost_prefetch(path)
+    except Exception as e:
+        print("用户自定义路径清理失败")
+        logger.error("用户自定义路径清理失败.是我在捣鬼>_<")
 
 
 def clean_application_cache():

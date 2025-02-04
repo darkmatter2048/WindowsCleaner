@@ -19,5 +19,9 @@
     ],
     "python.autoComplete.extraPaths": [
         "c:/Users/Administrator/.vscode/extensions/rt-thread.rt-thread-micropython-1.0.11/microExamples/code-completion"
-    ]
+    ],
+    "marscode.codeCompletionPro": {
+        "enableCodeCompletionPro": false
+    },
+    "marscode.enableInlineCommand": true
 }
