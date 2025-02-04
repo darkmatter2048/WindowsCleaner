@@ -120,6 +120,7 @@ def clean_main():
         print("临时文件清理失败")
         logger.error("临时文件清理失败.是我在捣鬼<_<")
     '''    
+    TEST
     try:
         boost_prefetch("C:\\Windows\\System32\\Winevt\\Logs")
     except Exception as e:
