@@ -99,7 +99,7 @@ def boost_main():
     clean_temp_folder()
     clean_system_logs()
     clean_browser_cache()
-    kill_processes_by_memory_usage()
+    #kill_processes_by_memory_usage()
 
 
 def clean_main():
@@ -148,7 +148,8 @@ def clean_main():
         print("系统日志清理失败")
         logger.error("系统日志清理失败.是我在捣鬼>_<")
     try:    
-        clean_application_cache()
+        #clean_application_cache()
+        print("应用程序缓存清理功能存在问题，已禁用")
     except Exception as e:
         print("应用程序缓存清理失败")
         logger.error("应用程序缓存清理失败.是我在捣鬼>_<")        
