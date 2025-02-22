@@ -28,6 +28,10 @@
 
 [Windows Cleaner官网：https://wc.dyblog.online](https://wc.dyblog.online)
 
+> [!tip]
+>
+> 从[夸克网盘](https://pan.quark.cn/s/03e706cb753a)下载Windows Cleaner(amd64)的安装包。
+
 或从[蓝奏云网盘](https://wwt.lanzn.com/b03xje5uf)下载Windows Cleaner(amd64)的安装包。
 
 密码:4ar1
