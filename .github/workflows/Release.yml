@@ -62,8 +62,8 @@ jobs:
       - name: Upload release build artifacts to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          name: ${{ inputs.release }}
-          tag_name: ${{ inputs.release }}
+          name: ${{ inputs.tag }}
+          tag_name: ${{ inputs.tag }}
           draft: false
           make_latest: true
           files: |
