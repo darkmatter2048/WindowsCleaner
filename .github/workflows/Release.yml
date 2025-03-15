@@ -50,16 +50,16 @@ jobs:
       contents: write
 
     steps:
-      - name: Download release artifacts
+      - name: 下载附件
         uses: actions/download-artifact@v4
         with:
           path: artifacts
 
-      - name: Create release directories and zip
+      - name: 压缩绿化版
         run: |
-          mv artifacts/WindowsCleaner-amd64-Setup/*.exe *.exe
+          zip -r WindowsCleaner.zip artifacts/WindowsCleaner
 
-      - name: Upload release build artifacts to GitHub Release
+      - name: 发行
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ inputs.tag }}
@@ -68,4 +68,4 @@ jobs:
           make_latest: true
           files: |
             WindowsCleaner.zip
-            *.exe
+            artifacts/WindowsCleaner-amd64-Setup/*.exe
