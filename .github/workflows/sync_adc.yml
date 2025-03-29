@@ -1,4 +1,4 @@
-name: 更改 AppDataCleaner 版本
+name: Download and Push AppDataCleaner Release
 
 on:
   #schedule:
@@ -22,20 +22,25 @@ jobs:
               owner: 'TC999',
               repo: 'AppDataCleaner'
             });
-            return { tag: latestRelease.data.tag_name, asset: latestRelease.data.assets[0].browser_download_url };
+            const asset = latestRelease.data.assets.find(a => a.name === 'AppDataCleaner.exe');
+            if (!asset) {
+              throw new Error('AppDataCleaner.exe not found in the latest release');
+            }
+            return { tag: latestRelease.data.tag_name, asset: asset.browser_download_url };
 
       - name: Download release asset
-        id: download_asset
         uses: actions/download-artifact@v3
         with:
           name: appdatacleaner
           url: ${{ steps.get_release_info.outputs.asset }}
-          path: WCMain
+          path: ./downloads
 
-      - name: Push to repository
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          #github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
-          force: true
-          directory: WCMain
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add ./downloads/AppDataCleaner.exe
+          git commit -m 'Add latest AppDataCleaner.exe'
+          git push
+        #env:
+        #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
