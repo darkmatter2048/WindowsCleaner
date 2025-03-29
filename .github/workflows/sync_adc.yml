@@ -1,0 +1,41 @@
+name: 更改 AppDataCleaner 版本
+
+on:
+  #schedule:
+  #  - cron: "0 0 * * *" # 每天定时运行
+  workflow_dispatch:
+
+jobs:
+  download_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout this repository
+        uses: actions/checkout@v2
+
+      - name: Get latest release info
+        id: get_release_info
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const latestRelease = await github.repos.getLatestRelease({
+              owner: 'TC999',
+              repo: 'AppDataCleaner'
+            });
+            return { tag: latestRelease.data.tag_name, asset: latestRelease.data.assets[0].browser_download_url };
+
+      - name: Download release asset
+        id: download_asset
+        uses: actions/download-artifact@v3
+        with:
+          name: appdatacleaner
+          url: ${{ steps.get_release_info.outputs.asset }}
+          path: WCMain
+
+      - name: Push to repository
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          #github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
+          force: true
+          directory: WCMain
