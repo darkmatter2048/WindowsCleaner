@@ -2,7 +2,7 @@ name: Download and Push AppDataCleaner Release
 
 on:
   #schedule:
-  #  - cron: "0 0 * * *" # 每天定时运行
+  #  - cron: '0 0 * * *' # 每天定时运行
   workflow_dispatch:
 
 jobs:
@@ -29,11 +29,11 @@ jobs:
             return { tag: latestRelease.data.tag_name, asset: asset.browser_download_url };
 
       - name: Download release asset
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: appdatacleaner
           url: ${{ steps.get_release_info.outputs.asset }}
-          path: ./downloads
+          path: WCMain
 
       - name: Commit and push changes
         run: |
