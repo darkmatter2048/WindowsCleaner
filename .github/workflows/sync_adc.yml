@@ -1,4 +1,4 @@
-name: Download and Push AppDataCleaner Release
+name: 更新 AppDataCleaner 程序版本
 
 on:
   #schedule:
@@ -10,13 +10,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout this repository
+      - name: 仓库检出
         uses: actions/checkout@v2
 
       - name: 更新
         run: sudo sh ./script/update-adc.sh
 
-      - name: Commit and push changes
+      - name: 提交并推送
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
