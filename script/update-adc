@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # 获取最新发布版本的URL
 latest_release_url=$(curl -s -L -o /dev/null -w %{url_effective} https://github.com/TC999/AppDataCleaner/releases/latest)
