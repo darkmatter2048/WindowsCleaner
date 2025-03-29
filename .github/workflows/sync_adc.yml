@@ -13,22 +13,8 @@ jobs:
       - name: Checkout this repository
         uses: actions/checkout@v2
 
-      - name: Get latest release version
-        id: get_release_version
-        uses: actions/github-script@v6
-        with:
-          script: |
-            const latestRelease = await github.repos.getLatestRelease({
-              owner: 'TC999',
-              repo: 'AppDataCleaner'
-            });
-            return { tag: latestRelease.data.tag_name };
-
-      - name: Download AppDataCleaner.exe
-        run: |
-          VERSION=${{ steps.get_release_version.outputs.tag }}
-          DOWNLOAD_URL="https://github.com/TC999/AppDataCleaner/releases/download/$VERSION/AppDataCleaner.exe"
-          wget -O ./WCMain/AppDataCleaner.exe $DOWNLOAD_URL
+      - name: 更新
+        run: script/update-adc
 
       - name: Commit and push changes
         run: |
