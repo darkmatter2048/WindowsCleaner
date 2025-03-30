@@ -1,0 +1,27 @@
+name: 更新 AppDataCleaner 程序版本
+
+on:
+  #schedule:
+  #  - cron: '0 0 * * *' # 每天定时运行
+  workflow_dispatch:
+
+jobs:
+  download_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 仓库检出
+        uses: actions/checkout@v2
+
+      - name: 更新
+        run: sudo sh ./script/update-adc.sh
+
+      - name: 提交并推送
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add ./WCMain/AppDataCleaner.exe
+          git commit -m '更新 AppDataCleaner.exe'
+          git push
+        #env:
+        #  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
