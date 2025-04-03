@@ -99,7 +99,7 @@ def boost_main():
     clean_temp_folder()
     clean_system_logs()
     clean_browser_cache()
-    #kill_processes_by_memory_usage()
+    memreduct()
 
 
 def clean_main():
@@ -292,27 +292,8 @@ def delete_restore_points():
         print("error：", e.returncode)
         logger.error("error：", e.returncode)
 
-def kill_processes_by_memory_usage(threshold=100,exclude_processes=["System", "Idle", "svchost.exe"]):
-    # 获取所有正在运行的进程
-    processes = psutil.process_iter()
-    
-    # 按照内存使用量降序排序进程
-    sorted_processes = sorted(processes, key=lambda p: p.memory_info().rss, reverse=True)
-    
-    # 杀掉占用内存较多的非桌面应用进程
-    for process in sorted_processes:
-        try:
-            # 检查进程是否为桌面应用或程序本身
-            if is_desktop_application(process):
-                continue
-            
-            # 获取进程的内存使用量（MB）
-            memory_usage = process.memory_info().rss / 1024 / 1024
-            
-            print(f"Killing process: {process.name()} (PID: {process.pid}) with memory usage: {memory_usage:.2f} MB")
-            process.kill()
-        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-            pass
+def memreduct(threshold=100,exclude_processes=["System", "Idle", "svchost.exe"]):
+    os.system(r"WCMain\memreduct.exe /clean /silent")
 
 def is_desktop_application(process):
     try:
@@ -381,14 +362,10 @@ class clean_page(QWidget, Ui_Form):
         self.run_flash()
 
     def RunSpaceSniffer(self):
-        import subprocess
-
         exe_path = "WCMain/SpaceSniffer.exe"
         process = subprocess.Popen([exe_path])
 
     def RunAppDataCleaner(self):
-        import subprocess
-
         exe_path = "WCMain/AppDataCleaner.exe"
         process = subprocess.Popen([exe_path])
 

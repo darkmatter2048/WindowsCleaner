@@ -27,13 +27,30 @@ import os
 import winreg
 import win32api
 import win32con
+import ctypes
+
+def is_admin():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+if not is_admin():
+    try:
+        # 重新以管理员权限运行
+        ctypes.windll.shell32.ShellExecuteW(
+            None, "runas", sys.executable, " ".join(sys.argv), None, 1
+        )
+        sys.exit()
+    except Exception as e:
+        print(f"发生错误：{e}")
 
 # 获取日志记录器实例
 logger = get_logger()
 
 # 获取当前脚本的目录
 script_directory = os.path.dirname(os.path.abspath(__file__))
-settings_path = f'{script_directory}\WCMain\settings.json'
+settings_path = os.path.join(script_directory, 'WCMain', 'settings.json')  # 修复反斜杠问题
 with open(settings_path, 'r') as f:
     settings_data = json.load(f)  
     
@@ -324,6 +341,7 @@ def load_settings():
        
 
 if __name__ == "__main__":
+    is_admin()
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
