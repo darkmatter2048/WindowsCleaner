@@ -239,35 +239,6 @@ class Demo(SplitFluentWindow):
         except Exception as e:
             print(f"更新时发生错误: {e}")
             logger.error(f"更新时发生错误: {e}")
-        '''
-        if self.checked:
-            return
-        else:
-            self.checked = True
-            if self.settings_data['update'] == 1:
-                info = download_version()
-                if info["version"] > self.settings_data["version"]:
-                    self.show_tooltip()
-                else:
-                    print("已经是最新版本")
-            elif self.settings_data['update'] == 2:
-                result = WeatherLate(self.settings_data["AutoUpdate"])
-                if result > 7:
-                    info = download_version()
-                    if info["version"] > self.settings_data["version"]:
-                        self.show_tooltip()
-                    else:
-                        print("已经是最新版本")
-                    now = datetime.now()
-                    formatted_date = now.strftime('%Y-%m-%d')  # 格式：年-月-日
-                    self.settings_data["AutoUpdate"] = formatted_date
-                    with open('WCMain/settings.json', 'w') as file:
-                        json.dump(self.settings_data, file, indent=4)    
-                else:
-                    print("天数不足") 
-        '''             
-                     
-
 
     def show_tooltip(self):
         # 使用 QTimer 让提示信息在系统托盘图标上显示
@@ -277,6 +248,24 @@ class Demo(SplitFluentWindow):
             QSystemTrayIcon.Information,
             2000
         ))    
+
+    def check_version(self,version1, version2):
+        # 将版本号拆分为数字列表
+        v1 = list(map(int, version1.split('.')))
+        v2 = list(map(int, version2.split('.')))
+        
+        # 填充零使长度一致
+        max_len = max(len(v1), len(v2))
+        v1 += [0] * (max_len - len(v1))
+        v2 += [0] * (max_len - len(v2))
+        
+        # 逐位比较
+        for a, b in zip(v1, v2):
+            if a > b:
+                return 1
+            elif a < b:
+                return -1
+        return 0         
     
     def icon_activated(self, reason):
         if reason == QSystemTrayIcon.Trigger:
