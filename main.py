@@ -24,6 +24,9 @@ try:
 except Exception as e:
     print(f"发生错误：{e}")
 import os
+import winreg
+import win32api
+import win32con
 
 # 获取日志记录器实例
 logger = get_logger()
@@ -63,30 +66,60 @@ def download_version():
         print(f'下载失败，状态码: {response.status_code}')
         logger.error(f'下载失败，状态码: {response.status_code}')
 
+# 开机自启
 def add_to_startup():
-    # 获取当前 Python 程序的路径
-    executable_path = sys.executable
-    program_name = os.path.splitext(os.path.basename(executable_path))[0]
+    def zhao():
+        location = "SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+        # 获取注册表该位置的所有键值
+        key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, location)
+        i = 0
+        while True:
+            try:
+                # 获取注册表对应位置的键和值
+                # print(winreg.EnumValue(key, i)[0], winreg.EnumValue(key, i)[1])
+                if winreg.EnumValue(key, i)[0] == os.path.basename(sys.argv[0]):
+                    return True
+                i += 1
+            except OSError as error:
+                # 一定要关闭这个键
+                winreg.CloseKey(key)
+                break
 
-    try:
-        key = winreg.HKEY_CURRENT_USER
-        sub_key = r'Software\Microsoft\Windows\CurrentVersion\Run'
-        with winreg.OpenKey(key, sub_key, 0, winreg.KEY_SET_VALUE) as registry_key:
-            winreg.SetValueEx(registry_key, program_name, 0, winreg.REG_SZ, executable_path)
-        print(f'{program_name} has been added to startup.')
-    except Exception as e:
-        print(f'Error adding to startup: {e}')
+    flag = zhao()
+    if flag:
+        pass
+    else:
+        sys.setrecursionlimit(1000000)
+        name = os.path.basename(sys.argv[0])
+        path = os.getcwd() + '\\' + os.path.basename(sys.argv[0])
+        key = win32api.RegOpenKey(win32con.HKEY_CURRENT_USER, "SOFTWARE\Microsoft\Windows\CurrentVersion\Run", 0,
+                                  win32con.KEY_ALL_ACCESS)
+        win32api.RegSetValueEx(key, name, 0, win32con.REG_SZ, path)
+        win32api.RegCloseKey(key)
         
 def remove_from_startup():
-    program_name = os.path.splitext(os.path.basename(sys.executable))[0]
+    # 获取当前程序名称
+    name = os.path.basename(sys.argv[0])
+    
     try:
-        key = winreg.HKEY_CURRENT_USER
-        sub_key = r'Software\Microsoft\Windows\CurrentVersion\Run'
-        with winreg.OpenKey(key, sub_key, 0, winreg.KEY_SET_VALUE) as registry_key:
-            winreg.DeleteValue(registry_key, program_name)
-        print(f'{program_name} has been removed from startup.')
+        # 打开注册表项
+        key = win32api.RegOpenKey(
+            win32con.HKEY_CURRENT_USER,
+            r"SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
+            0,  # 保留参数必须为0
+            win32con.KEY_ALL_ACCESS
+        )
+        
+        # 尝试删除注册表值
+        win32api.RegDeleteValue(key, name)
+        win32api.RegCloseKey(key)
+        print("成功移除开机启动项")
+        logger.info("成功移除开机启动项")
+        
     except Exception as e:
-        print(f'Error removing from startup: {e}')
+        print(f"移除启动项失败: {e}")
+        logger.error(f"移除启动项失败: {e}")
+
 
 class Demo(SplitFluentWindow):
 

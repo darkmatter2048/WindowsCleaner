@@ -74,7 +74,7 @@ python -m nuitka --standalone --remove-output --windows-console-mode=“disable�
 - [ ] 完善高级清理功能
 - [ ] 支持更多语言
 - [x] 更换UI字体
-- [ ] 修复开机自启Bug
+- [x] 修复开机自启Bug
 
 ## 🎖 贡献者 Contributors
 
