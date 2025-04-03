@@ -210,8 +210,8 @@ def clean_tmp_files():
     # 遍历文件夹及其子文件夹
     for root, dirs, files in os.walk(folder_path):
         for file in files:
-            # 检查文件是否为.tmp文件
-            if file.endswith(".tmp") or file.endswith(".cache"):
+            # 检查文件是否为.tmp文件, .cache文件, 或 .msp文件
+            if file.endswith(".tmp") or file.endswith(".cache") or file.endswith(".msp"):
                 # 获取文件的完整路径
                 file_path = os.path.join(root, file)
                 # 删除文件
