@@ -362,13 +362,19 @@ class clean_page(QWidget, Ui_Form):
         self.run_flash()
 
     def RunSpaceSniffer(self):
-        exe_path = "WCMain/SpaceSniffer.exe"
-        process = subprocess.Popen([exe_path])
+        try:
+            exe_path = "WCMain/SpaceSniffer.exe"
+            subprocess.Popen([exe_path])
+        except Exception as e:
+            self.RunAPIError_bar()
+
 
     def RunAppDataCleaner(self):
-        exe_path = "WCMain/AppDataCleaner.exe"
-        process = subprocess.Popen([exe_path])
-
+        try:
+            exe_path = "WCMain/AppDataCleaner.exe"
+            subprocess.Popen([exe_path])
+        except Exception as e:
+            self.RunAPIError_bar()
     def on_operation_completed(self):
         self.info_bar()
         print("完成")
@@ -534,6 +540,16 @@ class clean_page(QWidget, Ui_Form):
             parent=self,
         )
 
+    def RunAPIError_bar(self):
+        InfoBar.warning(
+            title="出错了！😭",
+            content="未知错误，请联系开发者",
+            orient=Qt.Horizontal,
+            isClosable=True,
+            position=InfoBarPosition.TOP,
+            duration=5000,
+            parent=self,
+        )
 
 if __name__ == "__main__":
     logger.error("请运行 main.py ，而不是 clean.py")
