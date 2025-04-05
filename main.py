@@ -35,16 +35,6 @@ def is_admin():
     except:
         return False
 
-if not is_admin():
-    try:
-        # 重新以管理员权限运行
-        ctypes.windll.shell32.ShellExecuteW(
-            None, "runas", sys.executable, " ".join(sys.argv), None, 1
-        )
-        sys.exit()
-    except Exception as e:
-        print(f"发生错误：{e}")
-
 # 获取日志记录器实例
 logger = get_logger()
 
@@ -330,7 +320,33 @@ def load_settings():
        
 
 if __name__ == "__main__":
-    is_admin()
+    if is_admin():
+        # Code of your program here
+        QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
+        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+        QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
+
+        load_settings()
+
+        app = QApplication(sys.argv)
+        w = Demo()
+        if settings_data["AutoRunEnabled"] != "True":  
+            w.show()
+        else:
+            message = f"Windows Cleaner已启动！\n单击系统托盘图标进入主页。"
+            title = 'Windows Cleaner 5.0'  # 弹窗的标题
+            icon = r'WCMain\resource\imgs\icon.ico'  # 可选参数，传入ico图标文件的路径，显示在弹窗上
+            timeout = 10  # 弹窗的显示时间，以秒（s）作为单位
+            try:
+                notification.notify(title=title, message=message, timeout=timeout, app_icon=icon)
+            except Exception as e:
+                print(f"发生错误：{e}")
+                logger.error(f"发生错误：{e}")
+        app.exec_()
+    else:
+        # Re-run the program with admin rights
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv[1:]), None, 1)
+    '''
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
@@ -352,3 +368,4 @@ if __name__ == "__main__":
             print(f"发生错误：{e}")
             logger.error(f"发生错误：{e}")
     app.exec_()
+    '''
