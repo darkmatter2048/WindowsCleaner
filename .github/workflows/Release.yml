@@ -10,6 +10,7 @@ on:
 
 jobs:
   Build:
+    name: 编译
     runs-on: windows-2022
     permissions: write-all
     steps:
