@@ -42,8 +42,8 @@ logger = get_logger()
 script_directory = os.path.dirname(os.path.abspath(__file__))
 settings_path = os.path.join(script_directory, 'WCMain', 'settings.json')  # 修复反斜杠问题
 with open(settings_path, 'r') as f:
-    settings_data = json.load(f)  
-    
+    settings_data = json.load(f)
+
 def WeatherLate(date_str):
     now = datetime.now()
     try:
@@ -103,11 +103,11 @@ def add_to_startup():
                                   win32con.KEY_ALL_ACCESS)
         win32api.RegSetValueEx(key, name, 0, win32con.REG_SZ, path)
         win32api.RegCloseKey(key)
-        
+
 def remove_from_startup():
     # 获取当前程序名称
     name = os.path.basename(sys.argv[0])
-    
+
     try:
         # 打开注册表项
         key = win32api.RegOpenKey(
@@ -116,13 +116,13 @@ def remove_from_startup():
             0,  # 保留参数必须为0
             win32con.KEY_ALL_ACCESS
         )
-        
+
         # 尝试删除注册表值
         win32api.RegDeleteValue(key, name)
         win32api.RegCloseKey(key)
         print("成功移除开机启动项")
         logger.info("成功移除开机启动项")
-        
+
     except Exception as e:
         print(f"移除启动项失败: {e}")
         logger.error(f"移除启动项失败: {e}")
@@ -133,10 +133,10 @@ class Demo(SplitFluentWindow):
     def __init__(self):
         super().__init__()
         global settings_data
-        self.settings_data = settings_data  
-        
+        self.settings_data = settings_data
+
         self.checked = False
-        self.update()    
+        self.update()
 
         # 创建托盘图标
         self.tray_icon = QSystemTrayIcon(self)
@@ -156,7 +156,7 @@ class Demo(SplitFluentWindow):
 
         # 连接托盘图标的左键点击事件
         self.tray_icon.activated.connect(self.icon_activated)
-        
+
         # create sub interface
         self.cleanpage = clean_page(self)
         self.cleanpage.setObjectName("clean")  # 大坑啊，objectName不能重复
@@ -167,21 +167,21 @@ class Demo(SplitFluentWindow):
         self.aboutpage = about_page(self)
         self.aboutpage.setObjectName("about")
         self.supportpage = support_page(self)
-        self.supportpage.setObjectName("support") 
+        self.supportpage.setObjectName("support")
         self.autopage = auto_page(self)
         self.autopage.setObjectName("AutoClean")
-        
+
         self.titleBar.maxBtn.hide()
         self.titleBar.setDoubleClickEnabled(False)
-        
+
         self.initNavigation()
-        self.initWindow() 
+        self.initWindow()
 
         self.cleanpage.widget_5.clicked.connect(self.switch)
         self.settingspage.AutoRun_2.stateChanged.connect(self.AutoRun)
 
     def switch(self):
-        self.switchTo(self.seniorpage)    
+        self.switchTo(self.seniorpage)
 
     def AutoRun(self):
         #self.settings_data = get_settings()
@@ -194,7 +194,7 @@ class Demo(SplitFluentWindow):
             self.settings_data['AutoRunEnabled'] = "False"
             remove_from_startup()
         with open('WCMain/settings.json', 'w') as file:
-            json.dump(self.settings_data, file, indent=4)    
+            json.dump(self.settings_data, file, indent=4)
 
     def update(self):
         try:
@@ -222,7 +222,7 @@ class Demo(SplitFluentWindow):
                         formatted_date = now.strftime('%Y-%m-%d')  # 格式：年-月-日
                         self.settings_data["AutoUpdate"] = formatted_date
                         with open('WCMain/settings.json', 'w') as file:
-                            json.dump(self.settings_data, file, indent=4)    
+                            json.dump(self.settings_data, file, indent=4)
                     else:
                         print("天数不足")
                         logger.debug("天数不足")
@@ -237,29 +237,29 @@ class Demo(SplitFluentWindow):
             'WindowsCleaner有新版本啦,快去更新吧！',
             QSystemTrayIcon.Information,
             2000
-        ))    
+        ))
 
     def check_version(self,version1, version2):
         # 将版本号拆分为数字列表
         v1 = list(map(int, version1.split('.')))
         v2 = list(map(int, version2.split('.')))
-        
+
         # 填充零使长度一致
         max_len = max(len(v1), len(v2))
         v1 += [0] * (max_len - len(v1))
         v2 += [0] * (max_len - len(v2))
-        
+
         # 逐位比较
         for a, b in zip(v1, v2):
             if a > b:
                 return 1
             elif a < b:
                 return -1
-        return 0         
-    
+        return 0
+
     def icon_activated(self, reason):
         if reason == QSystemTrayIcon.Trigger:
-            self.show()  
+            self.show()
 
     def closeEvent(self, e):
         if self.settings_data['closeEvent'] == 1:
@@ -276,7 +276,7 @@ class Demo(SplitFluentWindow):
                 self.hide()
             else:
                 self.close()
-                           
+
     def initWindow(self):
         self.setFixedSize(396,566)   # 288+28,520
         self.setWindowFlags(self.windowFlags() | Qt.WindowStaysOnTopHint)
@@ -286,9 +286,9 @@ class Demo(SplitFluentWindow):
         rect = QApplication.desktop().availableGeometry()
         w, h = rect.width(), rect.height()
         self.move(w-self.width()-13,h-self.height()-13)
-    
+
     def initNavigation(self):
-        # 添加子界面   
+        # 添加子界面
         self.addSubInterface(self.cleanpage, FluentIcon.HOME, '优化加速')
         self.addSubInterface(self.seniorpage, FluentIcon.DEVELOPER_TOOLS, '高级')
         self.addSubInterface(self.autopage, FluentIcon.BROOM, '自动清理')
@@ -316,8 +316,8 @@ def load_settings():
         setTheme(Theme.DARK)
     elif settings_data["theme"] == 2:
         setTheme(Theme.AUTO)
-    setThemeColor(settings_data["themeColor"]) # #009faa  
-       
+    setThemeColor(settings_data["themeColor"]) # #009faa
+
 
 if __name__ == "__main__":
     if is_admin():
@@ -330,7 +330,8 @@ if __name__ == "__main__":
 
         app = QApplication(sys.argv)
         w = Demo()
-        if settings_data["AutoRunEnabled"] != "True":  
+        print("正在以管理员权限运行")
+        if settings_data["AutoRunEnabled"] != "True":
             w.show()
         else:
             message = f"Windows Cleaner已启动！\n单击系统托盘图标进入主页。"
@@ -345,7 +346,8 @@ if __name__ == "__main__":
         app.exec_()
     else:
         # Re-run the program with admin rights
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv[1:]), None, 1)
+        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
+        #ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv[1:]), None, 1)
     '''
     QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
@@ -355,7 +357,7 @@ if __name__ == "__main__":
 
     app = QApplication(sys.argv)
     w = Demo()
-    if settings_data["AutoRunEnabled"] != "True":  
+    if settings_data["AutoRunEnabled"] != "True":
         w.show()
     else:
         message = f"Windows Cleaner已启动！\n单击系统托盘图标进入主页。"
