@@ -34,7 +34,7 @@
 
 密码:4ar1
 
-### 安装 
+### 安装
 一路Next即可，如果想以后方便打开可以勾选上`创建桌面快捷方式`选项。
 </details>
 
@@ -53,7 +53,7 @@ pip install nuitka
 ```
 - 编译
 ```python
-python -m nuitka --standalone --remove-output --windows-console-mode=“disable” --enable-plugins=“pyqt5” --output-dir=“dist” --main=“main.py” --windows-icon-from-ico=“icon.ico”
+python -m nuitka --standalone --windows-uac-admin --remove-output --windows-console-mode=“disable” --enable-plugins=“pyqt5” --output-dir=“dist” --main=“main.py” --windows-icon-from-ico=“icon.ico”
 ```
 > [!tip]
 >
@@ -98,6 +98,6 @@ python -m nuitka --standalone --remove-output --windows-console-mode=“disable�
 
 ## Copyright & License ⚖
 
-Copyright © 2021.DaYe 
+Copyright © 2021.DaYe
 
 <p xmlns:cc="http://creativecommons.org/ns#" xmlns:dct="http://purl.org/dc/terms/"><a property="dct:title" rel="cc:attributionURL" href=#>Windows Cleaner</a> by <a rel="cc:attributionURL dct:creator" property="cc:attributionName" href="https://www.dyblog.online/">DaYe</a> is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/?ref=chooser-v1" target="_blank" rel="license noopener noreferrer" style="display:inline-block;">CC BY-NC-SA 4.0<img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/cc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/by.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/nc.svg?ref=chooser-v1" alt=""><img style="height:22px!important;margin-left:3px;vertical-align:text-bottom;" src="https://mirrors.creativecommons.org/presskit/icons/sa.svg?ref=chooser-v1" alt=""></a></p>
