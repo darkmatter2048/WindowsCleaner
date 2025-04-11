@@ -16,7 +16,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: GA 中文显示
-        run: sudo apt-get install language-pack-zh-hans
+        run: |
+          sudo apt-get update
+          sudo apt-get install language-pack-zh-hans
 
       - name: 更新
         run: sudo sh ./script/update-adc.sh
