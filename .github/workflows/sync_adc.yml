@@ -6,12 +6,20 @@ on:
   workflow_dispatch:
 
 jobs:
-  download_and_push:
+  update_adc:
+    name: 更新 adc
     runs-on: ubuntu-latest
+    env:
+      LANG: zh_CN.UTF-8
 
     steps:
       - name: 仓库检出
         uses: actions/checkout@v2
+
+      - name: GA 中文显示
+        run: |
+          sudo apt-get update
+          sudo apt-get install language-pack-zh-hans
 
       - name: 更新
         run: sudo sh ./script/update-adc.sh
