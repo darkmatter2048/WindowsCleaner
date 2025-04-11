@@ -6,7 +6,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  download_and_push:
+  update_adc:
+    name: 更新 adc
     runs-on: ubuntu-latest
     env:
       LANG: zh_CN.UTF-8
