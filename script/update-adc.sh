@@ -9,7 +9,10 @@ version=$(echo $latest_release_url | awk -F'/' '{print $NF}')
 # 输出版本号
 echo $version
 
+# 进入WCMain
+cd WCMain
+
 # 删除
-rm -f ./WCMain/AppDataCleaner.exe
+rm -f AppDataCleaner.exe
 # 下载
-curl "https://github.com/TC999/AppDataCleaner/releases/download/$version/AppDataCleaner.exe" -o ./WCMain/AppDataCleaner.exe
+wget "https://github.com/TC999/AppDataCleaner/releases/download/$version/AppDataCleaner.exe"
