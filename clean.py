@@ -95,10 +95,14 @@ def get_v():
 
 
 def boost_main():
-    boost_prefetch("C:\\Windows\\Prefetch")
-    clean_temp_folder()
-    clean_system_logs()
-    clean_browser_cache()
+    try:
+        boost_prefetch("C:\\Windows\\Prefetch")
+        clean_temp_folder()
+        clean_system_logs()
+        clean_browser_cache()
+    except Exception as e:
+        print("清理失败")
+        logger.error("清理失败")
     memreduct()
 
 
@@ -293,7 +297,15 @@ def delete_restore_points():
         logger.error("error：", e.returncode)
 
 def memreduct(threshold=100,exclude_processes=["System", "Idle", "svchost.exe"]):
-    os.system(r"WCMain\memreduct.exe /clean /silent")
+    # 使用ShellExecute以管理员权限运行并隐藏窗口
+    ctypes.windll.shell32.ShellExecuteW(
+        None, 
+        "runas",  # 请求管理员权限
+        r"WCMain\memreduct.exe", 
+        "/clean /silent", 
+        None, 
+        0  # SW_HIDE隐藏窗口
+    )
 
 def is_desktop_application(process):
     try:
