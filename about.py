@@ -48,6 +48,7 @@ class about_page(QWidget, Ui_Form):
         info = download_version()
         if info["version"] > self.settings_data["version"]:
             self.showTeachingTip("有新版本！")
+            os.popen("start https://pan.quark.cn/s/03e706cb753a")
         else:
             print("已经是最新版本")
             self.showTeachingTip("已经是最新版本")
