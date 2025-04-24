@@ -10,5 +10,5 @@ class support_page(QWidget, Ui_Form):
         super().__init__(parent=parent)
         self.setupUi(self)
 
-        self.label_2.setUrl("https://afdian.com/a/donate_daye")
+        self.label_2.setUrl("https://love.bilibili.com/?from=dyblog.online")
     
