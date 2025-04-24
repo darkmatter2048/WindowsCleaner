@@ -58,6 +58,6 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
-        self.label_2.setText(_translate("Form", "⚡⚡⚡ 爱发电 ⚡⚡⚡"))
+        self.label_2.setText(_translate("Form", "慈善捐赠❤️：Bilibili公益"))
 from qfluentwidgets import HyperlinkLabel
 import resource_rc
