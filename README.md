@@ -13,6 +13,11 @@
 
 > [!warning]
 >
+> 安装软件时请先关闭杀毒软件(如Windows Defender)，否则会被误杀！
+> 并以管理员身份运行WindowsCleaner！
+
+> [!warning]
+>
 > 本项目从未发布至 GitCode，如您发现请截图并保留证据
 
 ## 🎨 运行截图 GUI
