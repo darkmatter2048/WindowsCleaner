@@ -6,3 +6,4 @@
 /env
 /logs
 test.py
+*.log

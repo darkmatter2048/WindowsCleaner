@@ -290,6 +290,6 @@ class Ui_Form(object):
         self.label_21.setText(_translate("Form", "高级选项"))
         self.label_22.setText(_translate("Form", "清理部分系统组件"))
         self.label_23.setText(_translate("Form", "（请谨慎清理）"))
-        self.label_10.setText(_translate("Form", "Copyright (C) 2021-2024.DaYe"))
+        self.label_10.setText(_translate("Form", "Copyright (C) 2021-2025.DaYe"))
 from qfluentwidgets import CaptionLabel, CardWidget, PrimaryPushButton, ProgressRing
 import resource_rc
