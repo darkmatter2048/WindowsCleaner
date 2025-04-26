@@ -33,11 +33,15 @@ class Ui_smh(object):
         spacerItem = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.verticalLayout.addLayout(self.horizontalLayout)
+        self.label_3 = BodyLabel(smh)
+        self.label_3.setText("")
+        self.label_3.setObjectName("label_3")
+        self.verticalLayout.addWidget(self.label_3)
         self.scrollArea = ScrollArea(smh)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 417, 401))
+        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 417, 383))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.verticalLayout.addWidget(self.scrollArea)
@@ -50,4 +54,4 @@ class Ui_smh(object):
         smh.setWindowTitle(_translate("smh", "Form"))
         self.label.setText(_translate("smh", "数据迁移 Beta"))
         self.pushButton.setText(_translate("smh", "扫描"))
-from qfluentwidgets import PrimaryPushButton, ScrollArea, TitleLabel
+from qfluentwidgets import BodyLabel, PrimaryPushButton, ScrollArea, TitleLabel

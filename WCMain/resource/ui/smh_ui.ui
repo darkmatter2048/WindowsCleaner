@@ -59,6 +59,13 @@
     </layout>
    </item>
    <item>
+    <widget class="BodyLabel" name="label_3">
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="ScrollArea" name="scrollArea">
      <property name="widgetResizable">
       <bool>true</bool>
@@ -69,7 +76,7 @@
         <x>0</x>
         <y>0</y>
         <width>417</width>
-        <height>401</height>
+        <height>383</height>
        </rect>
       </property>
      </widget>
@@ -93,6 +100,11 @@
    <extends>QScrollArea</extends>
    <header>qfluentwidgets</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>BodyLabel</class>
+   <extends>QLabel</extends>
+   <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
  <resources/>
