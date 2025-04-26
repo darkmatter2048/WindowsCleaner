@@ -11,6 +11,7 @@ from senior import senior_page
 from about import about_page
 from support import support_page
 from auto import auto_page
+from smh import smh_page
 
 # 导入日志模块
 from logger import get_logger
@@ -170,6 +171,7 @@ class Demo(SplitFluentWindow):
         self.supportpage.setObjectName("support")
         self.autopage = auto_page(self)
         self.autopage.setObjectName("AutoClean")
+        self.smhpge = smh_page(self)
 
         self.titleBar.maxBtn.hide()
         self.titleBar.setDoubleClickEnabled(False)
@@ -292,6 +294,7 @@ class Demo(SplitFluentWindow):
         self.addSubInterface(self.cleanpage, FluentIcon.HOME, '优化加速')
         self.addSubInterface(self.seniorpage, FluentIcon.DEVELOPER_TOOLS, '高级')
         self.addSubInterface(self.autopage, FluentIcon.BROOM, '自动清理')
+        self.addSubInterface(self.smhpge, FluentIcon.MOVE, '数据迁移')
         self.addSubInterface(self.aboutpage, FluentIcon.INFO, '关于')
         self.addSubInterface(self.supportpage, FluentIcon.HEART, '支持')
 
