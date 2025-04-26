@@ -22,6 +22,7 @@ AppPublisherURL={#MyAppURL}
 AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
+DisableDirPage=no
 ChangesAssociations=yes
 DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
