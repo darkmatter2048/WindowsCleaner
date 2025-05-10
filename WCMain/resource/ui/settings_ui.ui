@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>496</width>
-    <height>559</height>
+    <width>410</width>
+    <height>505</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,6 +16,11 @@
   <layout class="QGridLayout" name="gridLayout_7">
    <item row="2" column="1">
     <widget class="CardWidget" name="widget_5" native="true">
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei UI</family>
+      </font>
+     </property>
      <layout class="QGridLayout" name="gridLayout_5">
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_10">
@@ -23,6 +28,7 @@
          <widget class="CaptionLabel" name="label_9">
           <property name="font">
            <font>
+            <family>Microsoft YaHei UI</family>
             <pointsize>13</pointsize>
            </font>
           </property>
@@ -33,6 +39,11 @@
         </item>
         <item>
          <spacer name="horizontalSpacer_10">
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei UI</family>
+           </font>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -48,6 +59,7 @@
          <widget class="ComboBox" name="comboBox_7">
           <property name="font">
            <font>
+            <family>Microsoft YaHei UI</family>
             <pointsize>13</pointsize>
            </font>
           </property>
@@ -75,6 +87,11 @@
    </item>
    <item row="3" column="1">
     <widget class="CardWidget" name="widget_4" native="true">
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei UI</family>
+      </font>
+     </property>
      <layout class="QGridLayout" name="gridLayout_4">
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_12">
@@ -82,6 +99,7 @@
          <widget class="PrimaryPushButton" name="pushButton_2">
           <property name="font">
            <font>
+            <family>Microsoft YaHei UI</family>
             <pointsize>13</pointsize>
            </font>
           </property>
@@ -98,6 +116,11 @@
             <height>24</height>
            </size>
           </property>
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei UI</family>
+           </font>
+          </property>
           <property name="text">
            <string/>
           </property>
@@ -105,6 +128,11 @@
         </item>
         <item>
          <spacer name="horizontalSpacer_12">
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei UI</family>
+           </font>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -123,6 +151,11 @@
    </item>
    <item row="4" column="1">
     <widget class="CardWidget" name="widget_3" native="true">
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei UI</family>
+      </font>
+     </property>
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_7">
@@ -130,6 +163,7 @@
          <widget class="CheckBox" name="AutoRun_2">
           <property name="font">
            <font>
+            <family>Microsoft YaHei UI</family>
             <pointsize>13</pointsize>
            </font>
           </property>
@@ -140,6 +174,11 @@
         </item>
         <item>
          <spacer name="horizontalSpacer_7">
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei UI</family>
+           </font>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -158,6 +197,11 @@
    </item>
    <item row="5" column="1">
     <widget class="CardWidget" name="widget_2" native="true">
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei UI</family>
+      </font>
+     </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_8">
@@ -165,6 +209,7 @@
          <widget class="CaptionLabel" name="label_7">
           <property name="font">
            <font>
+            <family>Microsoft YaHei UI</family>
             <pointsize>13</pointsize>
            </font>
           </property>
@@ -175,6 +220,11 @@
         </item>
         <item>
          <spacer name="horizontalSpacer_8">
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei UI</family>
+           </font>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -190,6 +240,7 @@
          <widget class="ComboBox" name="comboBox_5">
           <property name="font">
            <font>
+            <family>Microsoft YaHei UI</family>
             <pointsize>13</pointsize>
            </font>
           </property>
@@ -217,6 +268,11 @@
    </item>
    <item row="6" column="1">
     <widget class="CardWidget" name="widget" native="true">
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei UI</family>
+      </font>
+     </property>
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_9">
@@ -224,6 +280,7 @@
          <widget class="CaptionLabel" name="label_8">
           <property name="font">
            <font>
+            <family>Microsoft YaHei UI</family>
             <pointsize>13</pointsize>
            </font>
           </property>
@@ -234,6 +291,11 @@
         </item>
         <item>
          <spacer name="horizontalSpacer_9">
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei UI</family>
+           </font>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -249,6 +311,7 @@
          <widget class="ComboBox" name="comboBox_6">
           <property name="font">
            <font>
+            <family>Microsoft YaHei UI</family>
             <pointsize>13</pointsize>
            </font>
           </property>
@@ -276,6 +339,11 @@
    </item>
    <item row="7" column="1">
     <spacer name="verticalSpacer">
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei UI</family>
+      </font>
+     </property>
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
@@ -289,6 +357,11 @@
    </item>
    <item row="1" column="1">
     <widget class="CardWidget" name="widget_6" native="true">
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei UI</family>
+      </font>
+     </property>
      <layout class="QGridLayout" name="gridLayout_6">
       <item row="0" column="0">
        <layout class="QHBoxLayout" name="horizontalLayout_11">
@@ -296,6 +369,7 @@
          <widget class="CaptionLabel" name="label_10">
           <property name="font">
            <font>
+            <family>Microsoft YaHei UI</family>
             <pointsize>13</pointsize>
            </font>
           </property>
@@ -306,6 +380,11 @@
         </item>
         <item>
          <spacer name="horizontalSpacer_11">
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei UI</family>
+           </font>
+          </property>
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
@@ -321,6 +400,7 @@
          <widget class="ComboBox" name="comboBox_8">
           <property name="font">
            <font>
+            <family>Microsoft YaHei UI</family>
             <pointsize>13</pointsize>
            </font>
           </property>
@@ -344,6 +424,11 @@
        <height>31</height>
       </size>
      </property>
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei UI</family>
+      </font>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -358,16 +443,6 @@
    <header>qfluentwidgets</header>
   </customwidget>
   <customwidget>
-   <class>ComboBox</class>
-   <extends>QComboBox</extends>
-   <header>qfluentwidgets</header>
-  </customwidget>
-  <customwidget>
-   <class>CheckBox</class>
-   <extends>QCheckBox</extends>
-   <header>qfluentwidgets</header>
-  </customwidget>
-  <customwidget>
    <class>PrimaryPushButton</class>
    <extends>QPushButton</extends>
    <header>qfluentwidgets</header>
@@ -377,6 +452,16 @@
    <extends>QWidget</extends>
    <header>qfluentwidgets</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ComboBox</class>
+   <extends>QComboBox</extends>
+   <header>qfluentwidgets</header>
+  </customwidget>
+  <customwidget>
+   <class>CheckBox</class>
+   <extends>QCheckBox</extends>
+   <header>qfluentwidgets</header>
   </customwidget>
  </customwidgets>
  <resources/>

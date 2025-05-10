@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>314</width>
-    <height>506</height>
+    <width>308</width>
+    <height>524</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="1" column="0" colspan="2">
     <widget class="CardWidget" name="widget" native="true">
      <property name="minimumSize">
       <size>
@@ -40,6 +40,7 @@
        <widget class="CaptionLabel" name="label_5">
         <property name="font">
          <font>
+          <family>Microsoft YaHei</family>
           <pointsize>13</pointsize>
          </font>
         </property>
@@ -51,7 +52,7 @@
      </layout>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item row="2" column="0" colspan="2">
     <widget class="CardWidget" name="cardWidget" native="true">
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
@@ -60,8 +61,8 @@
          <widget class="QLabel" name="label_2">
           <property name="minimumSize">
            <size>
-            <width>33</width>
-            <height>54</height>
+            <width>29</width>
+            <height>30</height>
            </size>
           </property>
           <property name="styleSheet">
@@ -76,7 +77,8 @@
          <widget class="CaptionLabel" name="label">
           <property name="font">
            <font>
-            <pointsize>20</pointsize>
+            <family>Microsoft YaHei</family>
+            <pointsize>12</pointsize>
            </font>
           </property>
           <property name="text">
@@ -99,15 +101,16 @@
         </item>
        </layout>
       </item>
-      <item row="1" column="0">
-       <widget class="CaptionLabel" name="label_3">
+      <item row="4" column="0">
+       <widget class="PrimaryPushButton" name="pushButton">
         <property name="font">
          <font>
-          <pointsize>13</pointsize>
+          <family>Microsoft YaHei UI</family>
+          <pointsize>16</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>清理内存和临时文件，减少电脑卡顿</string>
+         <string>立即加速</string>
         </property>
        </widget>
       </item>
@@ -124,8 +127,10 @@
          <widget class="CaptionLabel" name="label_4">
           <property name="font">
            <font>
+            <family>Microsoft YaHei UI</family>
             <pointsize>26</pointsize>
-            <bold>true</bold>
+            <weight>50</weight>
+            <bold>false</bold>
            </font>
           </property>
           <property name="text">
@@ -135,15 +140,16 @@
         </item>
        </layout>
       </item>
-      <item row="4" column="0">
-       <widget class="PrimaryPushButton" name="pushButton">
+      <item row="1" column="0">
+       <widget class="CaptionLabel" name="label_3">
         <property name="font">
          <font>
-          <pointsize>16</pointsize>
+          <family>Microsoft YaHei</family>
+          <pointsize>10</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>立即加速</string>
+         <string>清理内存和临时文件，减少电脑卡顿</string>
         </property>
        </widget>
       </item>
@@ -161,8 +167,8 @@
            <widget class="QLabel" name="label_6">
             <property name="minimumSize">
              <size>
-              <width>33</width>
-              <height>54</height>
+              <width>30</width>
+              <height>30</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -177,7 +183,8 @@
            <widget class="CaptionLabel" name="label_7">
             <property name="font">
              <font>
-              <pointsize>20</pointsize>
+              <family>Microsoft YaHei</family>
+              <pointsize>13</pointsize>
              </font>
             </property>
             <property name="text">
@@ -204,7 +211,8 @@
          <widget class="CaptionLabel" name="label_8">
           <property name="font">
            <font>
-            <pointsize>16</pointsize>
+            <family>Microsoft YaHei</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -216,7 +224,8 @@
          <widget class="CaptionLabel" name="label_9">
           <property name="font">
            <font>
-            <pointsize>16</pointsize>
+            <family>Microsoft YaHei</family>
+            <pointsize>9</pointsize>
            </font>
           </property>
           <property name="text">
@@ -229,7 +238,265 @@
      </layout>
     </widget>
    </item>
+   <item row="3" column="1">
+    <widget class="CardWidget" name="widget_3" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_7">
+          <item>
+           <widget class="QLabel" name="label_12">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>1024</width>
+              <height>1024</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">image: url(:/imgs/imgs/recovery-disk.png);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="CaptionLabel" name="label_13">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+              <pointsize>13</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>磁盘分析</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="CaptionLabel" name="label_14">
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>SpaceSniffer</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="CaptionLabel" name="label_15">
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>（请谨慎使用）</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
    <item row="4" column="0">
+    <widget class="CardWidget" name="widget_4" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_8">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_4">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_9">
+          <item>
+           <widget class="QLabel" name="label_16">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">image: url(:/imgs/imgs/project_data.png);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="CaptionLabel" name="label_17">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+              <pointsize>13</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>数据迁移</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="CaptionLabel" name="label_18">
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>移动AppData文件夹</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="CaptionLabel" name="label_19">
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>（请谨慎清理）</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="CardWidget" name="widget_5" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_10">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <item>
+           <widget class="QLabel" name="label_20">
+            <property name="minimumSize">
+             <size>
+              <width>30</width>
+              <height>30</height>
+             </size>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">image: url(:/imgs/imgs/Senior.png);</string>
+            </property>
+            <property name="text">
+             <string/>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="CaptionLabel" name="label_21">
+            <property name="font">
+             <font>
+              <family>Microsoft YaHei</family>
+              <pointsize>13</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>高级选项</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="CaptionLabel" name="label_22">
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>清理部分系统组件</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="CaptionLabel" name="label_23">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <family>Microsoft YaHei</family>
+            <pointsize>9</pointsize>
+           </font>
+          </property>
+          <property name="text">
+           <string>（请谨慎清理）</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item row="5" column="0" colspan="2">
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
@@ -242,7 +509,7 @@
      </property>
     </spacer>
    </item>
-   <item row="5" column="0">
+   <item row="6" column="0" colspan="2">
     <layout class="QHBoxLayout" name="horizontalLayout_5">
      <item>
       <spacer name="horizontalSpacer_3">
@@ -262,11 +529,12 @@
        <property name="maximumSize">
         <size>
          <width>266</width>
-         <height>16</height>
+         <height>26</height>
         </size>
        </property>
        <property name="font">
         <font>
+         <family>Microsoft YaHei</family>
          <pointsize>13</pointsize>
         </font>
        </property>

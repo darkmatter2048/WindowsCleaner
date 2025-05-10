@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'd:\Files\PythonFiles\WC\WindowsCleaner\resource\ui\mian_ui.ui'
+# Form implementation generated from reading ui file 'd:\Files\PythonFiles\WC\WindowsCleaner\WCMain\resource\ui\mian_ui.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.11
 #
@@ -241,6 +241,7 @@ class Ui_Form(object):
         self.label_22.setObjectName("label_22")
         self.verticalLayout_5.addWidget(self.label_22)
         self.label_23 = CaptionLabel(self.widget_5)
+        self.label_23.setMinimumSize(QtCore.QSize(0, 0))
         font = QtGui.QFont()
         font.setFamily("Microsoft YaHei")
         font.setPointSize(9)
@@ -284,8 +285,8 @@ class Ui_Form(object):
         self.label_13.setText(_translate("Form", "磁盘分析"))
         self.label_14.setText(_translate("Form", "SpaceSniffer"))
         self.label_15.setText(_translate("Form", "（请谨慎使用）"))
-        self.label_17.setText(_translate("Form", "应用数据"))
-        self.label_18.setText(_translate("Form", "清理AppData文件夹"))
+        self.label_17.setText(_translate("Form", "数据迁移"))
+        self.label_18.setText(_translate("Form", "移动AppData文件夹"))
         self.label_19.setText(_translate("Form", "（请谨慎清理）"))
         self.label_21.setText(_translate("Form", "高级选项"))
         self.label_22.setText(_translate("Form", "清理部分系统组件"))

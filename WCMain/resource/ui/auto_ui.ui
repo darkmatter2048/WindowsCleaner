@@ -38,8 +38,10 @@
       <widget class="LargeTitleLabel" name="label">
        <property name="font">
         <font>
+         <family>Microsoft YaHei UI</family>
          <pointsize>20</pointsize>
-         <bold>true</bold>
+         <weight>50</weight>
+         <bold>false</bold>
         </font>
        </property>
        <property name="text">
@@ -103,6 +105,7 @@
       <widget class="ComboBox" name="comboBox">
        <property name="font">
         <font>
+         <family>Microsoft YaHei UI</family>
          <pointsize>16</pointsize>
         </font>
        </property>
@@ -140,6 +143,7 @@
        <widget class="CaptionLabel" name="label_2">
         <property name="font">
          <font>
+          <family>Microsoft YaHei UI</family>
           <pointsize>13</pointsize>
          </font>
         </property>
@@ -152,6 +156,7 @@
        <widget class="CompactSpinBox" name="spinBox">
         <property name="font">
          <font>
+          <family>Microsoft YaHei UI</family>
           <pointsize>13</pointsize>
          </font>
         </property>
@@ -167,6 +172,7 @@
        <widget class="CaptionLabel" name="label_4">
         <property name="font">
          <font>
+          <family>Microsoft YaHei UI</family>
           <pointsize>13</pointsize>
          </font>
         </property>
@@ -185,11 +191,12 @@
        <widget class="CaptionLabel" name="label_5">
         <property name="font">
          <font>
+          <family>Microsoft YaHei UI</family>
           <pointsize>13</pointsize>
          </font>
         </property>
         <property name="text">
-         <string>当C盘剩余空间不足</string>
+         <string>C盘剩余空间不足</string>
         </property>
        </widget>
       </item>
@@ -197,6 +204,7 @@
        <widget class="CompactSpinBox" name="spinBox_2">
         <property name="font">
          <font>
+          <family>Microsoft YaHei UI</family>
           <pointsize>13</pointsize>
          </font>
         </property>
@@ -212,6 +220,7 @@
        <widget class="CaptionLabel" name="label_6">
         <property name="font">
          <font>
+          <family>Microsoft YaHei UI</family>
           <pointsize>13</pointsize>
          </font>
         </property>
@@ -230,6 +239,7 @@
        <widget class="PlainTextEdit" name="textEdit">
         <property name="font">
          <font>
+          <family>Microsoft YaHei UI</family>
           <pointsize>13</pointsize>
          </font>
         </property>
@@ -239,6 +249,7 @@
        <widget class="CaptionLabel" name="label_3">
         <property name="font">
          <font>
+          <family>Microsoft YaHei UI</family>
           <pointsize>13</pointsize>
          </font>
         </property>
