@@ -8,6 +8,18 @@ from smh_ui_ui import Ui_smh
 import os
 import subprocess
 
+# 获取当前用户的用户名，用于拼接AppData文件夹路径
+def get_adpath():
+    username = os.getlogin()
+    # 拼接AppData文件夹路径
+    appdata_path = os.path.join('C:\\Users', username, 'AppData')
+
+class CutThread(QThread):
+    operationCompleted = pyqtSignal()
+
+    def run(self):
+        self.operationCompleted.emit()
+
 class smh_page(QWidget, Ui_smh):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -45,6 +57,8 @@ class smh_page(QWidget, Ui_smh):
         self.origin_folder_path = QFileDialog.getExistingDirectory(self, "选择目标文件夹", self.origin_folder_path)
         if self.origin_folder_path:
             self.label_9.setText(self.origin_folder_path)
+
+            
 
     def RunAppDataCleaner(self):
         try:
