@@ -181,9 +181,13 @@ class Demo(SplitFluentWindow):
 
         self.cleanpage.widget_5.clicked.connect(self.switch)
         self.settingspage.AutoRun_2.stateChanged.connect(self.AutoRun)
+        self.cleanpage.widget_4.clicked.connect(self.switchToSmh)
 
     def switch(self):
         self.switchTo(self.seniorpage)
+
+    def switchToSmh(self):
+        self.switchTo(self.smhpge)
 
     def AutoRun(self):
         #self.settings_data = get_settings()
