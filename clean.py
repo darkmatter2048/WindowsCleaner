@@ -368,7 +368,7 @@ class clean_page(QWidget, Ui_Form):
         self.pushButton.clicked.connect(self.boost)
         self.widget_2.clicked.connect(self.clean)
         self.widget_3.clicked.connect(self.RunSpaceSniffer)
-        self.widget_4.clicked.connect(self.RunAppDataCleaner)
+        #self.widget_4.clicked.connect(self.RunAppDataCleaner)
 
         self.show_work()
         self.run_flash()
