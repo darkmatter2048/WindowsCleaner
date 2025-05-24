@@ -105,6 +105,17 @@ python -m nuitka --standalone --windows-uac-admin --remove-output --windows-cons
  </picture>
 </a>
 
+## 鸣谢
+
+- 🚀特别鸣谢[TC999](https://github.com/TC999)(编写GA编译脚本，解决UAC问题，开发日志功能)
+
+- 🥳所有[DaYe](https://dyblog.online/)开源事业的支持者
+
+- [PyQt5](https://www.qt.io/)
+
+- [QFluentWidgets](https://qfluentwidgets.com/)(基于PyQt5的UI框架)
+
+
 ## Copyright & License ⚖
 
 Copyright © 2021.DaYe
