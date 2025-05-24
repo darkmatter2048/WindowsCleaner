@@ -46,9 +46,30 @@ class senior_page(QWidget, Ui_Form):
                 self.success_bar_2()
             except:
                 print("error")
-                self.warning("权限不足，无法执行该操作")                
-
-    def warning(self, content="敬请期待..."):
+                self.warning("权限不足，无法执行该操作")      
+        '''
+        if self.checkBox.isChecked() == True:
+            try:
+                command = "powercfg -h off"
+                result = subprocess.run(["powershell", "-Command", command], capture_output=True, text=True, check=True)
+                print("输出:", result.stdout)
+                print("错误输出:", result.stderr)
+                self.success_bar_2()
+            except:
+                print("error")  
+                self.warning("权限不足，无法执行该操作") 
+        else:
+            try:
+                command = "powercfg -h on"
+                result = subprocess.run(["powershell", "-Command", command], capture_output=True, text=True, check=True)
+                print("输出:", result.stdout)
+                print("错误输出:", result.stderr)
+                self.success_bar_2()
+            except:
+                print("error")
+                self.warning("权限不足，无法执行该操作")                        
+        '''
+    def warning(self, content="敬请期待！"):
         InfoBar.warning(
         title='WARNING',
         content=content,
