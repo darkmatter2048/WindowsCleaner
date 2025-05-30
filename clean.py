@@ -305,13 +305,7 @@ def memreduct(threshold=100,exclude_processes=["System", "Idle", "svchost.exe"])
         "/clean /silent", 
         None, 
         0  # SW_HIDE隐藏窗口
-    )
-
-def is_desktop_application(process):
-    try:
-        return process.name() != "Python" and process.name() != "mian.exe" and process.as_dict(attrs=['name', 'cmdline'])['cmdline'] is not None
-    except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
-        return False        
+    )       
 
 class CleanThread(QThread):
     operationCompleted = pyqtSignal()
