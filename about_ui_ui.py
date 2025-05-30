@@ -148,10 +148,10 @@ class Ui_Form(object):
         self.label_2.setText(_translate("Form", "WindowsCleaner"))
         self.label_4.setText(_translate("Form", "作者B站: Mr_Jacek"))
         self.label_5.setText(_translate("Form", "官网：https://wc.dyblog.online/"))
-        self.label_3.setText(_translate("Form", "版本：v5.0.6"))
+        self.label_3.setText(_translate("Form", "版本：v5.0.8"))
         self.label_6.setText(_translate("Form", "博客：https://www.dyblog.online/"))
         self.pushButton.setText(_translate("Form", "立即检查更新"))
         self.label_7.setText(_translate("Form", "Developed By DaYe"))
-        self.label_8.setText(_translate("Form", "Licensed By BY-NC-SA 4.0"))
+        self.label_8.setText(_translate("Form", "Licensed under GPL-3.0"))
 from qfluentwidgets import CaptionLabel, CardWidget, HyperlinkLabel, LargeTitleLabel, PrimaryPushButton
 import resource_rc
