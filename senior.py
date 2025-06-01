@@ -19,7 +19,7 @@ class senior_page(QWidget, Ui_Form):
 
     def v_memory(self):
         if self.checkBox.isChecked() == True:
-            self.warning()
+            self.success_bar()
 
     def shut_sleep(self):
         if self.checkBox_2.isChecked() == True:
@@ -47,28 +47,79 @@ class senior_page(QWidget, Ui_Form):
             except:
                 print("error")
                 self.warning("权限不足，无法执行该操作")      
-        '''
+        
         if self.checkBox.isChecked() == True:
             try:
-                command = "powercfg -h off"
-                result = subprocess.run(["powershell", "-Command", command], capture_output=True, text=True, check=True)
-                print("输出:", result.stdout)
-                print("错误输出:", result.stderr)
+                # 关闭所有驱动器的虚拟内存
+                disable_all = "Get-WmiObject Win32_PageFileSetting | ForEach-Object { $_.Delete() }"
+                subprocess.run(["powershell", "-Command", disable_all], check=True)
+                
+                # 获取除C盘外最大的磁盘
+                get_disk = """
+                $disks = Get-Volume | Where-Object { 
+                    $_.DriveType -eq 'Fixed' -and 
+                    $_.DriveLetter -ne 'C' -and 
+                    $_.FileSystemType -eq 'NTFS'
+                } | Sort-Object -Property Size -Descending | Select-Object -First 1
+                $disks.DriveLetter + ':'
+                """
+                disk = subprocess.check_output(["powershell", "-Command", get_disk]).decode().strip()
+                
+                # 设置新的虚拟内存（初始大小为物理内存的1.5倍）
+                set_vmem = f"""
+                $computer = Get-WmiObject -Class Win32_ComputerSystem
+                $phyMem = [math]::Round($computer.TotalPhysicalMemory / 1GB).ToString()
+                $initial = [math]::Round($phyMem * 1.5).ToString()
+                
+                $pageFile = '{disk}\\pagefile.sys'
+                Set-WMIInstance -Class Win32_PageFileSetting -Arguments @{{
+                    Name = $pageFile; 
+                    InitialSize = $initial; 
+                    MaximumSize = $initial 
+                }}
+                """
+                subprocess.run(["powershell", "-Command", set_vmem], check=True)
+                # 刷新系统设置
+                subprocess.run(
+                    ["powershell", "-Command", "Clear-RecycleBin -Force"],
+                    check=True
+                )
+                
                 self.success_bar_2()
-            except:
-                print("error")  
-                self.warning("权限不足，无法执行该操作") 
+            except subprocess.CalledProcessError as e:
+                #self.warning(f"操作失败: {str(e)}")
+                print("error")
+            except Exception as e:
+                #self.warning(f"发生意外错误: {str(e)}")
+                print("error")
         else:
             try:
-                command = "powercfg -h on"
-                result = subprocess.run(["powershell", "-Command", command], capture_output=True, text=True, check=True)
-                print("输出:", result.stdout)
-                print("错误输出:", result.stderr)
+                # 关闭所有分页文件
+                disable_all = "Get-WmiObject Win32_PageFileSetting | ForEach-Object { $_.Delete() }"
+                subprocess.run(["powershell", "-Command", disable_all], check=True)
+                
+                # 启用自动管理并设置C盘分页文件
+                set_auto = """
+    $computer = Get-WmiObject -Class Win32_ComputerSystem
+    $computer.AutomaticManagedPagefile = $true
+    $computer.Put()
+    """
+                subprocess.run(["powershell", "-Command", set_auto], check=True)
+                
+                # 强制刷新系统设置
+                subprocess.run(
+                    ["powershell", "-Command", "wmic computersystem where name=\"%computername%\" call reboot"],
+                    check=True
+                )
                 self.success_bar_2()
-            except:
+            except subprocess.CalledProcessError as e:
+                #self.warning(f"操作失败: {str(e)}")
                 print("error")
-                self.warning("权限不足，无法执行该操作")                        
-        '''
+            except Exception as e:
+                #self.warning(f"发生意外错误: {str(e)}")
+                print("error")
+                    
+     
     def warning(self, content="敬请期待！"):
         InfoBar.warning(
         title='WARNING',
