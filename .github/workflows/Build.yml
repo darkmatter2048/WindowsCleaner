@@ -48,6 +48,7 @@ jobs:
           organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
           project-slug: "WindowsCleaner"  # 替换为实际项目slug
           signing-policy-slug: "test-signing"  # 替换为实际策略slug
+          artifact-configuration-slug: "sign-exezip"
           github-artifact-id: ${{ steps.upload-unsigned-exe.outputs.artifact-id }}
           wait-for-completion: true
           output-artifact-directory: dist/wincleaner.dist  # 签名后文件输出路径
