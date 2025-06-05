@@ -28,6 +28,29 @@ jobs:
         run: python -m nuitka --mingw64 --assume-yes-for-downloads --standalone --windows-uac-admin --remove-output --windows-console-mode="disable" --nofollow-imports --jobs=8 --enable-plugins="pyqt5" --output-dir="dist" --main="wincleaner.py" --windows-icon-from-ico="icon.ico" --company-name="DaYe" --product-name="WindowsCleaner" --file-version="5.0.0" --product-version="5.0" --file-description="WindowsCleaner" --copyright="DaYe" --trademarks="DaYe"
       - name: 移动文件
         run: move WCMain dist/wincleaner.dist/WCMain
+      
+      # 上传未签名的主程序用于代码签名
+      - name: 上传未签名的主程序
+        id: upload-unsigned-exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-exe
+          path: dist/wincleaner.dist/wincleaner.exe  # 根据实际路径调整
+          
+      # 提交代码签名请求
+      - name: 提交代码签名请求
+        id: submit-signing-request
+        uses: signpath/github-action-submit-signing-request@v1.1
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: "WindowsCleaner"  # 替换为实际项目slug
+          signing-policy-slug: "test-signing"  # 替换为实际策略slug
+          artifact-configuration-slug: "sign-exezip"
+          github-artifact-id: ${{ steps.upload-unsigned-exe.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: dist/wincleaner.dist  # 签名后文件输出路径
+
       - name: 上传文件
         uses: actions/upload-artifact@v4
         with:
