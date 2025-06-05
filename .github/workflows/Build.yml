@@ -42,7 +42,7 @@ jobs:
       # 提交代码签名请求
       - name: 提交代码签名请求
         id: submit-signing-request
-        uses: signpath/signpath-action-submit-signing-request@v1.1
+        uses: signpath/github-action-submit-signing-request@v1.1
         with:
           api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
           organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
