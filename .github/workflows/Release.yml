@@ -7,6 +7,10 @@ on:
         description: "版本号"
         required: true
         default: vx.x.x
+      sign:
+        description: "签名"
+        type: boolean
+        default: false
 
 jobs:
   Build:
@@ -39,6 +43,7 @@ jobs:
           
       # 提交代码签名请求
       - name: 提交代码签名请求
+        if: ${{ inputs.sign }}
         id: submit-signing-request
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
