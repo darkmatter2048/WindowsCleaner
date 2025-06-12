@@ -64,18 +64,18 @@ class smh_page(QWidget, Ui_smh):
         self.target_folder_path = ""
         self.origin_folder_path = ""
 
-        self.pushButton.setIcon(FIF.PASTE)
+        #self.pushButton.setIcon(FIF.PASTE)
         self.pushButton_3.setIcon(FIF.PASTE)
         self.pushButton_5.setIcon(FIF.CUT)
-        self.pushButton_2.setIcon(FIF.SHARE)
+        #self.pushButton_2.setIcon(FIF.SHARE)
         self.pushButton_4.setIcon(FIF.SHARE)
 
         self.widget_3.clicked.connect(self.RunAppDataCleaner)
         self.label_4.setUrl("https://adc.dyblog.online")
-        self.pushButton.clicked.connect(self.select_all_target_folder)
+        #self.pushButton.clicked.connect(self.select_all_target_folder)
         self.pushButton_3.clicked.connect(self.select_target_folder)
         self.pushButton_5.clicked.connect(self.select_origin_folder)
-        self.pushButton_2.clicked.connect(self.mode1)
+        #self.pushButton_2.clicked.connect(self.mode1)
         self.pushButton_4.clicked.connect(self.mode2)
 
     # 将目标文件夹复制到所选文件夹中
@@ -85,7 +85,7 @@ class smh_page(QWidget, Ui_smh):
         elif origin_folder==target_folder:
             self.RunAPIError_bar("源文件夹和目标文件夹不能相同！")
         else: 
-            self.pushButton_2.setEnabled(False)
+            #self.pushButton_2.setEnabled(False)
             self.pushButton_4.setEnabled(False)
             # 创建并启动线程
             self.cut_thread = CutThread(origin_folder, target_folder)
@@ -110,7 +110,7 @@ class smh_page(QWidget, Ui_smh):
     def finish(self):
         self.cut_thread.quit()
         self.cut_thread.wait()
-        self.pushButton_2.setEnabled(True)
+        #self.pushButton_2.setEnabled(True)
         self.pushButton_4.setEnabled(True)
         self.success_bar()
 
