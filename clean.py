@@ -129,8 +129,7 @@ def clean_main():
         boost_prefetch("C:\\Windows\\System32\\Winevt\\Logs")
     except Exception as e:
         print("系统日志清理失败")
-        logger.error("系统日志清理失败.是我在捣鬼>_<")    
-    '''    
+        logger.error("系统日志清理失败.是我在捣鬼>_<")       
     try:
         boost_prefetch("C:\\Windows\\System32\\LogFiles")
     except Exception as e:
@@ -141,6 +140,7 @@ def clean_main():
     except Exception as e:
         print("驱动程序缓存清理失败")
         logger.error("驱动程序缓存清理失败.是我在捣鬼>_<")
+    ''' 
     try:        
         clean_temp_folder()
     except Exception as e:
@@ -162,11 +162,17 @@ def clean_main():
     except Exception as e:
         print("浏览器缓存清理失败")
         logger.error("浏览器缓存清理失败")
-    try:    
-        delete_restore_points()
-    except Exception as e:
-        print("还原点清理失败")
-        logger.error("还原点清理失败.是我在捣鬼>_<")
+        '''
+    w = Dialog("确认清理还原点", "清理系统还原点可能导致无法恢复系统，确定要继续吗？", self)
+    if w.exec():
+        try:    
+            delete_restore_points()
+        except Exception as e:
+            print("还原点清理失败")
+            logger.error("还原点清理失败.是我在捣鬼>_<")
+    else:
+        print("跳过还原点清理")
+        '''
     try:    
         clean_tmp_files()
     except Exception as e:
@@ -223,6 +229,7 @@ def clean_tmp_files():
                     current_file = file_path
                     os.remove(file_path)
                     print(f"已删除：{file_path}")
+                    logger.info(f"Deleted: {file_path}")
                 except Exception as e:
                     print(f"Failed to delete: {file_path}, Error: {e}")
 
@@ -251,6 +258,7 @@ def boost_prefetch(folder_path):
             elif os.path.isdir(file_path):
                 shutil.rmtree(file_path)
             print(f"Deleted: {file_path}")
+            logger.info(f"Deleted: {file_path}")
         except Exception as e:
             print(f"Failed to delete: {file_path}, Error: {e}")
 
@@ -485,6 +493,16 @@ class clean_page(QWidget, Ui_Form):
         self.widget_2.setEnabled(True)
         self.showTeachingTip(content=message)
         self.show_work()
+
+        w = Dialog("确认清理还原点", "清理系统还原点可能导致无法恢复系统，确定要继续吗？", self)
+        if w.exec():
+            try:    
+                delete_restore_points()
+            except Exception as e:
+                print("还原点清理失败")
+                logger.error("还原点清理失败.是我在捣鬼>_<")
+        else:
+            print("跳过还原点清理")
 
         w = Dialog("是否继续清理？", "是否使用'磁盘清理'工具继续清理？", self)
         w.yesButton.setText(f"是(Y)")
