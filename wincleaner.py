@@ -304,6 +304,13 @@ class Demo(SplitFluentWindow):
 
         # 添加其它导航类
         self.navigationInterface.addItem(
+            routeKey="Help",
+            icon=FluentIcon.QUESTION,
+            text="常见问题",
+            onClick=self.visit_faq,
+            position=NavigationItemPosition.BOTTOM
+        )
+        self.navigationInterface.addItem(
             routeKey="GitHub",
             icon=FluentIcon.GITHUB,
             text="GitHub",
@@ -316,6 +323,8 @@ class Demo(SplitFluentWindow):
 
     def visit_res(self):
         QDesktopServices.openUrl(QUrl("https://github.com/darkmatter2048/WindowsCleaner"))
+    def visit_faq(self):
+        QDesktopServices.openUrl(QUrl("https://dyblog.online/windowscleaner#faq"))
 
 def load_settings():
     global settings_data
