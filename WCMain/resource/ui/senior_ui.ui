@@ -95,7 +95,7 @@
         </property>
         <property name="text">
          <string>注意⚠：此操作可能会导致
-VMware等虚拟机软件无法正常运行</string>
+Steam,VMware等软件无法正常运行</string>
         </property>
        </widget>
       </item>
