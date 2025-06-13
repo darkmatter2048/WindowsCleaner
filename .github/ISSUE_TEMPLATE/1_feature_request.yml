@@ -1,0 +1,36 @@
+name: ✨ 功能请求 ✨
+description: "💡 有好点子吗？与我们分享您的创意！"
+title: "[✨功能请求]: "
+labels: ['enhancement']
+body:
+  - type: input
+    id: problem
+    attributes:
+      label: 🌈 您想要的功能  
+      description: "简要描述您想添加或改进的功能。让我们一起使软件变得更好！"  
+    validations:
+      required: false
+  - type: textarea
+    id: way-to-solve
+    attributes:
+      label: 🚀 理想解决方案  
+      description: "您的完美解决方案是什么样的？请自由发挥想象力 - 不用担心技术细节！"  
+    validations:
+      required: true
+  - type: textarea
+    id: instead
+    attributes:
+      label: 🤔 替代解决方案（可选）  
+      description: "如果您有其他想法，请在此分享。想法越多越好！"  
+    validations:
+      required: false
+  - type: checkboxes
+    id: "latest-version"
+    attributes:
+      label: "✅ 最后步骤"
+      description: "在提交您的精彩想法之前，请确认以下事项："  
+      options:
+        - label: "🌟 我已检查最新版本并确认我请求的功能尚未实现。"
+          required: true
+        - label: "📋 我已查看现有功能请求，确保这不是重复提交。"
+          required: true
