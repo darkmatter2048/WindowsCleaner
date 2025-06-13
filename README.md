@@ -62,7 +62,7 @@ pip install nuitka
 ```
 - 编译
 ```python
-python -m nuitka --standalone --windows-uac-admin --remove-output --windows-console-mode=“disable” --enable-plugins=“pyqt5” --output-dir=“dist” --main=“main.py” --windows-icon-from-ico=“icon.ico”
+python -m nuitka --standalone --windows-uac-admin --remove-output --windows-console-mode=“disable” --enable-plugins=“pyqt5” --output-dir=“dist” --main=“wincleaner.py” --windows-icon-from-ico=“icon.ico”
 ```
 > [!tip]
 >
@@ -127,5 +127,5 @@ Copyright © 2021-2025.DaYe
 > ### 重要补充声明
 >
 > 本项目的核心价值在于深度清理算法[clean.py](clean.py)，为保护知识产权与贡献者权益，特此声明：
->  
-> **任何功能等效的实现（无论使用何种编程语言、框架或技术），若实质性地复制或衍生自本算法设计的逻辑结构、数据处理流程或优化方案，均视为 GPL-3.0 定义的衍生作品，须遵守 GPL-3.0 开源义务。** 
+>
+> **任何功能等效的实现（无论使用何种编程语言、框架或技术），若实质性地复制或衍生自本算法设计的逻辑结构、数据处理流程或优化方案，均视为 GPL-3.0 定义的衍生作品，须遵守 GPL-3.0 开源义务。**
