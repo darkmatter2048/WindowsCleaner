@@ -1,0 +1,45 @@
+name:  🐛 错误报告 🐛
+description: "🛠️ 发现问题了吗？请在这里告诉我们！"
+title: "[🐛bug]: "
+labels: ["bug"]
+body:
+  - type: input
+    id: "expectation"
+    attributes:
+      label: "✨ 您期望的结果"
+      description: "软件应该如何工作？描述您期望发生的情况。"  
+    validations:
+      required: false
+  - type: textarea
+    id: "describe-the-bug"
+    attributes:
+      label: "❓ 实际发生的情况"
+      description: "哎呀！出了什么问题？请告诉我们您看到了什么 - 细节越多越好！"  
+    validations:
+      required: true
+  - type: textarea
+    id: "reproduction-method"
+    attributes:
+      label: "📝 重现问题的步骤"
+      description: "您能告诉我们您是如何遇到这个错误的吗？列出步骤，这样我们可以更快地找到问题。"
+      placeholder: "例如：\n1. 使用了什么功能\n2. 然后发生了这个...\n3. 糟糕！问题出现了！"
+    validations:
+      required: false
+  - type: textarea
+    id: "more"
+    attributes:
+      label: "📌 额外信息"
+      description: "还有什么想告诉我们的吗？系统信息、版本号等。"
+      placeholder: "例如：\n系统：Windows 11\n版本：23H2"
+    validations:
+      required: false
+  - type: checkboxes
+    id: "latest-version"
+    attributes:
+      label: "✅ 最终检查清单"
+      description: "在提交您的错误报告之前，请确认以下事项："  
+      options:
+        - label: "⚡ 我已确认我使用的是最新版本，而不是旧版本。"
+          required: true
+        - label: "📋 我已检查常见问题和已知问题列表，确认这是一个新的错误。"
+          required: true
