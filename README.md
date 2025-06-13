@@ -3,10 +3,21 @@
 
 <h1>Windows Cleaner</h1>
 
+<p>
 <img src="https://img.shields.io/badge/Author-DaYe-orange" alt="Author" />
 <img src="https://img.shields.io/github/languages/count/darkmatter2048/WindowsCleaner" alt="languages-count" />
 <img src="https://img.shields.io/github/languages/top/darkmatter2048/WindowsCleaner?color=yellow" alt="languages-top" />
 <img src="https://img.shields.io/github/last-commit/darkmatter2048/WindowsCleaner" alt="last-commit" />
+</p>
+<p>
+<img src="https://img.shields.io/github/stars/darkmatter2048/WindowsCleaner" alt="stars" />
+<img src="https://img.shields.io/github/v/release/darkmatter2048/WindowsCleaner" alt="latest-release" />
+<img src="https://img.shields.io/github/downloads/darkmatter2048/WindowsCleaner/total" alt="downloads" />
+</p>
+<p>
+<a href="https://dyblog.online/donate"><img src="https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow" alt="Buy Me A Coffee" /></a>
+<a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=Wgxe7QkwqIYfSkIqIP2hnwGHWKMdZY58&authKey=lam7sd2TUpdZ1VLrIR%2FyQzYYGcO3SDaLqDpIfWNw7hSA8Df0ZiyEWT5Wm3RTA6Rx&noverify=0&group_code=868824052"><img src="https://img.shields.io/badge/QQ群-868824052-blue" alt="QQ Group" /></a>
+</p>
 
 <h3>专治C盘爆红及各种不服！</h3>
 </div>
