@@ -1,3 +1,7 @@
+---
+{}
+---
+````
 <div align=center>
 <img src="logo.png" width="150" height="150">
 
@@ -126,6 +130,24 @@ python -m nuitka --standalone --windows-uac-admin --remove-output --windows-cons
 
 - [QFluentWidgets](https://qfluentwidgets.com/)(基于PyQt5的UI框架)
 
+## 调用
+
+- 本软件使用到的开源项目
+
+- henrypp/memreduct--Lightweight real-time memory management application to monitor and clean system memory on your computer.
+
+- https://github.com/henrypp/memreduct
+
+- TC999/AppDataCleaner--辅助清理Appdata的小工具，支持 GPT 解释文件夹用途
+
+- https://github.com/TC999/AppDataCleaner
+
+- SpaceSniffer
+
+- https://sourceforge.net/projects/spacesniffer/
+
+
+
 
 ## Copyright & License ⚖
 
@@ -140,3 +162,4 @@ Copyright © 2021-2025.DaYe
 > 本项目的核心价值在于深度清理算法[clean.py](clean.py)，为保护知识产权与贡献者权益，特此声明：
 >
 > **任何功能等效的实现（无论使用何种编程语言、框架或技术），若实质性地复制或衍生自本算法设计的逻辑结构、数据处理流程或优化方案，均视为 GPL-3.0 定义的衍生作品，须遵守 GPL-3.0 开源义务。**
+````
