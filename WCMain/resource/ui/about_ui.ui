@@ -162,7 +162,7 @@
          </font>
         </property>
         <property name="text">
-         <string>版本：v4.0</string>
+         <string>版本：v5.0.9</string>
         </property>
        </widget>
       </item>
@@ -320,7 +320,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Licensed By BY-NC-SA 4.0</string>
+        <string>Licensed under GPL-3.0</string>
        </property>
       </widget>
      </item>
