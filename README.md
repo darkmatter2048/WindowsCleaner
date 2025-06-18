@@ -24,11 +24,6 @@
 
 > [!warning]
 >
-> 安装软件时请先关闭杀毒软件(如Windows Defender)，否则会被误杀！
-> 并以管理员身份运行WindowsCleaner！
-
-> [!warning]
->
 > 本项目从未发布至 GitCode，如您发现请截图并保留证据
 
 ## 🎨 运行截图 GUI
@@ -91,7 +86,7 @@ python -m nuitka --standalone --windows-uac-admin --remove-output --windows-cons
 ## 📝未来计划 Future Ideas
 
 - [x] 增加内存优化功能
-- [ ] 完善高级清理功能
+- [x] 完善高级清理功能
 - [ ] 支持更多语言
 - [x] 更换UI字体
 - [x] 修复开机自启Bug
@@ -116,11 +111,44 @@ python -m nuitka --standalone --windows-uac-admin --remove-output --windows-cons
  </picture>
 </a>
 
-## 鸣谢
+## 鸣谢 🥳
+## 赞助商 / Sponsors
 
-- 🚀特别鸣谢[TC999](https://github.com/TC999)(编写GA编译脚本，解决UAC问题，开发日志功能)
+感谢以下赞助商对本项目的支持。
 
-- 🥳所有[DaYe](https://dyblog.online/)开源事业的支持者
+<table>
+  <tr>
+    <td>
+      <img alt="SignPath" src="https://signpath.org/assets/favicon-50x50.png" />
+    </td>
+    <td>
+    Free code signing on Windows provided by <a href="https://signpath.io">SignPath.io</a>, certficate by <a href="https://signpath.org/">SignPath Foundation</a>
+    </td>
+  </tr> 
+</table>
+
+## 代码签名策略 / Code signing policy
+
+- Free code signing provided by [SignPath.io](https://about.signpath.io/), certificate by [SignPath Foundation](https://signpath.org/).<br/>
+  由 [SignPath.io](https://about.signpath.io/) 提供免费代码签名，由 [SignPath Foundation](https://signpath.org/) 提供证书。
+- Committers and reviewers: [DaYe](https://github.com/darkmatter2048)<br/>
+  提交者和审阅者：[DaYe](https://github.com/darkmatter2048)
+- Approvers: [DaYe](https://github.com/darkmatter2048)<br/>
+  审批人：[DaYe](https://github.com/darkmatter2048)
+- [Privacy policy](./readme/Privacy.md)<br/>
+ [隐私政策](./readme/Privacy.md)
+
+## 感谢以下项目和人士
+
+- 特别鸣谢[TC999](https://github.com/TC999)(编写GA编译脚本，解决UAC问题，开发日志功能)🚀
+
+- 感谢[玄离199](https://space.bilibili.com/67079745?from=dyblog.online)的安利，很意外，也很惊喜🥳
+
+- 所有[DaYe](https://dyblog.online/)开源事业的支持者🥳
+
+- [memreduct](https://github.com/henrypp/memreduct)
+
+- [SpaceSniffer](https://www.uderzo.it/main_products/space_sniffer/)
 
 - [PyQt5](https://www.qt.io/)
 
