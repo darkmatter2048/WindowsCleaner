@@ -28,10 +28,9 @@
     </message>
     <message>
         <location filename="senior_ui_ui.py" line="93"/>
-        <source>注意⚠：此操作可能会导致
-Steam,VMware等软件无法正常运行</source>
-        <translatorcomment>Note: This operation may cause Steam, VMware and other software to not run properly.</translatorcomment>
-        <translation>Note: This operation may cause \n Steam, VMware and other software to not run properly</translation>
+        <source>注意⚠：此操作可能会导致Steam,VMware等软件无法正常运行</source>
+        <translatorcomment>Note⚠: This operation may cause Steam, VMware and other software to not run properly.</translatorcomment>
+        <translation>Note⚠: This operation may cause Steam,VMware and other software to not run properly</translation>
     </message>
     <message>
         <location filename="senior_ui_ui.py" line="95"/>

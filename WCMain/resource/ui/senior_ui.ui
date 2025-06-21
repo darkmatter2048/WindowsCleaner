@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>583</width>
-    <height>511</height>
+    <width>348</width>
+    <height>452</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -37,6 +37,9 @@
      </property>
      <property name="text">
       <string>移除系统组件或修改系统设置Beta</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
@@ -94,8 +97,10 @@
          </font>
         </property>
         <property name="text">
-         <string>注意⚠：此操作可能会导致
-Steam,VMware等软件无法正常运行</string>
+         <string>注意⚠：此操作可能会导致Steam,VMware等软件无法正常运行</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
@@ -128,6 +133,9 @@ Steam,VMware等软件无法正常运行</string>
         </property>
         <property name="text">
          <string>✅关闭后不会影响系统睡眠及正常使用</string>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
         </property>
        </widget>
       </item>

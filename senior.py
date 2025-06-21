@@ -1,8 +1,8 @@
-from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtCore import Qt, pyqtSignal, QTranslator
 from PyQt5.QtGui import QPixmap, QPainter, QColor
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QApplication, QWidget
 
-from qfluentwidgets import FluentIcon as FIF, InfoBarIcon, InfoBar, InfoBarPosition
+from qfluentwidgets import FluentIcon as FIF, InfoBarIcon, InfoBar, InfoBarPosition, FluentTranslator
 from senior_ui_ui import Ui_Form
 
 import os
@@ -12,6 +12,11 @@ class senior_page(QWidget, Ui_Form):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
+        self.trans = QTranslator(self)
+        _app = QApplication.instance()
+        _app.installTranslator(self.trans)
+        self.trans.load('WCMain/resource/Languages/English/qm/senior.qm')
+        self.retranslateUi(self)
 
         self.checkBox.stateChanged.connect(self.v_memory)
         self.checkBox_2.stateChanged.connect(self.shut_sleep)
