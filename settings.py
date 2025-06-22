@@ -6,10 +6,7 @@ from qfluentwidgets import FluentIcon as FIF, InfoBarIcon, TeachingTip, Teaching
 from settings_ui_ui import Settings_UI_Form
 
 import json
-import winreg
 import os
-import sys
-import requests
 
 
 def get_settings():
