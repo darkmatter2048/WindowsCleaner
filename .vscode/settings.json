@@ -2,7 +2,7 @@
     "MicroPython.executeButton": [
         {
             "text": "▶",
-            "tooltip": "运行",
+            "tooltip": "Run",
             "alignment": "left",
             "command": "extension.executeFile",
             "priority": 3.5
@@ -11,7 +11,7 @@
     "MicroPython.syncButton": [
         {
             "text": "$(sync)",
-            "tooltip": "同步",
+            "tooltip": "sync",
             "alignment": "left",
             "command": "extension.execute",
             "priority": 4
@@ -23,5 +23,8 @@
     "marscode.codeCompletionPro": {
         "enableCodeCompletionPro": false
     },
-    "marscode.enableInlineCommand": true
+    "marscode.enableInlineCommand": true,
+    "python.analysis.extraPaths": [
+        "c:/Users/Administrator/.vscode/extensions/rt-thread.rt-thread-micropython-1.0.11/microExamples/code-completion"
+    ]
 }

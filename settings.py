@@ -1,6 +1,6 @@
-from PyQt5.QtCore import Qt, pyqtSignal, QTimer
+from PyQt5.QtCore import Qt, pyqtSignal, QTimer, QTranslator
 from PyQt5.QtGui import QPixmap, QPainter, QColor
-from PyQt5.QtWidgets import QWidget, QSystemTrayIcon
+from PyQt5.QtWidgets import QApplication,QWidget, QSystemTrayIcon
 
 from qfluentwidgets import FluentIcon as FIF, InfoBarIcon, TeachingTip, TeachingTipTailPosition, ColorDialog, setThemeColor
 from settings_ui_ui import Settings_UI_Form
@@ -32,6 +32,11 @@ class settings_page(QWidget, Settings_UI_Form):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
+        self.trans = QTranslator(self)
+        _app = QApplication.instance()
+        _app.installTranslator(self.trans)
+        self.trans.load('WCMain/resource/Languages/English/qm/settings.qm')
+        self.retranslateUi(self)
 
         global settings_data
         
