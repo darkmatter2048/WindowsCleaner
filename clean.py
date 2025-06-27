@@ -1,6 +1,6 @@
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
+from PyQt5.QtCore import Qt, pyqtSignal, QThread, QTranslator
 from PyQt5.QtGui import QPixmap, QPainter, QColor
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QApplication, QWidget
 
 from qfluentwidgets import (
     FluentIcon as FIF,
@@ -355,7 +355,13 @@ class clean_page(QWidget, Ui_Form):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
-
+       
+        self.trans = QTranslator(self)
+        _app = QApplication.instance()
+        _app.installTranslator(self.trans)
+        self.trans.load('WCMain/resource/Languages/English/qm/main.qm')
+        #self.retranslateUi(self)
+        
         # 设置流畅图标
         self.pushButton.setIcon(FIF.BROOM)
 
@@ -374,6 +380,7 @@ class clean_page(QWidget, Ui_Form):
 
         self.show_work()
         self.run_flash()
+        self.retranslateUi(self)
 
     def RunSpaceSniffer(self):
         try:
@@ -397,7 +404,7 @@ class clean_page(QWidget, Ui_Form):
         self.PermissionError_bar()
         self.pushButton.setEnabled(True)
         self.widget_2.setEnabled(True)
-        self.pushButton.setText("立即加速")
+        self.pushButton.setText(self.tr("立即加速"))
 
     def run_flash(self):
         self.thread = FlashThread()
@@ -406,9 +413,12 @@ class clean_page(QWidget, Ui_Form):
 
     def update_ui(self, index):
         global current_file
+        #current_file = self.tr(current_file)
         self.progressBar.setValue(index)
         file_name = os.path.basename(current_file)
+        file_name = self.tr(file_name)
         self.label_3.setText(f"{file_name}")
+        self.retranslateUi(self)
 
     def boost(self):
         print("优化加速")
@@ -444,7 +454,7 @@ class clean_page(QWidget, Ui_Form):
             # print(f"C 盘总空间: {total / (1024 ** 3):.2f} GB")
             # print(f"C 盘已用空间: {used / (1024 ** 3):.2f} GB")
             self.label_9.setText(
-                f"{free / (1024 ** 3):.2f}GB可用，共{total / (1024 ** 3):.2f}GB"
+                f"{free / (1024 ** 3):.2f}GB/{total / (1024 ** 3):.2f}GB"
             )
             # print(f"C 盘使用百分比: {percent}%")
         else:
@@ -457,10 +467,11 @@ class clean_page(QWidget, Ui_Form):
         # self.showTeachingTip(content="清理失败，请重试！")
 
     def after_clean(self):
-        self.pushButton.setText("立即加速")
+        self.pushButton.setText(self.tr("立即加速"))
+        self.retranslateUi(self)
         self.info_bar()
         global current_file
-        current_file = "清理内存和临时文件，减少电脑卡顿"
+        current_file = self.tr("清理内存和临时文件，减少电脑卡顿")
         self.v1 = get_v()
         if int(self.v0 - self.v1) > 1024:
             message = (
@@ -476,10 +487,11 @@ class clean_page(QWidget, Ui_Form):
         self.show_work()
 
     def deep_after_clean(self):
-        self.pushButton.setText("立即加速")
+        self.pushButton.setText(self.tr("立即加速"))
+        self.retranslateUi(self)
         self.info_bar()
         global current_file
-        current_file = "清理内存和临时文件，减少电脑卡顿"
+        current_file = self.tr("清理内存和临时文件，减少电脑卡顿")
         self.v1 = get_v()
         if int(self.v0 - self.v1) > 1024:
             message = (

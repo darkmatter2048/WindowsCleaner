@@ -6,15 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>348</width>
-    <height>452</height>
+    <width>449</width>
+    <height>495</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
-   <item row="0" column="0">
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
     <widget class="QLabel" name="label_4">
      <property name="minimumSize">
       <size>
@@ -27,7 +27,7 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item>
     <widget class="TitleLabel" name="label_3">
      <property name="font">
       <font>
@@ -43,7 +43,7 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="0">
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <widget class="PrimaryPushButton" name="pushButton">
@@ -72,7 +72,28 @@
      </item>
     </layout>
    </item>
-   <item row="3" column="0">
+   <item>
+    <widget class="CaptionLabel" name="label_5">
+     <property name="font">
+      <font>
+       <family>Microsoft YaHei UI</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>⚠警告：未勾选的项在执行时会被恢复！</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="CardWidget" name="widget" native="true">
      <layout class="QGridLayout" name="gridLayout">
       <item row="0" column="0">
@@ -107,7 +128,7 @@
      </layout>
     </widget>
    </item>
-   <item row="4" column="0">
+   <item>
     <widget class="CardWidget" name="widget_2" native="true">
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
@@ -142,7 +163,7 @@
      </layout>
     </widget>
    </item>
-   <item row="5" column="0">
+   <item>
     <spacer name="verticalSpacer">
      <property name="orientation">
       <enum>Qt::Vertical</enum>

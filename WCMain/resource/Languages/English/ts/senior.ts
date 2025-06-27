@@ -21,6 +21,12 @@
         <translation>Run</translation>
     </message>
     <message>
+        <location filename="senior_ui_ui.py" line="91"/>
+        <source>⚠警告：未勾选的项在执行时会被恢复！</source>
+        <translatorcomment>Run</translatorcomment>
+        <translation>⚠ Warning: Unchecked items will be restored when executed!</translation>
+    </message>
+    <message>
         <location filename="senior_ui_ui.py" line="92"/>
         <source>转移虚拟内存</source>
         <translatorcomment>transfer virtual memory</translatorcomment>
