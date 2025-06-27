@@ -29,21 +29,26 @@ class settings_page(QWidget, Settings_UI_Form):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
+        global settings_data
+        self.settings_data = settings_data
+
         self.trans = QTranslator(self)
         _app = QApplication.instance()
         _app.installTranslator(self.trans)
-        self.trans.load('WCMain/resource/Languages/English/qm/settings.qm')
+        path = f"WCMain\\resource\\Languages\\{str(self.settings_data['language'])}\\qm\\settings.qm"
+        self.trans.load(path)
         self.retranslateUi(self)
-
-        global settings_data
-        
-        self.settings_data = settings_data
 
         # 加载settings
         self.comboBox_7.setCurrentIndex(int(self.settings_data['theme'])) 
         self.AutoRun_2.setChecked(bool(self.settings_data['AutoRunEnabled']=="True")) 
         self.comboBox_5.setCurrentIndex(int(self.settings_data['closeEvent'])) 
         self.comboBox_6.setCurrentIndex(int(self.settings_data['update']))
+        # 获取WCMain\\resource\\Languages下的所有语言名称
+        languages = os.listdir('WCMain\\resource\\Languages')
+        languages = [language for language in languages if os.path.isdir(f'WCMain\\resource\\Languages\\{language}')]
+        self.comboBox_8.addItems(languages)
+        self.comboBox_8.setCurrentText(self.settings_data['language'])
 
         # 更新settings
         self.comboBox_7.currentIndexChanged.connect(self.ThemeChanged)
@@ -51,7 +56,15 @@ class settings_page(QWidget, Settings_UI_Form):
         #self.AutoRun_2.stateChanged.connect(self.AutoRun)
         self.comboBox_5.currentIndexChanged.connect(self.CloseEventChanged)
         self.comboBox_6.currentIndexChanged.connect(self.AutoUpdateChanged)
-              
+        self.comboBox_8.currentIndexChanged.connect(self.languageChanged)
+        
+    def languageChanged(self, index):
+        self.settings_data = get_settings()
+        self.settings_data['language'] = self.comboBox_8.currentText()
+        with open('WCMain/settings.json', 'w') as file:
+            json.dump(self.settings_data, file, indent=4)
+        self.showTeachingTip()
+
     def AutoUpdateChanged(self, index):
         self.settings_data = get_settings()
         self.settings_data['update'] = self.comboBox_6.currentIndex()

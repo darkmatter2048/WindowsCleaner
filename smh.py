@@ -9,6 +9,12 @@ from smh_ui_ui import Ui_smh
 import os
 import subprocess
 import shutil
+import json
+
+script_directory = os.path.dirname(os.path.abspath(__file__))
+settings_path = f'{script_directory}\WCMain\settings.json'
+with open(settings_path, 'r') as f:
+    settings_data = json.load(f)
 
 # 获取当前用户的用户名，用于拼接AppData文件夹路径
 def get_adpath():
@@ -60,10 +66,13 @@ class smh_page(QWidget, Ui_smh):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
+        global settings_data
+        self.settings_data = settings_data
         self.trans = QTranslator(self)
         _app = QApplication.instance()
         _app.installTranslator(self.trans)
-        self.trans.load('WCMain/resource/Languages/English/qm/smh.qm')
+        path = f"WCMain\\resource\\Languages\\{str(self.settings_data['language'])}\\qm\\smh.qm"
+        self.trans.load(path)
         self.retranslateUi(self)
 
         self.all_target_folder_path = ""

@@ -188,15 +188,17 @@ class auto_page(QWidget, Ui_AutoClean):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
-        self.trans = QTranslator(self)
-        _app = QApplication.instance()
-        _app.installTranslator(self.trans)
-        self.trans.load('WCMain/resource/Languages/English/qm/auto.qm')
-        self.retranslateUi(self)
 
         global settings_data
 
         self.settings_data = settings_data
+
+        self.trans = QTranslator(self)
+        _app = QApplication.instance()
+        _app.installTranslator(self.trans)
+        path = f"WCMain\\resource\\Languages\\{str(self.settings_data['language'])}\\qm\\auto.qm"
+        self.trans.load(path)
+        self.retranslateUi(self)
 
         self.Enabled = None 
         self.textEdit.setPlainText(str(self.settings_data["includePath"]))

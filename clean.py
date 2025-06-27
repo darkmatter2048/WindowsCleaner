@@ -355,12 +355,16 @@ class clean_page(QWidget, Ui_Form):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
+
+        global settings_data
+        self.settings_data = settings_data
        
         self.trans = QTranslator(self)
         _app = QApplication.instance()
         _app.installTranslator(self.trans)
-        self.trans.load('WCMain/resource/Languages/English/qm/main.qm')
-        #self.retranslateUi(self)
+        self.path = f"WCMain\\resource\\Languages\\{str(self.settings_data['language'])}\\qm\\main.qm"
+        self.trans.load(self.path)
+        self.retranslateUi(self)
         
         # 设置流畅图标
         self.pushButton.setIcon(FIF.BROOM)
@@ -380,7 +384,6 @@ class clean_page(QWidget, Ui_Form):
 
         self.show_work()
         self.run_flash()
-        self.retranslateUi(self)
 
     def RunSpaceSniffer(self):
         try:
@@ -489,6 +492,7 @@ class clean_page(QWidget, Ui_Form):
     def deep_after_clean(self):
         self.pushButton.setText(self.tr("立即加速"))
         self.retranslateUi(self)
+
         self.info_bar()
         global current_file
         current_file = self.tr("清理内存和临时文件，减少电脑卡顿")

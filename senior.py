@@ -7,15 +7,26 @@ from senior_ui_ui import Ui_Form
 
 import os
 import subprocess
+import json
+
+script_directory = os.path.dirname(os.path.abspath(__file__))
+settings_path = f'{script_directory}\WCMain\settings.json'
+with open(settings_path, 'r') as f:
+    settings_data = json.load(f)
 
 class senior_page(QWidget, Ui_Form):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
+
+        global settings_data
+        self.settings_data = settings_data
+
         self.trans = QTranslator(self)
         _app = QApplication.instance()
         _app.installTranslator(self.trans)
-        self.trans.load('WCMain/resource/Languages/English/qm/senior.qm')
+        path = f"WCMain\\resource\\Languages\\{str(self.settings_data['language'])}\\qm\\senior.qm"
+        self.trans.load(path)
         self.retranslateUi(self)
 
         self.checkBox.stateChanged.connect(self.v_memory)

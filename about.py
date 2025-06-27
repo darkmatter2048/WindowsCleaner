@@ -35,14 +35,16 @@ class about_page(QWidget, Ui_Form):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
-        self.trans = QTranslator(self)
-        _app = QApplication.instance()
-        _app.installTranslator(self.trans)
-        self.trans.load('WCMain/resource/Languages/English/qm/about.qm')
-        self.retranslateUi(self)
 
         global settings_data
         self.settings_data = settings_data 
+
+        self.trans = QTranslator(self)
+        _app = QApplication.instance()
+        _app.installTranslator(self.trans)
+        path = f"WCMain\\resource\\Languages\\{str(self.settings_data['language'])}\\qm\\about.qm"
+        self.trans.load(path)
+        self.retranslateUi(self)
 
         self.pushButton.clicked.connect(self.update)
         self.label_5.setUrl('https://wc.dyblog.online') 
