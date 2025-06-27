@@ -256,6 +256,9 @@
         <property name="text">
          <string>自定义清理列表(深度清理同步)</string>
         </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
        </widget>
       </item>
      </layout>

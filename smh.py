@@ -1,6 +1,7 @@
-from PyQt5.QtCore import Qt, pyqtSignal, QThread
+from PyQt5.QtCore import Qt, pyqtSignal, QThread, QTranslator
 from PyQt5.QtGui import QPixmap, QPainter, QColor
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QHBoxLayout, QFileDialog# 新增布局和标签组件
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QHBoxLayout, QFileDialog# 新增布局和标签组件
+
 
 from qfluentwidgets import FluentIcon as FIF, InfoBarIcon, InfoBar, InfoBarPosition
 from smh_ui_ui import Ui_smh
@@ -59,6 +60,11 @@ class smh_page(QWidget, Ui_smh):
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.setupUi(self)
+        self.trans = QTranslator(self)
+        _app = QApplication.instance()
+        _app.installTranslator(self.trans)
+        self.trans.load('WCMain/resource/Languages/English/qm/smh.qm')
+        self.retranslateUi(self)
 
         self.all_target_folder_path = ""
         self.target_folder_path = ""
