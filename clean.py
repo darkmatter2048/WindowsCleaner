@@ -11,7 +11,7 @@ from qfluentwidgets import (
     TeachingTipTailPosition,
     Dialog,
 )
-from mian_ui_ui import Ui_Form
+from main_ui_ui import Ui_Form
 
 import json
 import os
