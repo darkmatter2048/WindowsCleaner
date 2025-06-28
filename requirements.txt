@@ -1,4 +1,7 @@
-PyQt-Fluent-Widgets[full]==1.6.3
-plyer
-requests
-psutil
+plyer==2.1.0
+psutil==6.1.1
+PyQt5==5.15.11
+PyQt5_sip==12.15.0
+PyQt_Fluent_Widgets==1.6.3
+pywin32==308
+Requests==2.32.4
