@@ -27,6 +27,7 @@ jobs:
       with:
         input-file: wincleaner.py
         arguments: >
+          --standalone
           --enable-plugin=pyqt5 
           --windows-icon-from-ico=WCMain/resource/imgs/icon.ico
           --windows-uac-admin
