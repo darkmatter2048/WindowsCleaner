@@ -20,7 +20,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r requirements.txt ordered-set==4.1.0 wheel==0.38.4 zstandard==0.20.0
 
     - name: Build with Nuitka
       uses: Nuitka/Nuitka-Action@main
@@ -32,16 +32,21 @@ jobs:
           --windows-icon-from-ico=WCMain/resource/imgs/icon.ico
           --windows-uac-admin
           --remove-output
+          --include-data-dir=WCMain/resource=WCMain/resource
+          --include-data-dir=WCMain/settings.json=.
           --output-dir=dist
 
-    - name: Package artifacts
-      run: |
-        Compress-Archive -Path dist/wincleaner.dist/* -DestinationPath WindowsCleaner-${{ github.run_number }}.zip
+    - name: Install Inno Setup
+      run: choco install innosetup -y
+
+    - name: Build installer
+      run: iscc script.iss
 
     - name: Upload artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: WindowsCleaner
         path: |
-          *.zip
+          Output/*.exe
           dist/
+        include-hidden-files: true
