@@ -314,6 +314,11 @@ def memreduct(threshold=100,exclude_processes=["System", "Idle", "svchost.exe"])
         None, 
         0  # SW_HIDE隐藏窗口
     )       
+    # 等待一段时间，确保进程完成
+    time.sleep(3)
+    # 关闭memreduct.exe进程
+    subprocess.run("taskkill /f /im memreduct.exe", shell=True)
+
 
 class CleanThread(QThread):
     operationCompleted = pyqtSignal()
