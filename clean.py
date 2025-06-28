@@ -427,6 +427,7 @@ class clean_page(QWidget, Ui_Form):
         file_name = self.tr(file_name)
         self.label_3.setText(f"{file_name}")
         self.retranslateUi(self)
+        self.show_work()
 
     def boost(self):
         print("优化加速")
