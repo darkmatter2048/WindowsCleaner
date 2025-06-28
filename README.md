@@ -22,9 +22,10 @@
 <h3>专治C盘爆红及各种不服！</h3>
 </div>
 
-> [!warning]
->
-> 本项目从未发布至 GitCode，如您发现请截图并保留证据
+> [!IMPORTANT]  
+> 
+> #### 常见问题以及解答 FAQ
+> [点击此处查看帮助文档](https://dyblog.online/windowscleaner#faq)
 
 ## 🎨 运行截图 GUI
 | ![show1](readme/s_light.png) | ![show2](readme/s_dark.png) |
