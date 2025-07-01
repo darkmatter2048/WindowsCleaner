@@ -6,7 +6,11 @@ from PyQt5.QtWidgets import QApplication, QWidget
 from qfluentwidgets import FluentIcon as FIF, InfoBarIcon, TeachingTip, TeachingTipTailPosition
 from about_ui_ui import Ui_Form
 
-import requests
+try:
+    import requests
+except Exception as e:
+    print(f"发生错误：{e}")
+
 import json
 import os
 
