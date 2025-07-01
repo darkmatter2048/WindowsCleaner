@@ -21,19 +21,22 @@ with open(settings_path, 'r') as f:
     settings_data = json.load(f) 
 
 def download_version():
-    # URL 地址
-    url = 'https://wc.dyblog.online/version.json'
-    # 发送 GET 请求
-    response = requests.get(url)
-    # 检查请求是否成功
-    if response.status_code == 200:
-        # 解析 JSON 数据
-        data = response.json()
-        print('获取的 JSON 数据：')
-        print(data)
-        return data
-    else:
-        print(f'下载失败，状态码: {response.status_code}')
+    try:
+        # URL 地址
+        url = 'https://wc.dyblog.online/version.json'
+        # 发送 GET 请求
+        response = requests.get(url)
+        # 检查请求是否成功
+        if response.status_code == 200:
+            # 解析 JSON 数据
+            data = response.json()
+            print('获取的 JSON 数据：')
+            print(data)
+            return data
+        else:
+            print(f'下载失败，状态码: {response.status_code}')
+    except Exception as e:
+        print(f"发生错误：{e}")
 
 class about_page(QWidget, Ui_Form):
     def __init__(self, parent=None):
