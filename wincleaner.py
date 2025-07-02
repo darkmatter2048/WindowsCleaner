@@ -18,7 +18,12 @@ from logger import get_logger
 
 import json
 import winreg
-import requests
+
+try:
+    import requests
+except Exception as e:
+    print(f"发生错误：{e}")
+
 from datetime import datetime
 try:
     from plyer import notification
