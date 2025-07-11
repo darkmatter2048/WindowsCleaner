@@ -18,11 +18,8 @@ from logger import get_logger
 
 import json
 import winreg
-
-try:
-    import requests
-except Exception as e:
-    print(f"发生错误：{e}")
+import urllib.request
+import urllib.error
 
 from datetime import datetime
 try:
@@ -65,19 +62,26 @@ def WeatherLate(date_str):
 def download_version():
     # URL 地址
     url = 'https://wc.dyblog.online/version.json'
-    # 发送 GET 请求
-    response = requests.get(url)
-    # 检查请求是否成功
-    if response.status_code == 200:
-        # 解析 JSON 数据
-        data = response.json()
-        print('获取的 JSON 数据：')
-        print(data)
-        logger.info('获取的 JSON 数据：', data)
-        return data
-    else:
-        print(f'下载失败，状态码: {response.status_code}')
-        logger.error(f'下载失败，状态码: {response.status_code}')
+    try:
+        # 使用urllib代替requests
+        with urllib.request.urlopen(url) as response:
+            if response.status == 200:
+                # 读取并解析JSON数据
+                data = json.loads(response.read().decode('utf-8'))
+                print('获取的 JSON 数据：')
+                print(data)
+                #logger.info('获取的 JSON 数据：')
+                #logger.info(str(data))
+                return data
+            else:
+                print(f'下载失败，状态码: {response.status}')
+                #logger.error(f'下载失败，状态码: {response.status}')
+    except urllib.error.URLError as e:
+        print(f'下载失败，错误: {e.reason}')
+        #logger.error(f'下载失败，错误: {e.reason}')
+    except Exception as e:
+        print(f'下载失败，错误: {str(e)}')
+        #logger.error(f'下载失败，错误: {str(e)}')
 
 # 开机自启
 def add_to_startup():
