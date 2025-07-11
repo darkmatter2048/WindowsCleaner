@@ -25,8 +25,8 @@
 > [!IMPORTANT]  
 > 
 > ### 📢 常见问题以及解答 FAQ
-> #### [点击此处查看帮助文档](https://dyblog.online/windowscleaner#faq)
-> 
+> #### 🔔 [点击此处查看帮助文档](https://dyblog.online/windowscleaner#faq)
+> #### 🔔 如有一般性问题请前往[Discussions](https://github.com/darkmatter2048/WindowsCleaner/discussions)讨论区，***Issues* 仅用于错误报告和功能请求。**
 > #### 特别感谢[乔星欢](https://www.qiaoxh.com/?from=dyblog.online)提供的免费CDN服务
 
 
