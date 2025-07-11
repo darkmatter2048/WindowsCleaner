@@ -87,14 +87,6 @@ python -m nuitka --standalone --windows-uac-admin --remove-output --windows-cons
 #### GitHub Actions（推荐）
 - 全自动编译，直接运行（或勾选“生成安装包”生成安装程序），运行结束后下载编译产物全部解压即可使用(注：编译时间非常长，大概编译一次需要20-30分钟）/或下载带`Setup`字样的压缩包，解压后运行安装程序安装即可
 
-## 📝未来计划 Future Ideas
-
-- [x] 增加内存优化功能
-- [x] 完善高级清理功能
-- [ ] 支持更多语言
-- [x] 更换UI字体
-- [x] 修复开机自启Bug
-
 ## 🎖 贡献者 Contributors
 
 <a href="https://github.com/darkmatter2048/WindowsCleaner/graphs/contributors">
