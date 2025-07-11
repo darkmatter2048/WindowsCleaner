@@ -24,8 +24,11 @@
 
 > [!IMPORTANT]  
 > 
-> #### 常见问题以及解答 FAQ
-> [点击此处查看帮助文档](https://dyblog.online/windowscleaner#faq)
+> ### 📢 常见问题以及解答 FAQ
+> #### [点击此处查看帮助文档](https://dyblog.online/windowscleaner#faq)
+> 
+> #### 特别感谢[乔星欢](https://www.qiaoxh.com/?from=dyblog.online)提供的免费CDN服务
+
 
 ## 🎨 运行截图 GUI
 | ![show1](readme/s_light.png) | ![show2](readme/s_dark.png) |
