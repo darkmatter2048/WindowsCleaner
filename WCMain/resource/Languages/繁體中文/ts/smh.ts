@@ -12,19 +12,19 @@
         <location filename="smh_ui_ui.py" line="136"/>
         <source>数据迁移 Beta</source>
         <translatorcomment>Data Migration</translatorcomment>
-        <translation>Data Migration</translation>
+        <translation>數據遷移 Beta</translation>
     </message>
     <message>
         <location filename="smh_ui_ui.py" line="137"/>
         <source>单独移动某个文件夹</source>
         <translatorcomment>Move Individual Folder</translatorcomment>
-        <translation>Move Individual Folder</translation>
+        <translation>單獨移動某個文件夾</translation>
     </message>
     <message>
         <location filename="smh_ui_ui.py" line="138"/>
         <source>将</source>
         <translatorcomment>Move</translatorcomment>
-        <translation>Move</translation>
+        <translation>將</translation>
     </message>
     <message>
         <location filename="smh_ui_ui.py" line="141"/>
@@ -35,19 +35,19 @@
         <location filename="smh_ui_ui.py" line="140"/>
         <source>转移到</source>
         <translatorcomment>to</translatorcomment>
-        <translation>to</translation>
+        <translation>移動到</translation>
     </message>
     <message>
         <location filename="smh_ui_ui.py" line="142"/>
         <source>转移</source>
         <translatorcomment>Transfer</translatorcomment>
-        <translation>Transfer</translation>
+        <translation>轉移</translation>
     </message>
     <message>
         <location filename="smh_ui_ui.py" line="143"/>
         <source>合作项目</source>
         <translatorcomment>Collaboration Project</translatorcomment>
-        <translation>Collaboration Project</translation>
+        <translation>合作專案</translation>
     </message>
     <message>
         <location filename="smh_ui_ui.py" line="144"/>

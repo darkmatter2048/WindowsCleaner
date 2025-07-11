@@ -29,13 +29,13 @@
         <location filename="about_ui_ui.py" line="151"/>
         <source>版本：</source>
         <translatorcomment>Version:</translatorcomment>
-        <translation>バージョン：</translation>
+        <translation>構築番号：</translation>
     </message>
     <message>
         <location filename="about_ui_ui.py" line="152"/>
         <source>博客：https://www.dyblog.online/</source>
         <translatorcomment>Blog：https://www.dyblog.online/</translatorcomment>
-        <translation>Blog：https://www.dyblog.online/</translation>
+        <translation>Blog： https://www.dyblog.online/</translation>
     </message>
     <message>
         <location filename="about_ui_ui.py" line="153"/>

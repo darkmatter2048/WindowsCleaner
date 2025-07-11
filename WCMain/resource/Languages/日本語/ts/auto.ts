@@ -12,25 +12,25 @@
         <location filename="auto_ui_ui.py" line="153"/>
         <source>自动清理</source>
         <translatorcomment>Auto Clean</translatorcomment>
-        <translation>Auto Clean</translation>
+        <translation>自動削除</translation>
     </message>
     <message>
         <location filename="auto_ui_ui.py" line="154"/>
         <source>定期清理</source>
         <translatorcomment>Scheduled Cleanup</translatorcomment>
-        <translation>Scheduled Cleanup</translation>
+        <translation>定期削除</translation>
     </message>
     <message>
         <location filename="auto_ui_ui.py" line="155"/>
         <source>C盘空间不足时清理</source>
         <translatorcomment>Clean when C: drive space low</translatorcomment>
-        <translation>Clean when C: drive space low</translation>
+        <translation>C:ドライブの空き容量が不足している場合にクリーンアップ</translation>
     </message>
     <message>
         <location filename="auto_ui_ui.py" line="156"/>
         <source>每隔</source>
         <translatorcomment>Every</translatorcomment>
-        <translation>Every</translation>
+        <translation>毎</translation>
     </message>
     <message>
         <location filename="auto_ui_ui.py" line="157"/>
@@ -54,7 +54,7 @@
         <location filename="auto_ui_ui.py" line="160"/>
         <source>自定义清理列表(深度清理同步)</source>
         <translatorcomment>Custom Cleanup List (syncs with Deep Clean)</translatorcomment>
-        <translation>Custom Cleanup List (syncs with Deep Clean)</translation>
+        <translation>自作整理一覧（詳細掃除と同期）</translation>
     </message>
 </context>
 </TS>

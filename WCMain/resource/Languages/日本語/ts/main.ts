@@ -23,7 +23,7 @@
         <location filename="main_ui_ui.py" line="279"/>
         <source>立即加速</source>
         <translatorcomment>Boost Now</translatorcomment>
-        <translation>Boost Now</translation>
+        <translation>今すぐ加速</translation>
     </message>
     <message>
         <location filename="main_ui_ui.py" line="280"/>
@@ -41,7 +41,7 @@
         <location filename="main_ui_ui.py" line="282"/>
         <source>深度清理</source>
         <translatorcomment>Deep Clean</translatorcomment>
-        <translation>Deep Clean</translation>
+        <translation>詳細掃除</translation>
     </message>
     <message>
         <location filename="main_ui_ui.py" line="283"/>
@@ -58,7 +58,7 @@
         <location filename="main_ui_ui.py" line="285"/>
         <source>磁盘分析</source>
         <translatorcomment>Disk Analysis</translatorcomment>
-        <translation>Disk Analysis</translation>
+        <translation>磁盤分析</translation>
     </message>
     <message>
         <location filename="main_ui_ui.py" line="286"/>
@@ -75,13 +75,13 @@
         <location filename="main_ui_ui.py" line="288"/>
         <source>数据迁移</source>
         <translatorcomment>Data Migration</translatorcomment>
-        <translation>Data Migration</translation>
+        <translation>データ移動</translation>
     </message>
     <message>
         <location filename="main_ui_ui.py" line="289"/>
         <source>移动AppData文件夹</source>
-        <translatorcomment>Move AppData Folder</translatorcomment>
-        <translation>Move AppData Folder</translation>
+        <translatorcomment>移動 AppData Folder</translatorcomment>
+        <translation>移動 AppData Folder</translation>
     </message>
     <message>
         <location filename="main_ui_ui.py" line="293"/>
