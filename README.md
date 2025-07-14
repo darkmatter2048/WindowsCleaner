@@ -30,7 +30,6 @@
 > #### ❤️ 感谢好友[vladelaina](https://vladelaina.com/)（[Catime](https://catime.vladelaina.com/)项目作者）的大力支持
 > #### ❤️ 特别感谢[乔星欢](https://www.qiaoxh.com/?from=dyblog.online)提供的免费CDN服务
 
-
 ## 🎨 运行截图 GUI
 | ![show1](readme/s_light.png) | ![show2](readme/s_dark.png) |
 |:----------------------:|:----------------------:|
