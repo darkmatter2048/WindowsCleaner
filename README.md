@@ -27,8 +27,8 @@
 > ### 📢 常见问题以及解答 FAQ
 > #### 🔔 [点击此处查看帮助文档](https://dyblog.online/windowscleaner#faq)
 > #### 🔔 如有一般性问题请前往[Discussions](https://github.com/darkmatter2048/WindowsCleaner/discussions)讨论区，***Issues* 仅用于错误报告和功能请求。**
-> #### 特别感谢[乔星欢](https://www.qiaoxh.com/?from=dyblog.online)提供的免费CDN服务
-
+> #### ❤️ 感谢好友[vladelaina](https://vladelaina.com/)（[Catime](https://catime.vladelaina.com/)项目作者）的大力支持
+> #### ❤️ 特别感谢[乔星欢](https://www.qiaoxh.com/?from=dyblog.online)提供的免费CDN服务
 
 ## 🎨 运行截图 GUI
 | ![show1](readme/s_light.png) | ![show2](readme/s_dark.png) |
@@ -137,6 +137,8 @@ python -m nuitka --standalone --windows-uac-admin --remove-output --windows-cons
 ## 感谢以下项目和人士
 
 - 特别鸣谢[TC999](https://github.com/TC999)(编写GA编译脚本，解决UAC问题，开发日志功能)🚀
+
+- 感谢好友[vladelaina](https://vladelaina.com/)([Catime](https://catime.vladelaina.com/)项目作者)的协助❤️
 
 - 感谢[玄离199](https://space.bilibili.com/67079745?from=dyblog.online)的安利，很意外，也很惊喜🥳
 
