@@ -16,7 +16,9 @@
 </p>
 <p>
 <a href="https://dyblog.online/donate"><img src="https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow" alt="Buy Me A Coffee" /></a>
-<a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=Wgxe7QkwqIYfSkIqIP2hnwGHWKMdZY58&authKey=lam7sd2TUpdZ1VLrIR%2FyQzYYGcO3SDaLqDpIfWNw7hSA8Df0ZiyEWT5Wm3RTA6Rx&noverify=0&group_code=868824052"><img src="https://img.shields.io/badge/QQ群-868824052-blue" alt="QQ Group" /></a>
+<a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=Wgxe7QkwqIYfSkIqIP2hnwGHWKMdZY58&authKey=lam7sd2TUpdZ1VLrIR%2FyQzYYGcO3SDaLqDpIfWNw7hSA8Df0ZiyEWT5Wm3RTA6Rx&noverify=0&group_code=868824052"><img src="https://img.shields.io/badge/QQ群1-868824052-blue" alt="QQ Group" /></a>
+<a href="https://qm.qq.com/q/dqyQ3sxSHC"><img src="https://img.shields.io/badge/QQ群2-1030016834-blue" alt="QQ Group" /></a>
+<a href="https://t.me/+kRK2MIVK5d80MTA1"><img src="https://img.shields.io/badge/Telegram-Group-blue" alt="Telegram Group" /></a>
 </p>
 
 <h3>专治C盘爆红及各种不服！</h3>
@@ -93,9 +95,7 @@ python -m nuitka --standalone --windows-uac-admin --remove-output --windows-cons
   <img src="https://contrib.rocks/image?repo=darkmatter2048/WindowsCleaner" />
 </a>
 
-## 🤝支持 Windows Cleaner的开发
-
-[<img src="https://wc.dyblog.online/images/d.png" alt="Develop Image" style="width: 200px;"/>](https://dyblog.online/donate)
+## [❤️ 捐赠 Donate](https://dyblog.online/donate)
 
 ## ⭐ 星标历史 Star History
 
