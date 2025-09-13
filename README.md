@@ -99,6 +99,10 @@ python -m nuitka --standalone --windows-uac-admin --remove-output --windows-cons
 
 ## [❤️ 捐赠 Donate](https://dyblog.online/donate)
 
+## Project Status
+![WindowsCleaner](https://repobeats.axiom.co/api/embed/95ad3871ab16d2b0852d8e4fa9c5bebc450f522d.svg "Repobeats analytics image")
+
+
 ## ⭐ 星标历史 Star History
 
 <a href="https://star-history.com/#darkmatter2048/WindowsCleaner&Date">
