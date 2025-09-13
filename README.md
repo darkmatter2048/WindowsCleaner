@@ -61,7 +61,7 @@
 一路Next即可，如果想以后方便打开可以勾选上`创建桌面快捷方式`选项。
 </details>
 
-## 💻 从源代码构建 How to build
+## 💻 从源代码构建 / How to build
 ### 源码运行
 - 克隆此仓库
 - 安装 Python 3.8
@@ -97,13 +97,13 @@ python -m nuitka --standalone --windows-uac-admin --remove-output --windows-cons
   <img src="https://contrib.rocks/image?repo=darkmatter2048/WindowsCleaner" />
 </a>
 
-## [❤️ 捐赠 Donate](https://dyblog.online/donate)
+## [❤️ 捐赠 / Donate](https://dyblog.online/donate)
 
-## Project Status
+## 项目状态 / Project Status
 ![WindowsCleaner](https://repobeats.axiom.co/api/embed/95ad3871ab16d2b0852d8e4fa9c5bebc450f522d.svg "Repobeats analytics image")
 
 
-## ⭐ 星标历史 Star History
+## ⭐ 星标历史 / Star History
 
 <a href="https://star-history.com/#darkmatter2048/WindowsCleaner&Date">
  <picture>
