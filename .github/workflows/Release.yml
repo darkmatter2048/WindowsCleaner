@@ -63,7 +63,7 @@ jobs:
           name: WindowsCleaner
           path: dist
       - name: 生成安装包
-        uses: Minionguyjpro/Inno-Setup-Action@v1.2.5
+        uses: Minionguyjpro/Inno-Setup-Action@v1.2.7
         with:
           path: script.iss
           options: /O+
