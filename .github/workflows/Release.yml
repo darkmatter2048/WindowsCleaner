@@ -30,7 +30,8 @@ jobs:
           pip install -r requirements.txt -U nuitka==2.5.1 zstandard ordered-set
       - name: 编译
         run: |
-          python -m nuitka --mingw64 --assume-yes-for-downloads --standalone --windows-uac-admin --remove-output --windows-console-mode="disable" --jobs=8 --enable-plugins="pyqt5" --output-dir="dist" --main="wincleaner.py" --windows-icon-from-ico="icon.ico" --company-name="DaYe" --product-name="WindowsCleaner" --file-version="5.0.0" --product-version="5.0" --file-description="WindowsCleaner" --copyright="DaYe" --trademarks="DaYe" --include-package=requests --include-package=certifi
+          python -m nuitka --mingw64 --assume-yes-for-downloads --standalone --windows-uac-admin --remove-output --windows-console-mode="disable" --jobs=8 --enable-plugins="pyqt5" --output-dir="dist" --main="wincleaner.py" --windows-icon-from-ico="icon.ico" --company-name="DaYe" --product-name="WindowsCleaner" --file-version="5.0.0" --product-version="5.0" --file-description="WindowsCleaner" --copyright="DaYe" --trademarks="DaYe"
+
       - name: 移动文件
         run: move WCMain dist/wincleaner.dist/WCMain
 
