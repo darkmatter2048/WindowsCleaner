@@ -1,4 +1,4 @@
-name: 编译
+name: CI
 run-name: 编译
 on:
   workflow_dispatch:
