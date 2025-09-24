@@ -1,0 +1,19 @@
+name: 编译
+on:
+  workflow_dispatch:
+    inputs:
+      inno:
+        description: "生成安装包"
+        type: boolean
+        default: false
+      sign:
+        description: "签名"
+        type: boolean
+        default: false
+
+jobs:
+  Build:
+    uses: ./.github/workflows/Build.yml
+    with:
+      inno: ${{ inputs.inno }}
+      sign: ${{ inputs.sign }}
