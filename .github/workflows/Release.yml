@@ -13,7 +13,7 @@ on:
 
 jobs:
   Build:
-    uses: ./.github/workflows/BuildCore.yml
+    uses: ./.github/workflows/Build.yml
     with:
       inno: true
       sign: ${{ inputs.sign }}
