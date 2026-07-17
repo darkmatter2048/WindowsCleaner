@@ -16,5 +16,12 @@
   },
   "titleBar": {
     "appName": "WindowsCleaner"
+  },
+  "clean": {
+    "cleaning": "清理中...",
+    "freed": "已释放",
+    "nothing": "没有可清理的文件",
+    "failed": "清理失败",
+    "ok": "确定"
   }
 }

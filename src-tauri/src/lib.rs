@@ -1,3 +1,6 @@
+mod clean;
+mod winapp2;
+
 use serde::Serialize;
 use sysinfo::Disks;
 
@@ -27,7 +30,12 @@ fn get_disk_info() -> Result<DiskInfo, String> {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![get_disk_info])
+        .invoke_handler(tauri::generate_handler![
+            get_disk_info,
+            clean::quick_clean,
+            clean::deep_clean,
+            winapp2::clean_winapp2,
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

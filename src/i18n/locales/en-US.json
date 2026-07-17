@@ -16,5 +16,12 @@
   },
   "titleBar": {
     "appName": "WindowsCleaner"
+  },
+  "clean": {
+    "cleaning": "Cleaning...",
+    "freed": "Freed",
+    "nothing": "Nothing to clean",
+    "failed": "Clean failed",
+    "ok": "OK"
   }
 }

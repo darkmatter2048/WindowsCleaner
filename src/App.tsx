@@ -1,3 +1,4 @@
+import { useState, useCallback } from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import TitleBar from "./components/TitleBar/TitleBar";
 import DiskInfo from "./components/DiskInfo/DiskInfo";
@@ -23,13 +24,18 @@ const useStyles = makeStyles({
 
 function App() {
   const styles = useStyles();
+  const [refreshKey, setRefreshKey] = useState(0);
+
+  const handleCleaned = useCallback(() => {
+    setRefreshKey((k) => k + 1);
+  }, []);
 
   return (
     <div className={styles.root}>
       <TitleBar />
       <div className={styles.main}>
-        <DiskInfo />
-        <ActionButtons />
+        <DiskInfo key={refreshKey} />
+        <ActionButtons onCleaned={handleCleaned} />
       </div>
       <Footer />
     </div>
