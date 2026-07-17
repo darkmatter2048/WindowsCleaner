@@ -1,0 +1,20 @@
+{
+  "disk": {
+    "totalSpace": "C: Drive Total",
+    "freeSpace": "Free Space",
+    "usedSpace": "Used Space",
+    "unit": "GB"
+  },
+  "buttons": {
+    "quickClean": "Quick Clean",
+    "customClean": "Custom Clean"
+  },
+  "footer": {
+    "settings": "Settings",
+    "about": "About",
+    "donate": "Donate"
+  },
+  "titleBar": {
+    "appName": "WindowsCleaner"
+  }
+}

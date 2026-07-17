@@ -12,9 +12,15 @@
   "app": {
     "windows": [
       {
-        "title": "wc",
-        "width": 800,
-        "height": 600
+        "title": "WindowsCleaner",
+        "width": 320,
+        "height": 400,
+        "resizable": false,
+        "minWidth": 320,
+        "minHeight": 360,
+        "decorations": false,
+        "transparent": true,
+        "center": true
       }
     ],
     "security": {

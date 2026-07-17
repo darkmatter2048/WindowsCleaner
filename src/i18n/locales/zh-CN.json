@@ -1,0 +1,20 @@
+{
+  "disk": {
+    "totalSpace": "C盘总空间",
+    "freeSpace": "剩余空间",
+    "usedSpace": "已用空间",
+    "unit": "GB"
+  },
+  "buttons": {
+    "quickClean": "小白一键清",
+    "customClean": "自定义清理"
+  },
+  "footer": {
+    "settings": "设置",
+    "about": "关于",
+    "donate": "捐赠"
+  },
+  "titleBar": {
+    "appName": "WindowsCleaner"
+  }
+}

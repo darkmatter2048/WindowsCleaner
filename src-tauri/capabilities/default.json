@@ -5,6 +5,14 @@
   "windows": ["main"],
   "permissions": [
     "core:default",
-    "opener:default"
+    "opener:default",
+    "core:window:allow-start-dragging",
+    "core:window:allow-close",
+    "core:window:allow-minimize",
+    "core:window:allow-toggle-maximize",
+    "core:window:allow-inner-size",
+    "core:window:allow-is-maximized",
+    "core:window:allow-set-effects",
+    "core:window:allow-set-theme"
   ]
 }
