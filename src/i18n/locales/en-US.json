@@ -36,7 +36,7 @@
     },
     "general": {
       "title": "General Clean",
-      "subtitle": "Choose the items you want to clean. General clean matches Quick Clean by default and also supports recursive .msp cleanup.",
+      "subtitle": "Choose the items you want to clean. ",
       "selected": "{{count}} items selected",
       "selectAll": "Select All",
       "reset": "Reset Defaults",
@@ -106,14 +106,14 @@
       },
       "nvidia_debug_logs": {
         "title": "NVIDIA Debug Logs",
-        "description": "Recursively clean NVIDIA debug.log files."
+        "description": "Clean NVIDIA debug.log files."
       },
       "wps_backups": {
         "title": "WPS Backups",
         "description": "Clean WPS backup folders and .bak / .wbk files."
       },
       "winapp2": {
-        "title": "Winapp2 Cache",
+        "title": "software Cache",
         "description": "Clean detected software cache rules."
       },
       "msp_files": {
