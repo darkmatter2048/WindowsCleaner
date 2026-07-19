@@ -10,7 +10,7 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import { invoke } from "@tauri-apps/api/core";
-import { emit } from "@tauri-apps/api/event";
+import { emit, listen } from "@tauri-apps/api/event";
 import { useTranslation } from "react-i18next";
 import TitleBar from "../TitleBar/TitleBar";
 import { loadSettings, saveSettings } from "../../constants/settings";
@@ -80,6 +80,21 @@ export default function SettingsWindow() {
     };
     hydrate();
     return () => { mounted = false; };
+  }, []);
+
+  // Sync from other windows (e.g. autostart enabled via ScheduledCleanPanel)
+  useEffect(() => {
+    const unlisten = listen("settings-changed", (event) => {
+      const payload = event.payload as AppSettings;
+      if (!payload) return;
+      setSettings((current) => ({
+        ...current,
+        ...payload,
+      }));
+    }).catch(() => {});
+    return () => {
+      unlisten.then((fn) => fn?.()).catch(() => {});
+    };
   }, []);
 
   const persist = (next: AppSettings) => {

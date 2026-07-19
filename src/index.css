@@ -65,6 +65,18 @@ body {
   background: rgba(255, 255, 255, 0.25);
 }
 
+/* === Toast animation === */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 /* === Selection === */
 ::selection {
   background: rgba(0, 153, 204, 0.3);

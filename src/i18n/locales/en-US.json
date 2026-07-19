@@ -94,5 +94,31 @@
       "title": "Automatic update checks",
       "label": "Check for updates on every startup"
     }
+  },
+  "autoClean": {
+    "title": "Auto Clean",
+    "enable": "Enable auto clean",
+    "mode": {
+      "title": "Clean mode",
+      "scheduled": "Scheduled clean",
+      "lowDisk": "Low disk space clean"
+    },
+    "every": "Every",
+    "days": "days",
+    "scheduleHint": "Auto clean when the app starts after the interval has passed",
+    "whenFreeBelow": "When C drive free space below",
+    "gb": "GB",
+    "lowDiskHint": "Auto clean when free disk space drops below threshold",
+    "cleanList": "Clean items",
+    "cleanListHint": "Items selected in General Clean",
+    "noOptions": "No items selected. Go to General Clean to check items first.",
+    "save": "Save Settings",
+    "saved": "Settings saved",
+    "autostartDialog": {
+      "title": "Enable autostart recommended",
+      "content": "Auto clean needs the app running in the background. Enable autostart to ensure scheduled cleaning runs on time.",
+      "enable": "Enable",
+      "cancel": "Cancel"
+    }
   }
 }

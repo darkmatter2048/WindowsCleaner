@@ -1,3 +1,4 @@
+mod auto_clean;
 mod clean;
 mod winapp2;
 
@@ -209,6 +210,7 @@ pub fn run() {
         .plugin(tauri_plugin_opener::init())
         .setup(|app| {
             build_tray(&app.handle())?;
+            auto_clean::spawn_auto_clean_watcher(app.handle().clone());
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
@@ -224,6 +226,8 @@ pub fn run() {
             clean::deep_clean,
             clean::clean_selected,
             winapp2::clean_winapp2,
+            auto_clean::get_auto_clean_settings,
+            auto_clean::save_auto_clean_settings,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

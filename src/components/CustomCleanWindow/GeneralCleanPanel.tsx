@@ -119,10 +119,14 @@ function formatFreed(bytes: number): string {
   return `${bytes} B`;
 }
 
-export default function GeneralCleanPanel() {
+interface Props {
+  selectedOptions: CleanOptionId[];
+  onSelectedOptionsChange: (options: CleanOptionId[]) => void;
+}
+
+export default function GeneralCleanPanel({ selectedOptions, onSelectedOptionsChange }: Props) {
   const styles = useStyles();
   const { t } = useTranslation();
-  const [selected, setSelected] = useState<CleanOptionId[]>(DEFAULT_GENERAL_CLEAN_OPTION_IDS);
   const [cleaning, setCleaning] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogResult, setDialogResult] = useState<{ ok: boolean; message: string }>({
@@ -130,24 +134,23 @@ export default function GeneralCleanPanel() {
     message: "",
   });
 
-  const selectedSet = useMemo(() => new Set(selected), [selected]);
+  const selectedSet = useMemo(() => new Set(selectedOptions), [selectedOptions]);
 
   const toggleOption = (id: CleanOptionId, checked: boolean) => {
-    setSelected((current) => {
-      if (checked) {
-        return current.includes(id) ? current : [...current, id];
-      }
-      return current.filter((item) => item !== id);
-    });
+    if (checked) {
+      if (!selectedOptions.includes(id)) onSelectedOptionsChange([...selectedOptions, id]);
+    } else {
+      onSelectedOptionsChange(selectedOptions.filter((item) => item !== id));
+    }
   };
 
   const runClean = async () => {
-    if (selected.length === 0) return;
+    if (selectedOptions.length === 0) return;
 
     setCleaning(true);
     try {
       const result = await invoke<CleanResult>("clean_selected", {
-        request: { options: selected },
+        request: { options: selectedOptions },
       });
       const freed = formatFreed(result.bytes_freed);
       const errorNote = result.errors.length > 0
@@ -195,15 +198,15 @@ export default function GeneralCleanPanel() {
       </div>
 
       <footer className={styles.footer}>
-        <Text className={styles.count}>{t("customClean.general.selected", { count: selected.length })}</Text>
+        <Text className={styles.count}>{t("customClean.general.selected", { count: selectedOptions.length })}</Text>
         <div className={styles.footerActions}>
-          <Button appearance="subtle" onClick={() => setSelected(DEFAULT_GENERAL_CLEAN_OPTION_IDS)} disabled={cleaning}>
+          <Button appearance="subtle" onClick={() => onSelectedOptionsChange(DEFAULT_GENERAL_CLEAN_OPTION_IDS)} disabled={cleaning}>
             {t("customClean.general.reset")}
           </Button>
-          <Button appearance="secondary" onClick={() => setSelected(GENERAL_CLEAN_OPTIONS.map((option) => option.id))} disabled={cleaning}>
+          <Button appearance="secondary" onClick={() => onSelectedOptionsChange(GENERAL_CLEAN_OPTIONS.map((option) => option.id))} disabled={cleaning}>
             {t("customClean.general.selectAll")}
           </Button>
-          <Button appearance="primary" onClick={runClean} disabled={cleaning || selected.length === 0}>
+          <Button appearance="primary" onClick={runClean} disabled={cleaning || selectedOptions.length === 0}>
             {cleaning ? <Spinner size="tiny" /> : t("customClean.general.run")}
           </Button>
         </div>

@@ -8,7 +8,7 @@ pub struct CleanResult {
     pub errors: Vec<String>,
 }
 
-#[derive(Deserialize, Clone, Copy)]
+#[derive(Serialize, Deserialize, Clone, Copy)]
 #[serde(rename_all = "snake_case")]
 pub enum CleanOption {
     Prefetch,
@@ -560,7 +560,7 @@ const QUICK_CLEAN_OPTIONS: &[CleanOption] = &[
     CleanOption::Winapp2,
 ];
 
-fn run_clean_option(option: CleanOption) -> CleanResult {
+pub fn run_clean_option(option: CleanOption) -> CleanResult {
     match option {
         CleanOption::Prefetch => clean_prefetch(),
         CleanOption::UserTemp => clean_user_temp(),

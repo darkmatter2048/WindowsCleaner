@@ -96,5 +96,31 @@
       "label": "每次启动时自动检查更新",
       "hint": "当前仅保存设置项，更新源接入后即可生效。"
     }
+  },
+  "autoClean": {
+    "title": "自动清理",
+    "enable": "启用自动清理",
+    "mode": {
+      "title": "清理模式",
+      "scheduled": "定期清理",
+      "lowDisk": "C盘空间不足时清理"
+    },
+    "every": "每隔",
+    "days": "天及以上清理一次",
+    "scheduleHint": "上次清理后超过设定天数，再次启动时自动清理",
+    "whenFreeBelow": "C盘剩余空间不足",
+    "gb": "GB时清理",
+    "lowDiskHint": "C盘剩余空间低于阈值时，自动执行清理",
+    "cleanList": "清理项目",
+    "cleanListHint": "以下为在常规清理中勾选的项目",
+    "noOptions": "未选择任何清理项目，请先在常规清理中勾选",
+    "save": "保存设置",
+    "saved": "设置已保存",
+    "autostartDialog": {
+      "title": "建议开启开机自启",
+      "content": "自动清理需要程序在后台运行。建议同时开启开机自启，确保自动清理能按时执行。",
+      "enable": "开启",
+      "cancel": "取消"
+    }
   }
 }

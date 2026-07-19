@@ -2,8 +2,11 @@ import { useState } from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
 import TitleBar from "../TitleBar/TitleBar";
 import GeneralCleanPanel from "./GeneralCleanPanel";
+import ScheduledCleanPanel from "./ScheduledCleanPanel";
 import CustomCleanNav, { type CustomCleanSection } from "./CustomCleanNav";
 import PlaceholderPanel from "./PlaceholderPanel";
+import type { CleanOptionId } from "../../types/clean";
+import { DEFAULT_GENERAL_CLEAN_OPTION_IDS } from "../../constants/cleanOptions";
 
 const useStyles = makeStyles({
   root: {
@@ -29,18 +32,33 @@ export default function CustomCleanWindow() {
   const styles = useStyles();
   const [section, setSection] = useState<CustomCleanSection>("general");
 
+  // Lifted state so ScheduledCleanPanel can read the user's selected options
+  const [selectedOptions, setSelectedOptions] = useState<CleanOptionId[]>(
+    DEFAULT_GENERAL_CLEAN_OPTION_IDS,
+  );
+
   const renderContent = () => {
     switch (section) {
       case "general":
-        return <GeneralCleanPanel />;
+        return (
+          <GeneralCleanPanel
+            selectedOptions={selectedOptions}
+            onSelectedOptionsChange={setSelectedOptions}
+          />
+        );
       case "scheduled":
-        return <PlaceholderPanel titleKey="customClean.nav.scheduled" />;
+        return <ScheduledCleanPanel selectedOptions={selectedOptions} />;
       case "advanced":
         return <PlaceholderPanel titleKey="customClean.nav.advanced" />;
       case "softwareMove":
         return <PlaceholderPanel titleKey="customClean.nav.softwareMove" />;
       default:
-        return <GeneralCleanPanel />;
+        return (
+          <GeneralCleanPanel
+            selectedOptions={selectedOptions}
+            onSelectedOptionsChange={setSelectedOptions}
+          />
+        );
     }
   };
 
