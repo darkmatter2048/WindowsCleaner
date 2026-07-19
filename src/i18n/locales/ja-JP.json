@@ -1,0 +1,98 @@
+{
+  "_meta": { "nativeName": "日本語" },
+  "disk": {
+    "totalSpace": "Cドライブ総容量",
+    "freeSpace": "空き容量",
+    "usedSpace": "使用容量",
+    "unit": "GB"
+  },
+  "buttons": {
+    "quickClean": "クイッククリーン",
+    "customClean": "カスタムクリーン"
+  },
+  "footer": {
+    "settings": "設定",
+    "about": "について",
+    "donate": "寄付"
+  },
+  "titleBar": {
+    "appName": "WindowsCleaner"
+  },
+  "clean": {
+    "cleaning": "クリーン中...",
+    "freed": "解放済み",
+    "nothing": "クリーンする項目がありません",
+    "failed": "クリーン失敗",
+    "ok": "OK"
+  },
+  "customClean": {
+    "opening": "開いています...",
+    "openFailed": "カスタムクリーンウィンドウを開けませんでした",
+    "placeholder": "この機能は開発中です",
+    "nav": {
+      "general": "一般クリーン",
+      "scheduled": "定期クリーン",
+      "advanced": "詳細設定",
+      "softwareMove": "ソフトウェア移動"
+    },
+    "general": {
+      "title": "一般クリーン",
+      "subtitle": "クリーンする項目を選択してください",
+      "selected": "{{count}} 項目選択済み",
+      "selectAll": "すべて選択",
+      "reset": "デフォルトに戻す",
+      "run": "クリーン開始",
+      "errors": "{{count}} 項目でエラーが発生しました"
+    },
+    "options": {
+      "prefetch": { "title": "プリフェッチキャッシュ", "description": "C:\\Windows\\Prefetch 内の .pf ファイルを削除します。" },
+      "user_temp": { "title": "ユーザー一時ファイル", "description": "現在のユーザーの TEMP ディレクトリをクリーンします。" },
+      "windows_temp": { "title": "システム一時ファイル", "description": "C:\\Windows\\Temp の内容をクリーンします。" },
+      "system_logs": { "title": "システムログ", "description": "C:\\Windows\\Logs 内のファイルをクリーンします。" },
+      "software_distribution": { "title": "更新ダウンロードキャッシュ", "description": "Windows Update のダウンロードキャッシュをクリーンします。" },
+      "browser_cache": { "title": "ブラウザキャッシュ", "description": "Chrome と Edge のデフォルトキャッシュディレクトリをクリーンします。" },
+      "temp_files_c": { "title": "Cドライブ一時ファイル", "description": "Cドライブ上の .tmp および .cache ファイルを再帰的にクリーンします。" },
+      "restore_points": { "title": "システム復元ポイント", "description": "Cドライブのシステム復元ポイントを削除します。" },
+      "hibernation": { "title": "休止状態ファイル", "description": "休止状態を無効にして hiberfil.sys を解放します。" },
+      "delivery_optimization": { "title": "配信最適化キャッシュ", "description": "Delivery Optimization のダウンロードキャッシュをクリーンします。" },
+      "thumbnails": { "title": "サムネイルキャッシュ", "description": "エクスプローラーのサムネイルデータベースをクリーンします。" },
+      "defender": { "title": "Defender スキャン履歴", "description": "Microsoft Defender のスキャン履歴とキャッシュをクリーンします。" },
+      "inet_cache": { "title": "INetCache", "description": "Internet 一時ファイルキャッシュをクリーンします。" },
+      "wer_reports": { "title": "エラーレポート", "description": "Windows Error Reporting ファイルをクリーンします。" },
+      "shader_cache": { "title": "シェーダーキャッシュ", "description": "DirectX および GPU シェーダーキャッシュをクリーンします。" },
+      "nvidia_debug_logs": { "title": "NVIDIA デバッグログ", "description": "NVIDIA debug.log ファイルをクリーンします。" },
+      "wps_backups": { "title": "WPS バックアップ", "description": "WPS バックアップディレクトリと .bak / .wbk ファイルをクリーンします。" },
+      "winapp2": { "title": "ソフトウェアキャッシュ", "description": "検出されたソフトウェアキャッシュルールをクリーンします。" },
+      "msp_files": { "title": ".msp ファイルのクリーン", "description": "ディスク上の Windows Installer パッチファイルを再帰的にクリーンします。" }
+    }
+  },
+  "settings": {
+    "loading": "設定を読み込み中...",
+    "language": {
+      "title": "言語",
+      "label": "表示言語"
+    },
+    "theme": {
+      "title": "テーマ",
+      "label": "外観テーマ",
+      "restartHint": "（再起動後に適用）",
+      "system": "システムに従う",
+      "dark": "ダーク",
+      "light": "ライト"
+    },
+    "autostart": {
+      "title": "スタートアップ",
+      "label": "Windows 起動時に自動的に起動する"
+    },
+    "closeBehavior": {
+      "title": "閉じる動作",
+      "label": "メインウィンドウの閉じるボタンをクリックした時",
+      "minimizeToTray": "システムトレイに最小化",
+      "exit": "アプリケーションを終了"
+    },
+    "updates": {
+      "title": "自動更新チェック",
+      "label": "起動時に毎回更新を確認する"
+    }
+  }
+}

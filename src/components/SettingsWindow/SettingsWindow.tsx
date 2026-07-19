@@ -14,8 +14,9 @@ import { emit } from "@tauri-apps/api/event";
 import { useTranslation } from "react-i18next";
 import TitleBar from "../TitleBar/TitleBar";
 import { loadSettings, saveSettings } from "../../constants/settings";
-import type { AppSettings, AppLanguage, AppTheme, CloseBehavior } from "../../types/settings";
+import type { AppSettings, AppTheme, CloseBehavior } from "../../types/settings";
 import { useTheme } from "../../contexts/ThemeContext";
+import { getLanguages, getLanguageMeta, isAppLanguage } from "../../i18n";
 
 interface StartupSettings {
   autostart: boolean;
@@ -87,7 +88,8 @@ export default function SettingsWindow() {
     emit("settings-changed", next).catch(() => {});
   };
 
-  const changeLanguage = (language: AppLanguage) => {
+  const changeLanguage = (language: string) => {
+    if (!isAppLanguage(language)) return;
     const next = { ...settings, language };
     persist(next);
     void i18n.changeLanguage(language);
@@ -126,13 +128,16 @@ export default function SettingsWindow() {
               <Text className={styles.sectionTitle}>{t("settings.language.title")}</Text>
               <Dropdown
                 selectedOptions={[settings.language]}
-                value={settings.language === "zh-CN" ? t("settings.language.zhCN") : t("settings.language.enUS")}
+                value={getLanguageMeta(settings.language)?.nativeName ?? settings.language}
                 onOptionSelect={(_, data) => {
-                  if (data.optionValue) changeLanguage(data.optionValue as AppLanguage);
+                  if (data.optionValue) changeLanguage(data.optionValue);
                 }}
               >
-                <Option value="zh-CN">{t("settings.language.zhCN")}</Option>
-                <Option value="en-US">{t("settings.language.enUS")}</Option>
+                {getLanguages().map((lang) => (
+                  <Option key={lang.code} value={lang.code}>
+                    {lang.nativeName}
+                  </Option>
+                ))}
               </Dropdown>
             </section>
 
