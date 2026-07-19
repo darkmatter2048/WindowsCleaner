@@ -2,7 +2,7 @@ import { spawn } from "node:child_process";
 import { createServer } from "vite";
 
 const PORT = 1420;
-const HOST = process.env.TAURI_DEV_HOST || "localhost";
+const HOST = process.env.TAURI_DEV_HOST || "127.0.0.1";
 const READY_URL = `http://${HOST}:${PORT}/`;
 
 function keepProcessAlive() {

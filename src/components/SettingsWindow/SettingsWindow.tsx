@@ -67,11 +67,11 @@ export default function SettingsWindow() {
       try {
         const startup = await invoke<StartupSettings>("get_startup_settings");
         if (!mounted) return;
+        // Only autostart is read-only from the registry; the rest is
+        // already loaded from localStorage (the single source of truth).
         setSettings((current) => ({
           ...current,
           autostart: startup.autostart,
-          closeBehavior: startup.closeBehavior,
-          updateCheckOnStartup: startup.updateCheckOnStartup,
         }));
       } finally {
         if (mounted) setLoading(false);

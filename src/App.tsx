@@ -9,7 +9,7 @@ import Footer from "./components/Footer/Footer";
 import CustomCleanWindow from "./components/CustomCleanWindow/CustomCleanWindow";
 import SettingsWindow from "./components/SettingsWindow/SettingsWindow";
 import { useTheme } from "./contexts/ThemeContext";
-import { loadSettings } from "./constants/settings";
+import { loadSettings, saveSettings } from "./constants/settings";
 import type { AppSettings, AppTheme } from "./types/settings";
 
 const useStyles = makeStyles({
@@ -41,6 +41,8 @@ function App() {
 
   useEffect(() => {
     const settings = loadSettings();
+
+
     if (i18n.language !== settings.language) {
       void i18n.changeLanguage(settings.language);
     }
@@ -48,6 +50,9 @@ function App() {
     const unlisten = listen("settings-changed", (event) => {
       const payload = event.payload as AppSettings;
       if (!payload) return;
+      // Persist to this WebView's localStorage so
+      // loadSettings() (e.g. TitleBar close) reads the latest value.
+      saveSettings(payload);
       if (payload.language && i18n.language !== payload.language) {
         void i18n.changeLanguage(payload.language);
       }

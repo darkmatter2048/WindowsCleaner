@@ -5,7 +5,7 @@
   "identifier": "wc.dyblog.online",
   "build": {
     "beforeDevCommand": "node scripts/dev-server.mjs",
-    "devUrl": "http://localhost:1420",
+    "devUrl": "http://127.0.0.1:1420",
     "beforeBuildCommand": "pnpm build",
     "frontendDist": "../dist"
   },
