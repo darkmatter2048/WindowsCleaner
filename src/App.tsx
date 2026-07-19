@@ -4,6 +4,7 @@ import TitleBar from "./components/TitleBar/TitleBar";
 import DiskInfo from "./components/DiskInfo/DiskInfo";
 import ActionButtons from "./components/ActionButtons/ActionButtons";
 import Footer from "./components/Footer/Footer";
+import CustomCleanWindow from "./components/CustomCleanWindow/CustomCleanWindow";
 
 const useStyles = makeStyles({
   root: {
@@ -29,6 +30,10 @@ function App() {
   const handleCleaned = useCallback(() => {
     setRefreshKey((k) => k + 1);
   }, []);
+
+  if (window.location.hash === "#/custom-clean") {
+    return <CustomCleanWindow />;
+  }
 
   return (
     <div className={styles.root}>

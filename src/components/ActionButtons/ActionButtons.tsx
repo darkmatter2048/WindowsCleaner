@@ -40,7 +40,7 @@ const useStyles = makeStyles({
   button: {
     width: "220px",
     height: "80px",
-    fontFamily: "'AlimamaShuHeiTi', sans-serif",
+    fontFamily: "'AlimamaShuHeiTi', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', sans-serif",
     fontSize: "26px",
     fontWeight: 700,
     borderRadius: tokens.borderRadiusLarge,
@@ -82,7 +82,7 @@ const useStyles = makeStyles({
     color: tokens.colorPaletteRedForeground1,
   },
   freedText: {
-    fontFamily: "'DingTalkJinBu', sans-serif",
+    fontFamily: "'DingTalkJinBu', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', sans-serif",
     fontSize: "16px",
   },
 });
@@ -107,17 +107,18 @@ interface Props {
 export default function ActionButtons({ onCleaned }: Props) {
   const styles = useStyles();
   const { t } = useTranslation();
-  const [cleaning, setCleaning] = useState<string | null>(null);
+  const [cleaning, setCleaning] = useState(false);
+  const [openingCustom, setOpeningCustom] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogResult, setDialogResult] = useState<{
     ok: boolean;
     message: string;
   }>({ ok: true, message: "" });
 
-  const doClean = async (mode: "quick_clean" | "deep_clean", label: string) => {
-    setCleaning(label);
+  const doQuickClean = async () => {
+    setCleaning(true);
     try {
-      const result = await invoke<CleanResult>(mode);
+      const result = await invoke<CleanResult>("quick_clean");
       const freed = formatFreed(result.bytes_freed);
       setDialogResult({
         ok: true,
@@ -125,19 +126,34 @@ export default function ActionButtons({ onCleaned }: Props) {
           ? `${t("clean.freed")}: ${freed}`
           : t("clean.nothing"),
       });
-      onCleaned(); // trigger disk info refresh
+      onCleaned();
     } catch (err) {
       setDialogResult({
         ok: false,
         message: `${t("clean.failed")}: ${String(err)}`,
       });
     } finally {
-      setCleaning(null);
+      setCleaning(false);
       setDialogOpen(true);
     }
   };
 
-  const busy = cleaning !== null;
+  const openCustomClean = async () => {
+    setOpeningCustom(true);
+    try {
+      await invoke("open_custom_clean_window");
+    } catch (err) {
+      setDialogResult({
+        ok: false,
+        message: `${t("customClean.openFailed")}: ${String(err)}`,
+      });
+      setDialogOpen(true);
+    } finally {
+      setOpeningCustom(false);
+    }
+  };
+
+  const busy = cleaning || openingCustom;
 
   return (
     <div className={styles.container}>
@@ -146,21 +162,21 @@ export default function ActionButtons({ onCleaned }: Props) {
           className={`${styles.button} ${styles.primaryBtn}`}
           appearance="primary"
           size="large"
-          icon={cleaning === t("buttons.quickClean") ? <Spinner size="tiny" /> : <Broom28Regular className={styles.buttonIcon} />}
-          onClick={() => doClean("quick_clean", t("buttons.quickClean"))}
+          icon={cleaning ? <Spinner size="tiny" /> : <Broom28Regular className={styles.buttonIcon} />}
+          onClick={doQuickClean}
           disabled={busy}
         >
-          {cleaning === t("buttons.quickClean") ? t("clean.cleaning") : t("buttons.quickClean")}
+          {cleaning ? t("clean.cleaning") : t("buttons.quickClean")}
         </Button>
         <Button
           className={`${styles.button} ${styles.outlineBtn}`}
           appearance="outline"
           size="large"
-          icon={cleaning === t("buttons.customClean") ? <Spinner size="tiny" /> : <Options28Regular className={styles.buttonIcon} />}
-          onClick={() => doClean("deep_clean", t("buttons.customClean"))}
+          icon={openingCustom ? <Spinner size="tiny" /> : <Options28Regular className={styles.buttonIcon} />}
+          onClick={openCustomClean}
           disabled={busy}
         >
-          {cleaning === t("buttons.customClean") ? t("clean.cleaning") : t("buttons.customClean")}
+          {openingCustom ? t("customClean.opening") : t("buttons.customClean")}
         </Button>
       </div>
 

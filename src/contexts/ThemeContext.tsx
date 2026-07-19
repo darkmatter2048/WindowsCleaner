@@ -75,7 +75,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
       <FluentProvider
         theme={fluentTheme}
-        style={{ height: "100%", background: "transparent" }}
+        style={{ height: "100%", background: theme === "dark" ? "#1b1b1b" : "#f3f3f3" }}
       >
         {children}
       </FluentProvider>

@@ -23,5 +23,103 @@
     "nothing": "Nothing to clean",
     "failed": "Clean failed",
     "ok": "OK"
+  },
+  "customClean": {
+    "opening": "Opening...",
+    "openFailed": "Failed to open custom clean window",
+    "placeholder": "This feature is under development",
+    "nav": {
+      "general": "General Clean",
+      "scheduled": "Scheduled",
+      "advanced": "Advanced",
+      "softwareMove": "Software Move"
+    },
+    "general": {
+      "title": "General Clean",
+      "subtitle": "Choose the items you want to clean. General clean matches Quick Clean by default and also supports recursive .msp cleanup.",
+      "selected": "{{count}} items selected",
+      "selectAll": "Select All",
+      "reset": "Reset Defaults",
+      "run": "Start Cleaning",
+      "errors": "{{count}} items returned errors"
+    },
+    "options": {
+      "prefetch": {
+        "title": "Prefetch Cache",
+        "description": "Clean .pf files under C:\\Windows\\Prefetch."
+      },
+      "user_temp": {
+        "title": "User Temp Files",
+        "description": "Clean the current user TEMP directory."
+      },
+      "windows_temp": {
+        "title": "Windows Temp Files",
+        "description": "Clean the contents of C:\\Windows\\Temp."
+      },
+      "system_logs": {
+        "title": "System Logs",
+        "description": "Clean files under C:\\Windows\\Logs."
+      },
+      "software_distribution": {
+        "title": "Update Download Cache",
+        "description": "Clean the Windows Update download cache."
+      },
+      "browser_cache": {
+        "title": "Browser Cache",
+        "description": "Clean the default Chrome and Edge cache folders."
+      },
+      "temp_files_c": {
+        "title": "C Drive Temp Files",
+        "description": "Recursively clean .tmp and .cache files on C:."
+      },
+      "restore_points": {
+        "title": "Restore Points",
+        "description": "Delete restore points on drive C:."
+      },
+      "hibernation": {
+        "title": "Hibernation File",
+        "description": "Turn off hibernation and release hiberfil.sys."
+      },
+      "delivery_optimization": {
+        "title": "Delivery Optimization",
+        "description": "Clean the Delivery Optimization cache."
+      },
+      "thumbnails": {
+        "title": "Thumbnail Cache",
+        "description": "Clean Explorer thumbnail databases."
+      },
+      "defender": {
+        "title": "Defender History",
+        "description": "Clean Microsoft Defender scan history and cache."
+      },
+      "inet_cache": {
+        "title": "INetCache",
+        "description": "Clean Internet temporary file cache."
+      },
+      "wer_reports": {
+        "title": "Error Reports",
+        "description": "Clean Windows Error Reporting files."
+      },
+      "shader_cache": {
+        "title": "Shader Cache",
+        "description": "Clean DirectX and GPU shader caches."
+      },
+      "nvidia_debug_logs": {
+        "title": "NVIDIA Debug Logs",
+        "description": "Recursively clean NVIDIA debug.log files."
+      },
+      "wps_backups": {
+        "title": "WPS Backups",
+        "description": "Clean WPS backup folders and .bak / .wbk files."
+      },
+      "winapp2": {
+        "title": "Winapp2 Cache",
+        "description": "Clean detected software cache rules."
+      },
+      "msp_files": {
+        "title": "Recursive .msp Files",
+        "description": "Recursively clean Windows Installer patch files on the disk."
+      }
+    }
   }
 }

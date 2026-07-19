@@ -1,4 +1,4 @@
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -6,6 +6,35 @@ use std::path::{Path, PathBuf};
 pub struct CleanResult {
     pub bytes_freed: u64,
     pub errors: Vec<String>,
+}
+
+#[derive(Deserialize, Clone, Copy)]
+#[serde(rename_all = "snake_case")]
+pub enum CleanOption {
+    Prefetch,
+    UserTemp,
+    WindowsTemp,
+    SystemLogs,
+    SoftwareDistribution,
+    BrowserCache,
+    TempFilesC,
+    RestorePoints,
+    Hibernation,
+    DeliveryOptimization,
+    Thumbnails,
+    Defender,
+    InetCache,
+    WerReports,
+    ShaderCache,
+    NvidiaDebugLogs,
+    WpsBackups,
+    Winapp2,
+    MspFiles,
+}
+
+#[derive(Deserialize)]
+pub struct CleanRequest {
+    pub options: Vec<CleanOption>,
 }
 
 impl CleanResult {
@@ -243,6 +272,41 @@ fn clean_temp_files_c() -> CleanResult {
     } else {
         CleanResult::new()
     }
+}
+
+/// Explicit custom-clean option for recursively deleting .msp files under C:.
+/// Kept separate from quick clean because Windows Installer patches can be important.
+fn clean_msp_files() -> CleanResult {
+    fn walk(dir: &Path, result: &mut CleanResult) {
+        let entries = match fs::read_dir(dir) {
+            Ok(e) => e,
+            Err(_) => return,
+        };
+
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if path.is_dir() {
+                walk(&path, result);
+            } else if path
+                .extension()
+                .and_then(|e| e.to_str())
+                .map(|e| e.eq_ignore_ascii_case("msp"))
+                .unwrap_or(false)
+            {
+                let size = entry.metadata().map(|m| m.len()).unwrap_or(0);
+                if fs::remove_file(&path).is_ok() {
+                    result.add_freed(size);
+                }
+            }
+        }
+    }
+
+    let mut result = CleanResult::new();
+    let root = PathBuf::from("C:\\");
+    if root.exists() {
+        walk(&root, &mut result);
+    }
+    result
 }
 
 /// Chrome / Edge browser cache — safe, browsers rebuild on next launch.
@@ -529,6 +593,64 @@ fn delete_named_files_recursive(dir: &Path, target_name: &str, result: &mut Clea
 
 // ─── Top-level commands ───
 
+const QUICK_CLEAN_OPTIONS: &[CleanOption] = &[
+    CleanOption::Prefetch,
+    CleanOption::UserTemp,
+    CleanOption::WindowsTemp,
+    CleanOption::SystemLogs,
+    CleanOption::SoftwareDistribution,
+    CleanOption::BrowserCache,
+    CleanOption::TempFilesC,
+    CleanOption::RestorePoints,
+    CleanOption::Hibernation,
+    CleanOption::DeliveryOptimization,
+    CleanOption::Thumbnails,
+    CleanOption::Defender,
+    CleanOption::InetCache,
+    CleanOption::WerReports,
+    CleanOption::ShaderCache,
+    CleanOption::NvidiaDebugLogs,
+    CleanOption::WpsBackups,
+    CleanOption::Winapp2,
+];
+
+fn run_clean_option(option: CleanOption) -> CleanResult {
+    match option {
+        CleanOption::Prefetch => clean_prefetch(),
+        CleanOption::UserTemp => clean_user_temp(),
+        CleanOption::WindowsTemp => clean_windows_temp(),
+        CleanOption::SystemLogs => clean_system_logs(),
+        CleanOption::SoftwareDistribution => clean_software_distribution(),
+        CleanOption::BrowserCache => clean_browser_cache(),
+        CleanOption::TempFilesC => clean_temp_files_c(),
+        CleanOption::RestorePoints => clean_restore_points(),
+        CleanOption::Hibernation => disable_hibernation(),
+        CleanOption::DeliveryOptimization => clean_delivery_optimization(),
+        CleanOption::Thumbnails => clean_thumbnails(),
+        CleanOption::Defender => clean_defender(),
+        CleanOption::InetCache => clean_inet_cache(),
+        CleanOption::WerReports => clean_wer_reports(),
+        CleanOption::ShaderCache => clean_shader_cache(),
+        CleanOption::NvidiaDebugLogs => clean_nvidia_debug_logs(),
+        CleanOption::WpsBackups => clean_wps_backups(),
+        CleanOption::Winapp2 => crate::winapp2::clean_winapp2(),
+        CleanOption::MspFiles => clean_msp_files(),
+    }
+}
+
+fn run_clean_options(options: &[CleanOption]) -> CleanResult {
+    let mut result = CleanResult::new();
+    let before = measure_c_free().unwrap_or(0);
+
+    for option in options {
+        result.merge(run_clean_option(*option));
+    }
+
+    let after = measure_c_free().unwrap_or(before);
+    result.bytes_freed = after.saturating_sub(before);
+    result
+}
+
 /// Measure C: drive free space in bytes.
 fn measure_c_free() -> Result<u64, String> {
     let disks = sysinfo::Disks::new_with_refreshed_list();
@@ -545,41 +667,13 @@ fn measure_c_free() -> Result<u64, String> {
 /// Measures free space before and after, returns the delta.
 #[tauri::command]
 pub async fn quick_clean() -> CleanResult {
-    tauri::async_runtime::spawn_blocking(|| {
-        let mut result = CleanResult::new();
-
-        let before = measure_c_free().unwrap_or(0);
-
-        result.merge(clean_prefetch());
-        result.merge(clean_user_temp());
-        result.merge(clean_windows_temp());
-        result.merge(clean_system_logs());
-        result.merge(clean_software_distribution());
-        result.merge(clean_browser_cache());
-        result.merge(clean_temp_files_c());
-        result.merge(clean_restore_points());
-        result.merge(disable_hibernation());
-        result.merge(clean_delivery_optimization());
-        result.merge(clean_thumbnails());
-        result.merge(clean_defender());
-        result.merge(clean_inet_cache());
-        result.merge(clean_wer_reports());
-        result.merge(clean_shader_cache());
-        result.merge(clean_nvidia_debug_logs());
-        result.merge(clean_wps_backups());
-        result.merge(crate::winapp2::clean_winapp2());
-
-        let after = measure_c_free().unwrap_or(before);
-        result.bytes_freed = after.saturating_sub(before);
-
-        result
-    })
-    .await
-    .unwrap_or_else(|_| {
-        let mut err = CleanResult::new();
-        err.add_error("Clean task panicked".into());
-        err
-    })
+    tauri::async_runtime::spawn_blocking(|| run_clean_options(QUICK_CLEAN_OPTIONS))
+        .await
+        .unwrap_or_else(|_| {
+            let mut err = CleanResult::new();
+            err.add_error("Clean task panicked".into());
+            err
+        })
 }
 
 /// Deep clean (自定义清理) — same as quick clean for now.
@@ -587,4 +681,15 @@ pub async fn quick_clean() -> CleanResult {
 #[tauri::command]
 pub async fn deep_clean() -> CleanResult {
     quick_clean().await
+}
+
+#[tauri::command]
+pub async fn clean_selected(request: CleanRequest) -> CleanResult {
+    tauri::async_runtime::spawn_blocking(move || run_clean_options(&request.options))
+        .await
+        .unwrap_or_else(|_| {
+            let mut err = CleanResult::new();
+            err.add_error("Clean task panicked".into());
+            err
+        })
 }

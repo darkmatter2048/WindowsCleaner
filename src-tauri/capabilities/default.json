@@ -1,8 +1,8 @@
 {
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
-  "description": "Capability for the main window",
-  "windows": ["main"],
+  "description": "Capability for app windows",
+  "windows": ["main", "custom-clean"],
   "permissions": [
     "core:default",
     "opener:default",
@@ -13,6 +13,10 @@
     "core:window:allow-inner-size",
     "core:window:allow-is-maximized",
     "core:window:allow-set-effects",
-    "core:window:allow-set-theme"
+    "core:window:allow-set-theme",
+    "core:window:allow-set-background-color",
+    "core:window:allow-show",
+    "core:window:allow-hide",
+    "core:window:allow-set-focus"
   ]
 }

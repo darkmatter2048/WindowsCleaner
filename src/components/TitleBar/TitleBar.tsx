@@ -30,7 +30,7 @@ const useStyles = makeStyles({
     flexShrink: 0,
   },
   title: {
-    fontFamily: "'DingTalkJinBu', sans-serif",
+    fontFamily: "'DingTalkJinBu', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', sans-serif",
     fontSize: "13px",
     color: tokens.colorNeutralForeground2,
     fontWeight: 400,
@@ -63,6 +63,14 @@ export default function TitleBar() {
   const { t } = useTranslation();
   const appWindow = getCurrentWindow();
 
+  const handleClose = () => {
+    if (appWindow.label === "custom-clean") {
+      appWindow.hide();
+      return;
+    }
+    appWindow.close();
+  };
+
   return (
     <div className={styles.titlebar} data-tauri-drag-region>
       <div className={styles.brand}>
@@ -86,7 +94,7 @@ export default function TitleBar() {
             appearance="transparent"
             size="small"
             icon={<Dismiss16Regular />}
-            onClick={() => appWindow.close()}
+            onClick={handleClose}
             aria-label="Close"
           />
         </Tooltip>

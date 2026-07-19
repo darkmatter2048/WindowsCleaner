@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "identifier": "wc.dyblog.online",
   "build": {
-    "beforeDevCommand": "pnpm dev",
+    "beforeDevCommand": "node scripts/dev-server.mjs",
     "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "pnpm build",
     "frontendDist": "../dist"
@@ -12,6 +12,7 @@
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "WindowsCleaner",
         "width": 320,
         "height": 400,
@@ -19,8 +20,22 @@
         "minWidth": 320,
         "minHeight": 360,
         "decorations": false,
-        "transparent": true,
+        "transparent": false,
         "center": true
+      },
+      {
+        "label": "custom-clean",
+        "title": "自定义清理",
+        "url": "index.html#/custom-clean",
+        "width": 760,
+        "height": 520,
+        "resizable": false,
+        "minWidth": 680,
+        "minHeight": 460,
+        "decorations": false,
+        "transparent": false,
+        "center": true,
+        "visible": false
       }
     ],
     "security": {
