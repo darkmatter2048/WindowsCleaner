@@ -1,4 +1,5 @@
 import { makeStyles, tokens, Link } from "@fluentui/react-components";
+import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
 
 const useStyles = makeStyles({
@@ -14,7 +15,7 @@ const useStyles = makeStyles({
   },
   link: {
     fontSize: "12px",
-    fontFamily: "'DingTalkJinBu', sans-serif",
+    fontFamily: "'DingTalkJinBu', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', sans-serif",
     color: tokens.colorNeutralForeground3,
     ":hover": {
       color: tokens.colorBrandForeground1,
@@ -31,18 +32,19 @@ export default function Footer() {
   const styles = useStyles();
   const { t } = useTranslation();
 
-  const handleSettings = () => {
-    // TODO: navigate to settings page
-    console.log("Settings");
+  const handleSettings = async () => {
+    try {
+      await invoke("open_settings_window");
+    } catch (error) {
+      console.error("Failed to open settings window", error);
+    }
   };
 
   const handleAbout = () => {
-    // TODO: navigate to about page
     console.log("About");
   };
 
   const handleDonate = () => {
-    // TODO: navigate to donate page
     console.log("Donate");
   };
 

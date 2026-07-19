@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:tauri": "tauri dev",
+    "dev:reset": "node scripts/dev-reset.mjs",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri"

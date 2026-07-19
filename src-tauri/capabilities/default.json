@@ -2,7 +2,7 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for app windows",
-  "windows": ["main", "custom-clean"],
+  "windows": ["main", "custom-clean", "settings"],
   "permissions": [
     "core:default",
     "opener:default",

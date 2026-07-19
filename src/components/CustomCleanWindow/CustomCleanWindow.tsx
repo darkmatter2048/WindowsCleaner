@@ -46,7 +46,7 @@ export default function CustomCleanWindow() {
 
   return (
     <div className={styles.root}>
-      <TitleBar />
+      <TitleBar showIcon={false} title="自定义清理" />
       <div className={styles.body}>
         <CustomCleanNav selected={section} onSelect={setSection} />
         <main className={styles.content}>{renderContent()}</main>

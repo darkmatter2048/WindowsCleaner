@@ -44,82 +44,58 @@
       "errors": "还有 {{count}} 个项目返回了错误"
     },
     "options": {
-      "prefetch": {
-        "title": "预读取缓存",
-        "description": "清理 C:\\Windows\\Prefetch 中的 .pf 文件。"
-      },
-      "user_temp": {
-        "title": "用户临时文件",
-        "description": "清理当前用户 TEMP 目录内容。"
-      },
-      "windows_temp": {
-        "title": "系统临时文件",
-        "description": "清理 C:\\Windows\\Temp 中的内容。"
-      },
-      "system_logs": {
-        "title": "系统日志",
-        "description": "清理 C:\\Windows\\Logs 中的内容。"
-      },
-      "software_distribution": {
-        "title": "更新下载缓存",
-        "description": "清理 Windows Update 下载缓存。"
-      },
-      "browser_cache": {
-        "title": "浏览器缓存",
-        "description": "清理 Chrome 和 Edge 的默认缓存目录。"
-      },
-      "temp_files_c": {
-        "title": "C 盘临时文件",
-        "description": "递归清理 C 盘上的 .tmp 和 .cache 文件。"
-      },
-      "restore_points": {
-        "title": "系统还原点",
-        "description": "删除 C 盘系统还原点。"
-      },
-      "hibernation": {
-        "title": "休眠文件",
-        "description": "关闭系统休眠并释放 hiberfil.sys。"
-      },
-      "delivery_optimization": {
-        "title": "分发优化缓存",
-        "description": "清理 Delivery Optimization 下载缓存。"
-      },
-      "thumbnails": {
-        "title": "缩略图缓存",
-        "description": "清理 Explorer 缩略图数据库。"
-      },
-      "defender": {
-        "title": "Defender 扫描历史",
-        "description": "清理 Microsoft Defender 扫描历史和缓存。"
-      },
-      "inet_cache": {
-        "title": "INetCache",
-        "description": "清理 Internet 临时文件缓存。"
-      },
-      "wer_reports": {
-        "title": "错误报告",
-        "description": "清理 Windows Error Reporting 报告。"
-      },
-      "shader_cache": {
-        "title": "着色器缓存",
-        "description": "清理 DirectX 和显卡驱动着色器缓存。"
-      },
-      "nvidia_debug_logs": {
-        "title": "NVIDIA 调试日志",
-        "description": "清理 NVIDIA debug.log 文件。"
-      },
-      "wps_backups": {
-        "title": "WPS 备份",
-        "description": "清理 WPS 备份目录。"
-      },
-      "winapp2": {
-        "title": "软件缓存",
-        "description": "清理常用软件缓存。"
-      },
-      "msp_files": {
-        "title": "清理 .msp 文件",
-        "description": "递归清理磁盘上的 Windows Installer patch 文件。"
-      }
+      "prefetch": { "title": "预读取缓存", "description": "清理 C:\\Windows\\Prefetch 中的 .pf 文件。" },
+      "user_temp": { "title": "用户临时文件", "description": "清理当前用户 TEMP 目录内容。" },
+      "windows_temp": { "title": "系统临时文件", "description": "清理 C:\\Windows\\Temp 中的内容。" },
+      "system_logs": { "title": "系统日志", "description": "清理 C:\\Windows\\Logs 中的内容。" },
+      "software_distribution": { "title": "更新下载缓存", "description": "清理 Windows Update 下载缓存。" },
+      "browser_cache": { "title": "浏览器缓存", "description": "清理 Chrome 和 Edge 的默认缓存目录。" },
+      "temp_files_c": { "title": "C 盘临时文件", "description": "递归清理 C 盘上的 .tmp 和 .cache 文件。" },
+      "restore_points": { "title": "系统还原点", "description": "删除 C 盘系统还原点。" },
+      "hibernation": { "title": "休眠文件", "description": "关闭系统休眠并释放 hiberfil.sys。" },
+      "delivery_optimization": { "title": "分发优化缓存", "description": "清理 Delivery Optimization 下载缓存。" },
+      "thumbnails": { "title": "缩略图缓存", "description": "清理 Explorer 缩略图数据库。" },
+      "defender": { "title": "Defender 扫描历史", "description": "清理 Microsoft Defender 扫描历史和缓存。" },
+      "inet_cache": { "title": "INetCache", "description": "清理 Internet 临时文件缓存。" },
+      "wer_reports": { "title": "错误报告", "description": "清理 Windows Error Reporting 报告。" },
+      "shader_cache": { "title": "着色器缓存", "description": "清理 DirectX 和显卡驱动着色器缓存。" },
+      "nvidia_debug_logs": { "title": "NVIDIA 调试日志", "description": "清理 NVIDIA debug.log 文件。" },
+      "wps_backups": { "title": "WPS 备份", "description": "清理 WPS 备份目录。" },
+      "winapp2": { "title": "软件缓存", "description": "清理常用软件缓存。" },
+      "msp_files": { "title": "清理 .msp 文件", "description": "递归清理磁盘上的 Windows Installer patch 文件。" }
+    }
+  },
+  "settings": {
+    "loading": "正在加载设置...",
+    "language": {
+      "title": "语言",
+      "label": "界面语言",
+      "zhCN": "简体中文",
+      "enUS": "English"
+    },
+    "theme": {
+      "title": "主题",
+      "label": "外观主题",
+      "restartHint": "（重启后生效）",
+      "system": "跟随系统",
+      "dark": "深色",
+      "light": "浅色"
+    },
+    "autostart": {
+      "title": "开机自启",
+      "label": "登录 Windows 时自动启动",
+      "hint": "注意：当前程序会请求管理员权限，开机自启时可能仍会触发 UAC。"
+    },
+    "closeBehavior": {
+      "title": "关闭选项",
+      "label": "点击主窗口关闭按钮时",
+      "minimizeToTray": "最小化到系统托盘",
+      "exit": "直接退出程序"
+    },
+    "updates": {
+      "title": "自动检查更新",
+      "label": "每次启动时自动检查更新",
+      "hint": "当前仅保存设置项，更新源接入后即可生效。"
     }
   }
 }

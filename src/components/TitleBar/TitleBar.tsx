@@ -3,9 +3,11 @@ import {
   Dismiss16Regular,
   Subtract16Regular,
 } from "@fluentui/react-icons";
+import { invoke } from "@tauri-apps/api/core";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useTranslation } from "react-i18next";
 import appIcon from "../../assets/clean.png";
+import { loadSettings } from "../../constants/settings";
 
 const useStyles = makeStyles({
   titlebar: {
@@ -58,24 +60,38 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TitleBar() {
+interface TitleBarProps {
+  showIcon?: boolean;
+  title?: string;
+}
+
+export default function TitleBar({ showIcon = true, title }: TitleBarProps) {
   const styles = useStyles();
   const { t } = useTranslation();
   const appWindow = getCurrentWindow();
 
-  const handleClose = () => {
-    if (appWindow.label === "custom-clean") {
-      appWindow.hide();
+  const handleClose = async () => {
+    if (appWindow.label === "custom-clean" || appWindow.label === "settings") {
+      await appWindow.hide();
       return;
     }
-    appWindow.close();
+
+    const settings = loadSettings();
+    if (settings.closeBehavior === "minimizeToTray") {
+      await invoke("handle_main_close");
+      return;
+    }
+
+    await appWindow.close();
   };
+
+  const label = title ?? t("titleBar.appName");
 
   return (
     <div className={styles.titlebar} data-tauri-drag-region>
       <div className={styles.brand}>
-        <img src={appIcon} className={styles.logo} alt="" />
-        <span className={styles.title}>{t("titleBar.appName")}</span>
+        {showIcon && <img src={appIcon} className={styles.logo} alt="" />}
+        <span className={styles.title}>{label}</span>
       </div>
       <div className={styles.controls}>
         <Tooltip content="最小化" relationship="label">
@@ -94,7 +110,7 @@ export default function TitleBar() {
             appearance="transparent"
             size="small"
             icon={<Dismiss16Regular />}
-            onClick={handleClose}
+            onClick={() => void handleClose()}
             aria-label="Close"
           />
         </Tooltip>

@@ -14,68 +14,86 @@ import {
   type Theme,
 } from "@fluentui/react-components";
 import { getCurrentWindow, Effect } from "@tauri-apps/api/window";
+import { loadSettings, saveSettings } from "../constants/settings";
+import type { AppTheme } from "../types/settings";
 
-type ThemeMode = "dark" | "light";
+type Resolved = "dark" | "light";
 
 interface ThemeContextValue {
-  theme: ThemeMode;
+  theme: AppTheme;
+  resolvedTheme: Resolved;
+  setTheme: (t: AppTheme) => void;
   toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue>({
-  theme: "dark",
+  theme: "system",
+  resolvedTheme: "dark",
+  setTheme: () => {},
   toggleTheme: () => {},
 });
 
 const STORAGE_KEY = "wc-theme";
 
-function getInitialTheme(): ThemeMode {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === "light" || stored === "dark") return stored;
-  } catch {
-    // localStorage unavailable
+function readSystem(): Resolved {
+  if (typeof window === "undefined") return "dark";
+  return window.matchMedia?.("(prefers-color-scheme: dark)").matches
+    ? "dark"
+    : "light";
+}
+
+function getInitial(): AppTheme {
+  const s = loadSettings();
+  if (s.theme === "dark" || s.theme === "light" || s.theme === "system") {
+    return s.theme;
   }
-  return "dark";
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw === "dark" || raw === "light") return raw;
+  } catch { /* noop */ }
+  return "system";
 }
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
-  const micaInitializedRef = useRef(false);
+  const [theme, setThemeState] = useState<AppTheme>(getInitial);
+  const micaOnce = useRef(false);
 
-  const fluentTheme: Theme =
-    theme === "dark" ? webDarkTheme : webLightTheme;
+  const resolved: Resolved = theme === "system" ? readSystem() : theme;
+  const fluentTheme: Theme = resolved === "dark" ? webDarkTheme : webLightTheme;
 
-  const toggleTheme = useCallback(() => {
-    setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+  const setTheme = useCallback((next: AppTheme) => {
+    setThemeState(next);
   }, []);
 
+  const toggleTheme = useCallback(() => {
+    setThemeState((prev) => {
+      const r: Resolved = prev === "system" ? readSystem() : prev;
+      return r === "dark" ? "light" : "dark";
+    });
+  }, []);
+
+  // Persist + native window
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, theme);
-    } catch {
-      // ignore
+    localStorage.setItem(STORAGE_KEY, theme);
+    const s = loadSettings();
+    saveSettings({ ...s, theme });
+
+    const win = getCurrentWindow();
+    const bg = resolved === "dark" ? "#1b1b1b" : "#f3f3f3";
+    win.setTheme(resolved).catch(() => {});
+    win.setBackgroundColor(bg).catch(() => {});
+
+    if (!micaOnce.current) {
+      micaOnce.current = true;
+      win.setEffects({ effects: [Effect.Mica] }).catch(() => {});
     }
-
-    const appWindow = getCurrentWindow();
-    const fallbackBackground = theme === "dark" ? "#1b1b1b" : "#f3f3f3";
-
-    appWindow.setTheme(theme).catch(() => {});
-    appWindow.setBackgroundColor(fallbackBackground).catch(() => {});
-
-    if (!micaInitializedRef.current) {
-      micaInitializedRef.current = true;
-      appWindow
-        .setEffects({ effects: [Effect.Mica] })
-        .catch(() => {});
-    }
-  }, [theme]);
+  }, [theme, resolved]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, resolvedTheme: resolved, setTheme, toggleTheme }}>
       <FluentProvider
         theme={fluentTheme}
-        style={{ height: "100%", background: theme === "dark" ? "#1b1b1b" : "#f3f3f3" }}
+        style={{ height: "100%", background: resolved === "dark" ? "#1b1b1b" : "#f3f3f3" }}
       >
         {children}
       </FluentProvider>

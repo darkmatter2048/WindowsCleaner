@@ -1,3 +1,4 @@
+import { spawn } from "node:child_process";
 import { createServer } from "vite";
 
 const PORT = 1420;
@@ -29,7 +30,26 @@ async function waitForServer(url, timeoutMs = 15_000) {
   throw new Error(`Vite dev server did not become ready at ${url}`);
 }
 
+function killProcessImage(imageName) {
+  return new Promise((resolve) => {
+    const child = spawn("taskkill", ["/IM", imageName, "/F"], {
+      stdio: "ignore",
+      shell: false,
+    });
+
+    child.on("error", () => resolve());
+    child.on("exit", () => resolve());
+  });
+}
+
+async function ensureCleanTauriBinary() {
+  if (process.platform !== "win32") return;
+  await killProcessImage("wc.exe");
+}
+
 let server;
+
+await ensureCleanTauriBinary();
 
 if (await isServerReady(READY_URL)) {
   console.log(`[dev-server] reusing existing server: ${READY_URL}`);

@@ -36,6 +36,20 @@
         "transparent": false,
         "center": true,
         "visible": false
+      },
+      {
+        "label": "settings",
+        "title": "设置",
+        "url": "index.html#/settings",
+        "width": 560,
+        "height": 520,
+        "resizable": false,
+        "minWidth": 520,
+        "minHeight": 500,
+        "decorations": false,
+        "transparent": false,
+        "center": true,
+        "visible": false
       }
     ],
     "security": {
