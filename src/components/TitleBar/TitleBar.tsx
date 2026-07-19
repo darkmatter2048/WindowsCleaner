@@ -77,12 +77,7 @@ export default function TitleBar({ showIcon = true, title }: TitleBarProps) {
     }
 
     const settings = loadSettings();
-    if (settings.closeBehavior === "minimizeToTray") {
-      await invoke("handle_main_close");
-      return;
-    }
-
-    await appWindow.close();
+    await invoke("handle_main_close", { behavior: settings.closeBehavior });
   };
 
   const label = title ?? t("titleBar.appName");

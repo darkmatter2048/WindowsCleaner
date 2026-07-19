@@ -149,8 +149,12 @@ fn set_update_check_on_startup(state: tauri::State<AppState>, enabled: bool) -> 
 }
 
 #[tauri::command]
-fn handle_main_close(app: tauri::AppHandle<Wry>, state: tauri::State<AppState>) -> Result<(), String> {
-    let behavior = *state.close_behavior.lock().map_err(|_| "Failed to read close behavior")?;
+fn handle_main_close(app: tauri::AppHandle<Wry>, state: tauri::State<AppState>, behavior: CloseBehavior) -> Result<(), String> {
+    // Sync Rust state with what the frontend persisted
+    {
+        let mut stored = state.close_behavior.lock().map_err(|_| "Failed to update close behavior")?;
+        *stored = behavior;
+    }
     match behavior {
         CloseBehavior::MinimizeToTray => {
             if let Some(window) = app.get_webview_window("main") {
