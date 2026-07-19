@@ -4,6 +4,7 @@ import {
   useState,
   useEffect,
   useCallback,
+  useRef,
   type ReactNode,
 } from "react";
 import {
@@ -40,6 +41,7 @@ function getInitialTheme(): ThemeMode {
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<ThemeMode>(getInitialTheme);
+  const micaInitializedRef = useRef(false);
 
   const fluentTheme: Theme =
     theme === "dark" ? webDarkTheme : webLightTheme;
@@ -48,29 +50,26 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   }, []);
 
-  // Persist theme + sync with native
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, theme);
     } catch {
       // ignore
     }
-    const appWindow = getCurrentWindow();
-    appWindow.setTheme(theme).catch(() => {});
-  }, [theme]);
 
-  // Mica effect on mount
-  useEffect(() => {
     const appWindow = getCurrentWindow();
-    appWindow
-      .setEffects({ effects: [Effect.Mica] })
-      .catch(async () => {
-        // Fallback for Windows 10: solid dark background
-        await appWindow
-          .setBackgroundColor("#1b1b1b")
-          .catch(() => {});
-      });
-  }, []);
+    const fallbackBackground = theme === "dark" ? "#1b1b1b" : "#f3f3f3";
+
+    appWindow.setTheme(theme).catch(() => {});
+    appWindow.setBackgroundColor(fallbackBackground).catch(() => {});
+
+    if (!micaInitializedRef.current) {
+      micaInitializedRef.current = true;
+      appWindow
+        .setEffects({ effects: [Effect.Mica] })
+        .catch(() => {});
+    }
+  }, [theme]);
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
