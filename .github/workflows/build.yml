@@ -18,7 +18,7 @@ jobs:
       - name: 安装 Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: 安装 pnpm
         uses: pnpm/action-setup@v4
@@ -49,7 +49,7 @@ jobs:
             src-tauri/target/release/bundle/nsis/*.exe
 
       - name: 提交代码签名 (SignPath)
-        if: ${{ inputs.sign }}
+        if: ${{ inputs.sign == true }}
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
           api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
