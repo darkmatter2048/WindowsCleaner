@@ -192,6 +192,59 @@ const useStyles = makeStyles({
     color: "#f57c7c",
     border: "1px solid #d32f2f",
   },
+  // Process dialog
+  processDialogTitle: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: tokens.spacingHorizontalS,
+  },
+  processDialogBody: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: tokens.spacingVerticalL,
+  },
+  processDialogDesc: {
+    fontSize: "14px",
+    lineHeight: "22px",
+    textAlign: "center",
+    color: tokens.colorNeutralForeground2,
+  },
+  processList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "6px",
+    padding: "12px 16px",
+    borderRadius: tokens.borderRadiusLarge,
+    backgroundColor: tokens.colorNeutralBackground1,
+    border: `1px solid ${tokens.colorNeutralStroke1}`,
+    minWidth: "280px",
+  },
+  processItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: tokens.spacingHorizontalS,
+    padding: "6px 0",
+    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
+  },
+  processDot: {
+    width: "8px",
+    height: "8px",
+    borderRadius: "50%",
+    backgroundColor: tokens.colorPaletteRedForeground1,
+    flexShrink: 0,
+  },
+  processName: {
+    fontSize: "14px",
+    fontWeight: 600,
+    flex: 1,
+  },
+  processPid: {
+    fontSize: "12px",
+    color: tokens.colorNeutralForeground3,
+    fontFamily: "monospace",
+  },
 });
 
 // ---------------------------------------------------------------------------
@@ -618,38 +671,33 @@ export default function SoftwareMovePanel() {
               moveState.runningProcs.length > 0 && (
                 <>
                   <DialogTitle>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                      <Warning24Regular style={{ color: "var(--colorPaletteRedForeground1)" }} />
-                      {t("softwareMove.processesRunningTitle")}
+                    <div className={styles.processDialogTitle}>
+                      <Warning24Regular style={{ color: "var(--colorPaletteRedForeground1)", fontSize: "20px" }} />
+                      <Text style={{ fontWeight: 700 }}>{t("softwareMove.processesRunningTitle")}</Text>
                     </div>
                   </DialogTitle>
                   <DialogContent>
                     <DialogBody>
-                      <Text>
-                        {t("softwareMove.processesRunningContent", {
-                          name: appName(moveState.app.key),
-                        })}
-                      </Text>
-                      <div
-                        style={{
-                          marginTop: "12px",
-                          padding: "8px 12px",
-                          borderRadius: "4px",
-                          backgroundColor: "var(--colorNeutralBackground2)",
-                          fontSize: "13px",
-                          fontFamily: "monospace",
-                        }}
-                      >
-                        {moveState.runningProcs.map((p) => (
-                          <div key={p.pid}>
-                            {p.name} (PID: {p.pid})
-                          </div>
-                        ))}
-                      </div>
-                      <div className={styles.riskBox} style={{ marginTop: "12px" }}>
-                        <Text className={styles.riskText}>
-                          {t("softwareMove.forceCloseWarning")}
+                      <div className={styles.processDialogBody}>
+                        <Text className={styles.processDialogDesc}>
+                          {t("softwareMove.processesRunningContent", {
+                            name: appName(moveState.app.key),
+                          })}
                         </Text>
+                        <div className={styles.processList}>
+                          {moveState.runningProcs.map((p) => (
+                            <div key={p.pid} className={styles.processItem}>
+                              <span className={styles.processDot} />
+                              <Text className={styles.processName}>{p.name}</Text>
+                              <Text className={styles.processPid}>PID {p.pid}</Text>
+                            </div>
+                          ))}
+                        </div>
+                        <div className={styles.riskBox}>
+                          <Text className={styles.riskText} style={{ display: "block", textAlign: "center" }}>
+                            {t("softwareMove.forceCloseWarning")}
+                          </Text>
+                        </div>
                       </div>
                     </DialogBody>
                   </DialogContent>
