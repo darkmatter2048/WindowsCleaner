@@ -11,5 +11,6 @@ on:
 jobs:
   Build:
     uses: ./.github/workflows/build.yml
+    secrets: inherit
     with:
       sign: ${{ inputs.sign }}
