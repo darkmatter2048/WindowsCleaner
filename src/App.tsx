@@ -10,6 +10,7 @@ import Footer from "./components/Footer/Footer";
 import CustomCleanWindow from "./components/CustomCleanWindow/CustomCleanWindow";
 import SettingsWindow from "./components/SettingsWindow/SettingsWindow";
 import AboutWindow from "./components/AboutWindow/AboutWindow";
+import DonateWindow from "./components/DonateWindow/DonateWindow";
 import { useTheme } from "./contexts/ThemeContext";
 import { loadSettings, saveSettings } from "./constants/settings";
 import type { AppSettings, AppTheme } from "./types/settings";
@@ -84,6 +85,10 @@ function App() {
 
   if (window.location.hash === "#/about") {
     return <AboutWindow />;
+  }
+
+  if (window.location.hash === "#/donate") {
+    return <DonateWindow />;
   }
 
   return (

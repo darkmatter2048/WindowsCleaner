@@ -52,6 +52,17 @@
         "visible": false
       },
       {
+        "label": "donate",
+        "title": "捐赠",
+        "url": "index.html#/donate",
+        "width": 380,
+        "height": 480,
+        "resizable": false,
+        "decorations": false,
+        "center": true,
+        "visible": false
+      },
+      {
         "label": "about",
         "title": "关于",
         "url": "index.html#/about",

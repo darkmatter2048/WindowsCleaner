@@ -169,6 +169,11 @@ async fn open_about_window(app: tauri::AppHandle) -> Result<(), String> {
 }
 
 #[tauri::command]
+async fn open_donate_window(app: tauri::AppHandle) -> Result<(), String> {
+    open_named_window(&app, "donate")
+}
+
+#[tauri::command]
 fn get_startup_settings(state: tauri::State<AppState>) -> Result<StartupSettings, String> {
     let autostart = read_autostart_enabled()?;
     let close_behavior = *state.close_behavior.lock().map_err(|_| "Failed to read close behavior")?;
@@ -357,7 +362,7 @@ pub fn run() {
             auto_clean::spawn_auto_clean_watcher(app.handle().clone());
 
             // Set taskbar icons for all windows
-            for label in &["main", "custom-clean", "settings", "about"] {
+            for label in &["main", "custom-clean", "settings", "about", "donate"] {
                 if let Some(win) = app.get_webview_window(label) {
                     let _ = win.set_icon(win_icon.clone());
                 }
@@ -419,6 +424,7 @@ pub fn run() {
             open_custom_clean_window,
             open_settings_window,
             open_about_window,
+            open_donate_window,
             get_startup_settings,
             set_autostart_enabled,
             set_close_behavior,

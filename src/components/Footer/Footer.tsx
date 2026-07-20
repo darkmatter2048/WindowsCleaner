@@ -45,7 +45,7 @@ export default function Footer() {
   };
 
   const handleDonate = () => {
-    console.log("Donate");
+    invoke("open_donate_window").catch(() => {});
   };
 
   return (
