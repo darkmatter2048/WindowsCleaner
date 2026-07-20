@@ -34,32 +34,16 @@ jobs:
       - name: 编译
         run: pnpm tauri build
 
-      - name: 打包待签名文件
+      - name: 打包单文件版
         shell: pwsh
         run: |
-          $dest = "dist/to-sign"
-          New-Item -ItemType Directory -Force -Path $dest
-
-          # 便携版 exe
           $exe = "src-tauri/target/release/wc.exe"
-          if (Test-Path $exe) { Copy-Item $exe $dest }
+          if (-not (Test-Path $exe)) { Write-Error "wc.exe not found"; exit 1 }
+          Compress-Archive -Path $exe -DestinationPath "dist/WindowsCleaner.zip"
+          Write-Output "Packaged: WindowsCleaner.zip"
 
-          # MSI 安装包
-          $msi = Get-ChildItem "src-tauri/target/release/bundle/msi" -Filter "*.msi" -ErrorAction SilentlyContinue
-          if ($msi) { Copy-Item $msi.FullName $dest }
-
-          # NSIS 安装包
-          $nsis = Get-ChildItem "src-tauri/target/release/bundle/nsis" -Filter "*.exe" -ErrorAction SilentlyContinue
-          if ($nsis) { Copy-Item $nsis.FullName $dest }
-
-          # 打包成 zip
-          Compress-Archive -Path "$dest/*" -DestinationPath "dist/WindowsCleaner-unsigned.zip"
-
-          Write-Output "=== 待签名文件 ==="
-          Get-ChildItem $dest | ForEach-Object { Write-Output $_.Name }
-
-      - name: 上传待签名包
+      - name: 上传产物
         uses: actions/upload-artifact@v4
         with:
-          name: WindowsCleaner-unsigned
-          path: dist/WindowsCleaner-unsigned.zip
+          name: WindowsCleaner
+          path: dist/WindowsCleaner.zip

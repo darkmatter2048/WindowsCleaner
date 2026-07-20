@@ -32,4 +32,4 @@ jobs:
           draft: false
           make_latest: true
           files: |
-            artifacts/WindowsCleaner-unsigned/WindowsCleaner-unsigned.zip
+            artifacts/WindowsCleaner/WindowsCleaner.zip
