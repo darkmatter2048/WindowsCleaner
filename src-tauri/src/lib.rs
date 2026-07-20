@@ -173,7 +173,10 @@ fn handle_main_close(app: tauri::AppHandle<Wry>, state: tauri::State<AppState>, 
     Ok(())
 }
 
-fn build_tray(app: &tauri::AppHandle<Wry>) -> tauri::Result<()> {
+fn build_tray(
+    app: &tauri::AppHandle<Wry>,
+    icon: tauri::image::Image<'_>,
+) -> tauri::Result<()> {
     let show = MenuItemBuilder::with_id("show", "打开主界面").build(app)?;
     let settings = MenuItemBuilder::with_id("settings", "设置").build(app)?;
     let quit = MenuItemBuilder::with_id("quit", "退出").build(app)?;
@@ -181,16 +184,9 @@ fn build_tray(app: &tauri::AppHandle<Wry>) -> tauri::Result<()> {
         .items(&[&show, &settings, &quit])
         .build()?;
 
-    let png = include_bytes!("../icons/32x32.png");
-    let img = image::load_from_memory(png).expect("Failed to decode tray icon");
-    let rgba = img.to_rgba8();
-    let (w, h) = rgba.dimensions();
-    let tray_icon = tauri::image::Image::new_owned(rgba.into_raw(), w, h);
-
     let tooltip = format!("WindowsCleaner v{}", env!("CARGO_PKG_VERSION"));
-
     TrayIconBuilder::new()
-        .icon(tray_icon)
+        .icon(icon)
         .tooltip(tooltip)
         .menu(&menu)
         .on_menu_event(|app, event| match event.id().as_ref() {
@@ -221,8 +217,24 @@ pub fn run() {
         .manage(AppState::default())
         .plugin(tauri_plugin_opener::init())
         .setup(|app| {
-            build_tray(&app.handle())?;
+            // Decode shared icon for tray + all windows
+            let png = include_bytes!("../icons/logo.png");
+            let img = image::load_from_memory(png).expect("Failed to decode icon");
+            let rgba = img.to_rgba8();
+            let (w, h) = rgba.dimensions();
+            let raw = rgba.into_raw();
+            let tray_icon = tauri::image::Image::new_owned(raw.clone(), w, h);
+            let win_icon = tauri::image::Image::new_owned(raw, w, h);
+
+            build_tray(&app.handle(), tray_icon)?;
             auto_clean::spawn_auto_clean_watcher(app.handle().clone());
+
+            // Set taskbar icons for all windows
+            for label in &["main", "custom-clean", "settings"] {
+                if let Some(win) = app.get_webview_window(label) {
+                    let _ = win.set_icon(win_icon.clone());
+                }
+            }
 
             // Intercept main window close (taskbar X, Alt+F4, etc.)
             if let Some(window) = app.get_webview_window("main") {
