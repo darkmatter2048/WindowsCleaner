@@ -1,0 +1,50 @@
+name: 发行
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "版本号"
+        required: true
+        default: v6.0.1
+      sign:
+        description: "代码签名"
+        type: boolean
+        default: false
+
+jobs:
+  Build:
+    uses: ./.github/workflows/build.yml
+    with:
+      sign: ${{ inputs.sign }}
+
+  Release:
+    needs: [Build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: 下载附件
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: 打包
+        run: |
+          cd artifacts/WindowsCleaner
+          zip -r ../../WindowsCleaner-portable.zip ./*.exe 2>/dev/null || true
+          cp ./*.msi ../../WindowsCleaner-installer.msi 2>/dev/null || true
+          cd ../..
+          ls -la
+
+      - name: 发行
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ inputs.tag }}
+          tag_name: ${{ inputs.tag }}
+          draft: false
+          make_latest: true
+          files: |
+            WindowsCleaner-portable.zip
+            WindowsCleaner-installer.msi
