@@ -82,6 +82,9 @@
       "title": "Startup",
       "label": "Launch automatically when Windows starts"
     },
+    "hideOnStartup": {
+      "label": "Hide main window on startup (tray only)"
+    },
     "closeBehavior": {
       "title": "Close behavior",
       "label": "When clicking the main window close button",

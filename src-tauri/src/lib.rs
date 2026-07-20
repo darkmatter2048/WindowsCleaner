@@ -20,6 +20,46 @@ struct AppState {
     close_behavior: Mutex<CloseBehavior>,
     update_check_on_startup: Mutex<bool>,
     should_exit: Mutex<bool>,
+    hide_on_startup: Mutex<bool>,
+}
+
+// ---------------------------------------------------------------------------
+// Hide-on-startup persistence (same pattern as auto_clean)
+// ---------------------------------------------------------------------------
+
+#[derive(Serialize, Deserialize, Clone)]
+struct StartupConfig {
+    hide_on_startup: bool,
+}
+
+impl Default for StartupConfig {
+    fn default() -> Self {
+        Self { hide_on_startup: false }
+    }
+}
+
+fn startup_config_path(app: &tauri::AppHandle) -> std::path::PathBuf {
+    app.path()
+        .app_data_dir()
+        .unwrap_or_else(|_| std::path::PathBuf::from("."))
+        .join("startup_config.json")
+}
+
+fn load_startup_config(app: &tauri::AppHandle) -> StartupConfig {
+    let path = startup_config_path(app);
+    std::fs::read_to_string(&path)
+        .ok()
+        .and_then(|s| serde_json::from_str(&s).ok())
+        .unwrap_or_default()
+}
+
+fn save_startup_config(app: &tauri::AppHandle, config: &StartupConfig) -> Result<(), String> {
+    let path = startup_config_path(app);
+    if let Some(parent) = path.parent() {
+        std::fs::create_dir_all(parent).map_err(|e| e.to_string())?;
+    }
+    let json = serde_json::to_string_pretty(config).map_err(|e| e.to_string())?;
+    std::fs::write(&path, json).map_err(|e| e.to_string())
 }
 
 #[derive(Serialize)]
@@ -152,6 +192,23 @@ fn set_update_check_on_startup(state: tauri::State<AppState>, enabled: bool) -> 
 }
 
 #[tauri::command]
+fn get_hide_on_startup(app: tauri::AppHandle) -> Result<bool, String> {
+    Ok(load_startup_config(&app).hide_on_startup)
+}
+
+#[tauri::command]
+fn set_hide_on_startup(
+    app: tauri::AppHandle,
+    state: tauri::State<AppState>,
+    enabled: bool,
+) -> Result<(), String> {
+    let mut hide = state.hide_on_startup.lock().map_err(|_| "lock error")?;
+    *hide = enabled;
+    let config = StartupConfig { hide_on_startup: enabled };
+    save_startup_config(&app, &config)
+}
+
+#[tauri::command]
 fn handle_main_close(app: tauri::AppHandle<Wry>, state: tauri::State<AppState>, behavior: CloseBehavior) -> Result<(), String> {
     // Sync Rust state with what the frontend persisted
     {
@@ -236,6 +293,20 @@ pub fn run() {
                 }
             }
 
+            // Apply hide-on-startup config: main is initially hidden,
+            // show it only if hide_on_startup is disabled
+            {
+                let config = load_startup_config(&app.handle());
+                if let Ok(mut hide) = app.state::<AppState>().hide_on_startup.lock() {
+                    *hide = config.hide_on_startup;
+                }
+                if !config.hide_on_startup {
+                    if let Some(main) = app.get_webview_window("main") {
+                        let _ = main.show();
+                    }
+                }
+            }
+
             // Intercept main window close (taskbar X, Alt+F4, etc.)
             if let Some(window) = app.get_webview_window("main") {
                 let w = window.clone();
@@ -271,6 +342,8 @@ pub fn run() {
             set_autostart_enabled,
             set_close_behavior,
             set_update_check_on_startup,
+            get_hide_on_startup,
+            set_hide_on_startup,
             handle_main_close,
             clean::quick_clean,
             clean::deep_clean,

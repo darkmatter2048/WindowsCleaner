@@ -60,20 +60,23 @@ export default function SettingsWindow() {
   const { t, i18n } = useTranslation();
   const { setTheme } = useTheme();
   const [settings, setSettings] = useState<AppSettings>(loadSettings());
+  const [hideOnStartup, setHideOnStartup] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     let mounted = true;
     const hydrate = async () => {
       try {
-        const startup = await invoke<StartupSettings>("get_startup_settings");
+        const [startup, hide] = await Promise.all([
+          invoke<StartupSettings>("get_startup_settings"),
+          invoke<boolean>("get_hide_on_startup"),
+        ]);
         if (!mounted) return;
-        // Only autostart is read-only from the registry; the rest is
-        // already loaded from localStorage (the single source of truth).
         setSettings((current) => ({
           ...current,
           autostart: startup.autostart,
         }));
+        setHideOnStartup(hide);
       } finally {
         if (mounted) setLoading(false);
       }
@@ -131,6 +134,11 @@ export default function SettingsWindow() {
     persist({ ...settings, updateCheckOnStartup: enabled });
   };
 
+  const changeHideOnStartup = async (enabled: boolean) => {
+    await invoke("set_hide_on_startup", { enabled });
+    setHideOnStartup(enabled);
+  };
+
   return (
     <div className={styles.root}>
       <TitleBar showIcon={false} title="设置" />
@@ -183,6 +191,11 @@ export default function SettingsWindow() {
                 checked={settings.autostart}
                 label={t("settings.autostart.label")}
                 onChange={(_, data) => void changeAutostart(Boolean(data.checked))}
+              />
+              <Switch
+                checked={hideOnStartup}
+                label={t("settings.hideOnStartup.label")}
+                onChange={(_, data) => void changeHideOnStartup(Boolean(data.checked))}
               />
             </section>
 

@@ -82,6 +82,9 @@
       "title": "スタートアップ",
       "label": "Windows 起動時に自動的に起動する"
     },
+    "hideOnStartup": {
+      "label": "起動時にメインウィンドウを隠す（トレイのみ）"
+    },
     "closeBehavior": {
       "title": "閉じる動作",
       "label": "メインウィンドウの閉じるボタンをクリックした時",

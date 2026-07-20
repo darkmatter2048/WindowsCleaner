@@ -82,6 +82,9 @@
       "title": "开机自启",
       "label": "登录 Windows 时自动启动"
     },
+    "hideOnStartup": {
+      "label": "启动时隐藏主界面（仅托盘图标）"
+    },
     "closeBehavior": {
       "title": "关闭选项",
       "label": "点击主窗口关闭按钮时",

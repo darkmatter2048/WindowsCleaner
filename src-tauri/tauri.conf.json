@@ -21,7 +21,8 @@
         "minHeight": 360,
         "decorations": false,
         "transparent": false,
-        "center": true
+        "center": true,
+        "visible": false
       },
       {
         "label": "custom-clean",
