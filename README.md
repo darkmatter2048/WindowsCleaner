@@ -36,7 +36,7 @@
 
 ## 主界面
 
-![主界面](readme/ui.png)
+![主界面](readme/ui.jpg)
 
 ## 贡献者
 
