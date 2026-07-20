@@ -10,7 +10,7 @@ use crate::clean::{run_clean_option, CleanOption, CleanResult};
 // Settings
 // ---------------------------------------------------------------------------
 
-#[derive(Serialize, Deserialize, Clone, Copy, PartialEq)]
+#[derive(Debug, Serialize, Deserialize, Clone, Copy, PartialEq)]
 #[serde(rename_all = "camelCase")]
 pub enum AutoCleanMode {
     Scheduled,
@@ -165,6 +165,8 @@ fn run_auto_clean_if_needed(app: &tauri::AppHandle) {
         return;
     }
 
+    crate::logger::info("auto_clean", "自动清理 开始", &format!("mode={:?} options={}", settings.mode, settings.options.len()));
+
     let should_clean = match settings.mode {
         AutoCleanMode::Scheduled => {
             if settings.last_clean_time.is_empty() {
@@ -195,6 +197,12 @@ fn run_auto_clean_if_needed(app: &tauri::AppHandle) {
     let mut updated = load_settings(app);
     updated.last_clean_time = today_string();
     let _ = save_settings(app, &updated);
+
+    crate::logger::info(
+        "auto_clean",
+        &format!("自动清理 完成: 释放 {} 字节, errors={}", result.bytes_freed, result.errors.len()),
+        "",
+    );
 }
 
 // ---------------------------------------------------------------------------

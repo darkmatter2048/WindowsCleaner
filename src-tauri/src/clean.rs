@@ -8,7 +8,7 @@ pub struct CleanResult {
     pub errors: Vec<String>,
 }
 
-#[derive(Serialize, Deserialize, Clone, Copy)]
+#[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 #[serde(rename_all = "snake_case")]
 pub enum CleanOption {
     Prefetch,
@@ -561,7 +561,8 @@ const QUICK_CLEAN_OPTIONS: &[CleanOption] = &[
 ];
 
 pub fn run_clean_option(option: CleanOption) -> CleanResult {
-    match option {
+    let name = format!("{:?}", option);
+    let result = match option {
         CleanOption::Prefetch => clean_prefetch(),
         CleanOption::UserTemp => clean_user_temp(),
         CleanOption::WindowsTemp => clean_windows_temp(),
@@ -581,7 +582,18 @@ pub fn run_clean_option(option: CleanOption) -> CleanResult {
         CleanOption::WpsBackups => clean_wps_backups(),
         CleanOption::Winapp2 => crate::winapp2::clean_winapp2(),
         CleanOption::MspFiles => clean_msp_files(),
+    };
+    if result.bytes_freed > 0 || !result.errors.is_empty() {
+        crate::logger::info(
+            "clean",
+            &format!("{}: {} 字节", name, result.bytes_freed),
+            &format!("errors={}", result.errors.len()),
+        );
     }
+    for e in &result.errors {
+        crate::logger::warn("clean", &name, e);
+    }
+    result
 }
 
 fn run_clean_options(options: &[CleanOption]) -> CleanResult {
@@ -610,13 +622,23 @@ fn measure_c_free() -> Result<u64, String> {
 
 #[tauri::command]
 pub async fn quick_clean() -> CleanResult {
-    tauri::async_runtime::spawn_blocking(|| run_clean_options(QUICK_CLEAN_OPTIONS))
+    crate::logger::info("clean", "快速清理 开始", "");
+    let r = tauri::async_runtime::spawn_blocking(|| run_clean_options(QUICK_CLEAN_OPTIONS))
         .await
         .unwrap_or_else(|_| {
             let mut err = CleanResult::new();
             err.add_error("Clean task panicked".into());
             err
-        })
+        });
+    crate::logger::info(
+        "clean",
+        &format!("快速清理 完成: 释放 {} 字节", r.bytes_freed),
+        &format!("errors={}", r.errors.len()),
+    );
+    for e in &r.errors {
+        crate::logger::warn("clean", "清理错误", e);
+    }
+    r
 }
 
 #[tauri::command]
@@ -626,11 +648,21 @@ pub async fn deep_clean() -> CleanResult {
 
 #[tauri::command]
 pub async fn clean_selected(request: CleanRequest) -> CleanResult {
-    tauri::async_runtime::spawn_blocking(move || run_clean_options(&request.options))
+    crate::logger::info("clean", "自定义清理 开始", &format!("{} 项", request.options.len()));
+    let r = tauri::async_runtime::spawn_blocking(move || run_clean_options(&request.options))
         .await
         .unwrap_or_else(|_| {
             let mut err = CleanResult::new();
             err.add_error("Clean task panicked".into());
             err
-        })
+        });
+    crate::logger::info(
+        "clean",
+        &format!("自定义清理 完成: 释放 {} 字节", r.bytes_freed),
+        &format!("errors={}", r.errors.len()),
+    );
+    for e in &r.errors {
+        crate::logger::warn("clean", "清理错误", e);
+    }
+    r
 }

@@ -529,10 +529,13 @@ pub async fn move_software(
         let mut skipped: Vec<String> = Vec::new();
         copy_dir_with_progress(&app, src, dst.as_ref(), total_size, &mut copied, &key, &mut skipped);
 
+        crate::logger::info("move", &format!("开始移动 {} → {}", key, target_dir), "");
+
         // Safety gate: if ANY files were skipped, do NOT touch the source.
         // remove_dir_all is destructive — a partial failure would destroy data.
         if !skipped.is_empty() {
             let _ = fs::remove_dir_all(dst);
+            crate::logger::error("move", &format!("{} 移动失败: {} 个文件无法复制", key, skipped.len()), "");
             return Err(format!(
                 "{} 个文件无法复制（被占用或权限不足）。源目录未变动，已复制的临时数据已清除。请关闭相关软件后重试。",
                 skipped.len()
@@ -587,6 +590,7 @@ pub async fn move_software(
             "status": "done"
         }));
 
+        crate::logger::info("move", &format!("移动完成 {}", key), &format!("→ {}", target_dir));
         Ok(MoveResult { skipped_files: skipped, junction_created: true })
     })
     .await

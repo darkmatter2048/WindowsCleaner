@@ -101,18 +101,18 @@ pub fn set_defender_disabled(disabled: bool) -> Result<(), String> {
     if disabled {
         key.set_value("DisableAntiSpyware", &1u32)
             .map_err(|e| format!("Failed to disable Defender: {}", e))?;
-        // Also disable real-time monitoring via policy
         let _ = key.set_value("DisableRealtimeMonitoring", &1u32);
         let _ = key.set_value("DisableBehaviorMonitoring", &1u32);
         let _ = key.set_value("DisableOnAccessProtection", &1u32);
         let _ = key.set_value("DisableScanOnRealtimeEnable", &1u32);
+        crate::logger::warn("defender", "已关闭 Windows Defender", "");
     } else {
-        // Delete the values to re-enable
         let _ = key.delete_value("DisableAntiSpyware");
         let _ = key.delete_value("DisableRealtimeMonitoring");
         let _ = key.delete_value("DisableBehaviorMonitoring");
         let _ = key.delete_value("DisableOnAccessProtection");
         let _ = key.delete_value("DisableScanOnRealtimeEnable");
+        crate::logger::info("defender", "已恢复 Windows Defender", "");
     }
     Ok(())
 }
@@ -164,7 +164,11 @@ pub fn set_update_disabled(disabled: bool) -> Result<(), String> {
     write_service_disabled("wuauserv", disabled)?;
     let _ = write_service_disabled("UsoSvc", disabled);
     let _ = write_service_disabled("WaaSMedicSvc", disabled);
-    // Registry change takes effect on next reboot
+    if disabled {
+        crate::logger::warn("update", "已禁用 Windows Update", "");
+    } else {
+        crate::logger::info("update", "已恢复 Windows Update", "");
+    }
     Ok(())
 }
 
@@ -235,11 +239,10 @@ pub fn set_page_file(initial_mb: u32, max_mb: u32) -> Result<(), String> {
     let entry = format!("{}\\pagefile.sys {} {}", system_drive, initial_mb, max_mb);
     key.set_value("PagingFiles", &entry)
         .map_err(|e| format!("Failed to set page file: {}", e))?;
-
-    // Also set the existing page file to avoid conflicts
     key.set_value("ExistingPagingFiles", &entry)
         .map_err(|e| format!("Failed to set existing page file: {}", e))?;
 
+    crate::logger::info("pagefile", &format!("虚拟内存: {} MB - {} MB", initial_mb, max_mb), "");
     Ok(())
 }
 
@@ -457,6 +460,7 @@ pub async fn move_user_folder(
         }
 
         // Step 2: Update registry — after this, Windows uses the new path
+        crate::logger::info("folders", &format!("迁移文件夹 {}: {} → {}", folder_key, src_str, dst_str), "");
         write_user_shell_folder(&folder_key, &dst_str)?;
 
         // Step 3: Delete source to actually free up space on C:
@@ -520,6 +524,7 @@ pub async fn undo_user_folder(
         }
 
         // Update registry to original path
+        crate::logger::info("folders", &format!("还原文件夹 {}: {} → {}", folder_key, current_path, original_path), "");
         write_user_shell_folder(&folder_key, &original_path)?;
 
         // Remove the moved copy

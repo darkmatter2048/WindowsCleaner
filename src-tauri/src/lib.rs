@@ -1,6 +1,7 @@
 mod advanced;
 mod auto_clean;
 mod clean;
+mod logger;
 mod software_move;
 mod winapp2;
 
@@ -69,7 +70,7 @@ pub struct DiskInfo {
     free: u64,
 }
 
-#[derive(Serialize, Deserialize, Clone, Copy)]
+#[derive(Debug, Serialize, Deserialize, Clone, Copy)]
 #[serde(rename_all = "camelCase")]
 enum CloseBehavior {
     MinimizeToTray,
@@ -111,8 +112,10 @@ fn write_autostart_enabled(enabled: bool) -> Result<(), String> {
     if enabled {
         let exe = current_exe_quoted()?;
         run.set_value(APP_RUN_KEY, &exe).map_err(|e| e.to_string())?;
+        crate::logger::info("autostart", "开机自启 已启用", "");
     } else {
         let _ = run.delete_value(APP_RUN_KEY);
+        crate::logger::info("autostart", "开机自启 已禁用", "");
     }
 
     Ok(())
@@ -178,6 +181,7 @@ fn set_autostart_enabled(enabled: bool) -> Result<(), String> {
 fn set_close_behavior(state: tauri::State<AppState>, behavior: CloseBehavior) -> Result<(), String> {
     let mut close_behavior = state.close_behavior.lock().map_err(|_| "Failed to update close behavior")?;
     *close_behavior = behavior;
+    crate::logger::info("settings", &format!("关闭行为 → {:?}", behavior), "");
     Ok(())
 }
 
@@ -274,6 +278,8 @@ pub fn run() {
         .manage(AppState::default())
         .plugin(tauri_plugin_opener::init())
         .setup(|app| {
+            logger::init(&app.handle());
+
             // Decode shared icon for tray + all windows
             let png = include_bytes!("../icons/logo.png");
             let img = image::load_from_memory(png).expect("Failed to decode icon");
