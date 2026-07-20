@@ -2,6 +2,11 @@ name: BuildCore
 
 on:
   workflow_call:
+    inputs:
+      sign:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   Build:
@@ -34,15 +39,36 @@ jobs:
       - name: 编译
         run: pnpm tauri build
 
-      - name: 打包单文件版
+      - name: 上传未签名的主程序
+        id: upload-unsigned-exe
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-exe
+          path: src-tauri/target/release/wc.exe
+
+      - name: 提交代码签名请求 (SignPath)
+        if: ${{ inputs.sign }}
+        id: submit-signing-request
+        uses: signpath/github-action-submit-signing-request@v1.1
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: "WindowsCleaner"
+          signing-policy-slug: "release-signing"
+          artifact-configuration-slug: "sign-exezip"
+          github-artifact-id: ${{ steps.upload-unsigned-exe.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: signed
+
+      - name: 打包并上传最终产物
         shell: pwsh
         run: |
-          $exe = "src-tauri/target/release/wc.exe"
-          if (-not (Test-Path $exe)) { Write-Error "wc.exe not found"; exit 1 }
+          # Prefer signed exe; fall back to unsigned
+          $exe = "signed/wc.exe"
+          if (-not (Test-Path $exe)) { $exe = "src-tauri/target/release/wc.exe" }
           Compress-Archive -Path $exe -DestinationPath "dist/WindowsCleaner.zip"
-          Write-Output "Packaged: WindowsCleaner.zip"
 
-      - name: 上传产物
+      - name: 上传最终产物
         uses: actions/upload-artifact@v4
         with:
           name: WindowsCleaner
