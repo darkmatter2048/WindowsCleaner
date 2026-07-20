@@ -184,6 +184,15 @@
       "turnOff": "Disable auto-update",
       "risk": "⚠ Warning: Disabling Windows Update prevents security patches and feature updates. Your system may be vulnerable to known exploits. Check for updates manually on a regular basis."
     },
+    "folders": {
+      "title": "User Folders",
+      "desc": "Move user folders (Documents, Pictures, Downloads, etc.) from C: to another drive to free up system disk space. Changes take effect immediately.",
+      "risk": "⚠ Note: A logout or Explorer restart may be needed for the change to fully apply. Close any applications using these folders first.",
+      "move": "Move",
+      "undo": "Undo",
+      "scanning": "Calculating folder sizes...",
+      "noneOnC": "All user folders are already on other drives."
+    },
     "virtualMemory": {
       "title": "Virtual Memory (Page File)",
       "desc": "Adjust the page file size on drive C. The page file extends available memory when physical RAM is full.",
