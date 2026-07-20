@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { makeStyles, tokens } from "@fluentui/react-components";
+import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { useTranslation } from "react-i18next";
 import TitleBar from "./components/TitleBar/TitleBar";
@@ -42,6 +43,8 @@ function App() {
   useEffect(() => {
     const settings = loadSettings();
 
+    // Sync close behavior to Rust on startup so taskbar close events work
+    invoke("set_close_behavior", { behavior: settings.closeBehavior }).catch(() => {});
 
     if (i18n.language !== settings.language) {
       void i18n.changeLanguage(settings.language);

@@ -7,7 +7,7 @@ mod winapp2;
 use serde::{Deserialize, Serialize};
 use std::sync::Mutex;
 use sysinfo::Disks;
-use tauri::{Manager, Wry};
+use tauri::{Manager, WindowEvent, Wry};
 use tauri::menu::{MenuBuilder, MenuItemBuilder};
 use tauri::tray::TrayIconBuilder;
 use winreg::enums::*;
@@ -38,7 +38,7 @@ enum CloseBehavior {
 
 impl Default for CloseBehavior {
     fn default() -> Self {
-        CloseBehavior::MinimizeToTray
+        CloseBehavior::Exit
     }
 }
 
@@ -181,7 +181,17 @@ fn build_tray(app: &tauri::AppHandle<Wry>) -> tauri::Result<()> {
         .items(&[&show, &settings, &quit])
         .build()?;
 
+    let png = include_bytes!("../icons/32x32.png");
+    let img = image::load_from_memory(png).expect("Failed to decode tray icon");
+    let rgba = img.to_rgba8();
+    let (w, h) = rgba.dimensions();
+    let tray_icon = tauri::image::Image::new_owned(rgba.into_raw(), w, h);
+
+    let tooltip = format!("WindowsCleaner v{}", env!("CARGO_PKG_VERSION"));
+
     TrayIconBuilder::new()
+        .icon(tray_icon)
+        .tooltip(tooltip)
         .menu(&menu)
         .on_menu_event(|app, event| match event.id().as_ref() {
             "show" => {
@@ -213,6 +223,32 @@ pub fn run() {
         .setup(|app| {
             build_tray(&app.handle())?;
             auto_clean::spawn_auto_clean_watcher(app.handle().clone());
+
+            // Intercept main window close (taskbar X, Alt+F4, etc.)
+            if let Some(window) = app.get_webview_window("main") {
+                let w = window.clone();
+                let handle = app.handle().clone();
+                w.on_window_event(move |event| {
+                    if let WindowEvent::CloseRequested { api, .. } = event {
+                        let state = handle.state::<AppState>();
+                        let behavior = *state.close_behavior.lock().unwrap();
+                        match behavior {
+                            CloseBehavior::MinimizeToTray => {
+                                api.prevent_close();
+                                let _ = if let Some(main) = handle.get_webview_window("main") {
+                                    main.hide()
+                                } else {
+                                    Err(tauri::Error::WebviewNotFound)
+                                };
+                            }
+                            CloseBehavior::Exit => {
+                                handle.exit(0);
+                            }
+                        }
+                    }
+                });
+            }
+
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
