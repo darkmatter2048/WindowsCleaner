@@ -32,7 +32,7 @@
 
 > [!tip]
 >
-> 从[中国大陆地区](https://pan.quark.cn/s/03e706cb753a)下载最新版Windows Cleaner
+> #### 🪜🧱 从[中国大陆地区](https://pan.quark.cn/s/03e706cb753a)下载最新版Windows Cleaner
 
 ## 主界面
 
