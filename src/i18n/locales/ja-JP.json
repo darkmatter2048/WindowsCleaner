@@ -69,12 +69,10 @@
   "settings": {
     "loading": "設定を読み込み中...",
     "language": {
-      "title": "言語",
-      "label": "表示言語"
+      "title": "言語"
     },
     "theme": {
       "title": "テーマ",
-      "label": "外観テーマ",
       "restartHint": "（再起動後に適用）",
       "system": "システムに従う",
       "dark": "ダーク",
@@ -119,6 +117,37 @@
       "content": "自動クリーンはバックグラウンド動作が必要です。スタートアップを有効にして、定期クリーンが確実に実行されるようにしましょう。",
       "enable": "有効にする",
       "cancel": "キャンセル"
+    }
+  },
+  "advanced": {
+    "title": "詳細設定",
+    "defender": {
+      "title": "Windows Defender",
+      "desc": "Windows Defender のリアルタイム保護とアンチスパイウェアを無効にします。",
+      "enabled": "有効",
+      "disabled": "無効",
+      "turnOn": "有効のままにする（推奨）",
+      "turnOff": "Defender を無効にする",
+      "risk": "⚠ 警告：Windows Defender を無効にすると、システムがウイルスやマルウェアの脅威にさらされます。信頼できる別のアンチウイルスソフトウェアがインストールされていることを確認してください。"
+    },
+    "update": {
+      "title": "Windows Update",
+      "desc": "Windows Update サービスを停止して無効にします。",
+      "enabled": "自動更新中",
+      "disabled": "無効",
+      "turnOn": "自動更新を維持（推奨）",
+      "turnOff": "自動更新を無効にする",
+      "risk": "⚠ 警告：Windows Update を無効にすると、セキュリティパッチや機能更新が適用されなくなります。既知の脆弱性に対してシステムが無防備になる可能性があります。定期的に手動で更新を確認してください。"
+    },
+    "virtualMemory": {
+      "title": "仮想メモリ（ページファイル）",
+      "desc": "Cドライブのページファイルサイズを調整します。ページファイルは物理メモリが不足したときに使用可能なメモリを拡張します。",
+      "systemManaged": "システム管理",
+      "systemManagedLabel": "Windows に自動管理させる（推奨）",
+      "restartHint": "⚠ 注意：仮想メモリの変更を適用するにはシステムの再起動が必要です。",
+      "initial": "初期サイズ",
+      "maximum": "最大サイズ",
+      "apply": "適用"
     }
   }
 }

@@ -69,12 +69,10 @@
   "settings": {
     "loading": "Loading settings...",
     "language": {
-      "title": "Language",
-      "label": "Display language"
+      "title": "Language"
     },
     "theme": {
       "title": "Theme",
-      "label": "Appearance theme",
       "restartHint": "(restart to apply)",
       "system": "Follow system",
       "dark": "Dark",
@@ -119,6 +117,37 @@
       "content": "Auto clean needs the app running in the background. Enable autostart to ensure scheduled cleaning runs on time.",
       "enable": "Enable",
       "cancel": "Cancel"
+    }
+  },
+  "advanced": {
+    "title": "Advanced Options",
+    "defender": {
+      "title": "Windows Defender",
+      "desc": "Disable Windows Defender real-time protection and anti-spyware.",
+      "enabled": "Enabled",
+      "disabled": "Disabled",
+      "turnOn": "Keep enabled (recommended)",
+      "turnOff": "Disable Defender",
+      "risk": "⚠ Warning: Disabling Windows Defender exposes your system to viruses and malware. Ensure you have another reliable antivirus installed."
+    },
+    "update": {
+      "title": "Windows Update",
+      "desc": "Stop and disable the Windows Update service.",
+      "enabled": "Auto-updating",
+      "disabled": "Disabled",
+      "turnOn": "Keep auto-update (recommended)",
+      "turnOff": "Disable auto-update",
+      "risk": "⚠ Warning: Disabling Windows Update prevents security patches and feature updates. Your system may be vulnerable to known exploits. Check for updates manually on a regular basis."
+    },
+    "virtualMemory": {
+      "title": "Virtual Memory (Page File)",
+      "desc": "Adjust the page file size on drive C. The page file extends available memory when physical RAM is full.",
+      "systemManaged": "System managed",
+      "systemManagedLabel": "Let Windows manage automatically (recommended)",
+      "restartHint": "⚠ Note: A system restart is required for virtual memory changes to take effect.",
+      "initial": "Initial size",
+      "maximum": "Maximum size",
+      "apply": "Apply"
     }
   }
 }

@@ -69,12 +69,10 @@
   "settings": {
     "loading": "正在加载设置...",
     "language": {
-      "title": "语言",
-      "label": "界面语言"
+      "title": "语言"
     },
     "theme": {
       "title": "主题",
-      "label": "外观主题",
       "restartHint": "（重启后生效）",
       "system": "跟随系统",
       "dark": "深色",
@@ -82,8 +80,7 @@
     },
     "autostart": {
       "title": "开机自启",
-      "label": "登录 Windows 时自动启动",
-      "hint": "注意：当前程序会请求管理员权限，开机自启时可能仍会触发 UAC。"
+      "label": "登录 Windows 时自动启动"
     },
     "closeBehavior": {
       "title": "关闭选项",
@@ -93,8 +90,7 @@
     },
     "updates": {
       "title": "自动检查更新",
-      "label": "每次启动时自动检查更新",
-      "hint": "当前仅保存设置项，更新源接入后即可生效。"
+      "label": "每次启动时自动检查更新"
     }
   },
   "autoClean": {
@@ -121,6 +117,37 @@
       "content": "自动清理需要程序在后台运行。建议同时开启开机自启，确保自动清理能按时执行。",
       "enable": "开启",
       "cancel": "取消"
+    }
+  },
+  "advanced": {
+    "title": "高级选项",
+    "defender": {
+      "title": "Windows Defender",
+      "desc": "关闭 Windows Defender 实时保护和反间谍软件功能。",
+      "enabled": "已启用",
+      "disabled": "已关闭",
+      "turnOn": "保持启用（推荐）",
+      "turnOff": "关闭 Defender",
+      "risk": "⚠ 风险提示：关闭 Windows Defender 会使系统暴露于病毒和恶意软件威胁之下。请确保已安装其他可靠的杀毒软件。"
+    },
+    "update": {
+      "title": "Windows 更新",
+      "desc": "停止并禁用 Windows Update 服务。",
+      "enabled": "自动更新中",
+      "disabled": "已禁用",
+      "turnOn": "保持自动更新（推荐）",
+      "turnOff": "关闭自动更新",
+      "risk": "⚠ 风险提示：关闭 Windows 更新将无法获取安全补丁和功能更新，系统可能面临已知漏洞的威胁。建议定期手动检查更新。"
+    },
+    "virtualMemory": {
+      "title": "虚拟内存（页面文件）",
+      "desc": "调整 C 盘页面文件的大小。页面文件用于在物理内存不足时扩展可用内存。",
+      "systemManaged": "系统管理",
+      "systemManagedLabel": "由系统自动管理（推荐）",
+      "restartHint": "⚠ 提示：修改虚拟内存后需要重启计算机才能生效。",
+      "initial": "初始大小",
+      "maximum": "最大值",
+      "apply": "应用"
     }
   }
 }

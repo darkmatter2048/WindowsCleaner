@@ -1,3 +1,4 @@
+mod advanced;
 mod auto_clean;
 mod clean;
 mod winapp2;
@@ -228,6 +229,14 @@ pub fn run() {
             winapp2::clean_winapp2,
             auto_clean::get_auto_clean_settings,
             auto_clean::save_auto_clean_settings,
+            advanced::get_advanced_status,
+            advanced::get_defender_status,
+            advanced::set_defender_disabled,
+            advanced::get_update_status,
+            advanced::set_update_disabled,
+            advanced::get_page_file_info,
+            advanced::set_page_file,
+            advanced::reset_page_file_to_system_managed,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
