@@ -26,7 +26,7 @@
 </p>
 </div>
 
-> [!WARNING]  
+> [!CAUTION]  
 > 
 > #### 🔔 如有一般性问题请前往[Discussions](https://github.com/darkmatter2048/WindowsCleaner/discussions)讨论区，***Issues* 仅用于错误报告和功能请求。**
 
