@@ -39,33 +39,33 @@ jobs:
       - name: 编译
         run: pnpm tauri build
 
-      - name: 上传未签名的程序
-        id: upload-unsigned
+      - name: 上传未签名的主程序
+        id: upload-unsigned-exe
         uses: actions/upload-artifact@v4
         with:
-          name: unsigned-bundle
+          name: unsigned-exe
           path: |
-            src-tauri/target/release/bundle/msi/*.msi
-            src-tauri/target/release/bundle/nsis/*.exe
+            src-tauri/target/release/wc.exe
 
       - name: 提交代码签名 (SignPath)
         if: ${{ inputs.sign }}
+        id: submit-signing-request
         uses: signpath/github-action-submit-signing-request@v1.1
         with:
           api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
           organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
           project-slug: "WindowsCleaner"
           signing-policy-slug: "release-signing"
-          artifact-configuration-slug: "sign-msi"
-          github-artifact-id: ${{ steps.upload-unsigned.outputs.artifact-id }}
+          artifact-configuration-slug: "sign-exezip"
+          github-artifact-id: ${{ steps.upload-unsigned-exe.outputs.artifact-id }}
           wait-for-completion: true
           output-artifact-directory: signed
 
-      - name: 上传最终产物
+      - name: 上传最终产物 (含签名)
         uses: actions/upload-artifact@v4
         with:
           name: WindowsCleaner
           path: |
+            signed/*
             src-tauri/target/release/bundle/msi/*.msi
             src-tauri/target/release/bundle/nsis/*.exe
-            signed/*

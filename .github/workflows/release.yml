@@ -34,8 +34,15 @@ jobs:
       - name: 打包
         run: |
           cd artifacts/WindowsCleaner
-          zip -r ../../WindowsCleaner-portable.zip ./*.exe 2>/dev/null || true
+          # Portable exe (signed or unsigned)
+          if [ -f signed/wc.exe ]; then
+            cp signed/wc.exe ./WindowsCleaner.exe
+          fi
+          zip -r ../../WindowsCleaner-portable.zip WindowsCleaner.exe 2>/dev/null || true
+          # MSI installer
           cp ./*.msi ../../WindowsCleaner-installer.msi 2>/dev/null || true
+          # NSIS installer
+          cp ./*-setup.exe ../../WindowsCleaner-setup.exe 2>/dev/null || true
           cd ../..
           ls -la
 
@@ -49,3 +56,4 @@ jobs:
           files: |
             WindowsCleaner-portable.zip
             WindowsCleaner-installer.msi
+            WindowsCleaner-setup.exe
