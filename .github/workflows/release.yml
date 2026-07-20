@@ -7,17 +7,10 @@ on:
         description: "版本号"
         required: true
         default: v6.0.1
-      sign:
-        description: "代码签名"
-        type: boolean
-        default: false
 
 jobs:
   Build:
     uses: ./.github/workflows/build.yml
-    secrets: inherit
-    with:
-      sign: ${{ inputs.sign }}
 
   Release:
     needs: [Build]
@@ -31,21 +24,6 @@ jobs:
         with:
           path: artifacts
 
-      - name: 打包
-        run: |
-          cd artifacts/WindowsCleaner
-          # Portable exe (signed or unsigned)
-          if [ -f signed/wc.exe ]; then
-            cp signed/wc.exe ./WindowsCleaner.exe
-          fi
-          zip -r ../../WindowsCleaner-portable.zip WindowsCleaner.exe 2>/dev/null || true
-          # MSI installer
-          cp ./*.msi ../../WindowsCleaner-installer.msi 2>/dev/null || true
-          # NSIS installer
-          cp ./*-setup.exe ../../WindowsCleaner-setup.exe 2>/dev/null || true
-          cd ../..
-          ls -la
-
       - name: 发行
         uses: softprops/action-gh-release@v2
         with:
@@ -54,6 +32,4 @@ jobs:
           draft: false
           make_latest: true
           files: |
-            WindowsCleaner-portable.zip
-            WindowsCleaner-installer.msi
-            WindowsCleaner-setup.exe
+            artifacts/WindowsCleaner-unsigned/WindowsCleaner-unsigned.zip

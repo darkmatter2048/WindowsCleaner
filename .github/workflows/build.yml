@@ -2,11 +2,6 @@ name: BuildCore
 
 on:
   workflow_call:
-    inputs:
-      sign:
-        required: false
-        type: boolean
-        default: false
 
 jobs:
   Build:
@@ -39,33 +34,32 @@ jobs:
       - name: 编译
         run: pnpm tauri build
 
-      - name: 上传未签名的主程序
-        id: upload-unsigned-exe
+      - name: 打包待签名文件
+        shell: pwsh
+        run: |
+          $dest = "dist/to-sign"
+          New-Item -ItemType Directory -Force -Path $dest
+
+          # 便携版 exe
+          $exe = "src-tauri/target/release/wc.exe"
+          if (Test-Path $exe) { Copy-Item $exe $dest }
+
+          # MSI 安装包
+          $msi = Get-ChildItem "src-tauri/target/release/bundle/msi" -Filter "*.msi" -ErrorAction SilentlyContinue
+          if ($msi) { Copy-Item $msi.FullName $dest }
+
+          # NSIS 安装包
+          $nsis = Get-ChildItem "src-tauri/target/release/bundle/nsis" -Filter "*.exe" -ErrorAction SilentlyContinue
+          if ($nsis) { Copy-Item $nsis.FullName $dest }
+
+          # 打包成 zip
+          Compress-Archive -Path "$dest/*" -DestinationPath "dist/WindowsCleaner-unsigned.zip"
+
+          Write-Output "=== 待签名文件 ==="
+          Get-ChildItem $dest | ForEach-Object { Write-Output $_.Name }
+
+      - name: 上传待签名包
         uses: actions/upload-artifact@v4
         with:
-          name: unsigned-exe
-          path: |
-            src-tauri/target/release/wc.exe
-
-      - name: 提交代码签名 (SignPath)
-        if: ${{ inputs.sign }}
-        id: submit-signing-request
-        uses: signpath/github-action-submit-signing-request@v1.1
-        with:
-          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
-          organization-id: ${{ secrets.SIGNPATH_ORGANIZATION_ID }}
-          project-slug: "WindowsCleaner"
-          signing-policy-slug: "release-signing"
-          artifact-configuration-slug: "sign-exezip"
-          github-artifact-id: ${{ steps.upload-unsigned-exe.outputs.artifact-id }}
-          wait-for-completion: true
-          output-artifact-directory: signed
-
-      - name: 上传最终产物 (含签名)
-        uses: actions/upload-artifact@v4
-        with:
-          name: WindowsCleaner
-          path: |
-            signed/*
-            src-tauri/target/release/bundle/msi/*.msi
-            src-tauri/target/release/bundle/nsis/*.exe
+          name: WindowsCleaner-unsigned
+          path: dist/WindowsCleaner-unsigned.zip

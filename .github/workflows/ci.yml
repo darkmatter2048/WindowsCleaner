@@ -2,15 +2,7 @@ name: 编译
 
 on:
   workflow_dispatch:
-    inputs:
-      sign:
-        description: "代码签名"
-        type: boolean
-        default: false
 
 jobs:
   Build:
     uses: ./.github/workflows/build.yml
-    secrets: inherit
-    with:
-      sign: ${{ inputs.sign }}
