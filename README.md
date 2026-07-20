@@ -26,33 +26,35 @@
 </p>
 </div>
 
-> [!IMPORTANT]  
+> [!WARNING]  
 > 
 > #### 🔔 如有一般性问题请前往[Discussions](https://github.com/darkmatter2048/WindowsCleaner/discussions)讨论区，***Issues* 仅用于错误报告和功能请求。**
 
+> [!tip]
+>
+> 从[中国大陆地区](https://pan.quark.cn/s/03e706cb753a)下载最新版Windows Cleaner
 
+## 主界面
 
-## 🎖 贡献者 Contributors
+![主界面](readme/ui.png)
+
+## 贡献者
 
 <a href="https://github.com/darkmatter2048/WindowsCleaner/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=darkmatter2048/WindowsCleaner" />
 </a>
 
-## 项目状态 / Project Status
-![WindowsCleaner](https://repobeats.axiom.co/api/embed/95ad3871ab16d2b0852d8e4fa9c5bebc450f522d.svg "Repobeats analytics image")
+## 收藏数
 
-
-## ⭐ 星标历史 / Star History
-
-<a href="https://star-history.com/#darkmatter2048/WindowsCleaner&Date">
+<a href="https://www.star-history.com/?repos=darkmatter2048%2FWindowsCleaner&type=date&legend=top-left">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=darkmatter2048/WindowsCleaner&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=darkmatter2048/WindowsCleaner&type=Date" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=darkmatter2048/WindowsCleaner&type=Date" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=darkmatter2048/WindowsCleaner&type=date&theme=dark&legend=top-left&sealed_token=YcP5zIRg5ZbiDQmF65kGhWYS5iUR_r3kx8GxNaYJ6HX0VEVwn4OyDtxCJQN47Ud4Eu3hLxBZmP2_o2d0nIfz3DWvZAKa8gndcZdF7PuYkila75c64JlkCg" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=darkmatter2048/WindowsCleaner&type=date&legend=top-left&sealed_token=YcP5zIRg5ZbiDQmF65kGhWYS5iUR_r3kx8GxNaYJ6HX0VEVwn4OyDtxCJQN47Ud4Eu3hLxBZmP2_o2d0nIfz3DWvZAKa8gndcZdF7PuYkila75c64JlkCg" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=darkmatter2048/WindowsCleaner&type=date&legend=top-left&sealed_token=YcP5zIRg5ZbiDQmF65kGhWYS5iUR_r3kx8GxNaYJ6HX0VEVwn4OyDtxCJQN47Ud4Eu3hLxBZmP2_o2d0nIfz3DWvZAKa8gndcZdF7PuYkila75c64JlkCg" />
  </picture>
 </a>
 
-## 赞助商 / Sponsors
+## 赞助商
 
 感谢以下赞助商对本项目的支持。
 
