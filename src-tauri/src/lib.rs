@@ -6,11 +6,13 @@ mod software_move;
 mod winapp2;
 
 use serde::{Deserialize, Serialize};
+use serde_json::Value as JsonValue;
 use std::sync::Mutex;
 use sysinfo::Disks;
 use tauri::{Manager, WindowEvent, Wry};
 use tauri::menu::{MenuBuilder, MenuItemBuilder};
 use tauri::tray::TrayIconBuilder;
+use tauri_plugin_notification::NotificationExt;
 use winreg::enums::*;
 use winreg::RegKey;
 
@@ -122,6 +124,11 @@ fn write_autostart_enabled(enabled: bool) -> Result<(), String> {
 }
 
 #[tauri::command]
+fn fetch_app_version() -> String {
+    env!("CARGO_PKG_VERSION").to_string()
+}
+
+#[tauri::command]
 fn get_disk_info() -> Result<DiskInfo, String> {
     let disks = Disks::new_with_refreshed_list();
     for disk in disks.list() {
@@ -154,6 +161,11 @@ async fn open_custom_clean_window(app: tauri::AppHandle) -> Result<(), String> {
 #[tauri::command]
 async fn open_settings_window(app: tauri::AppHandle) -> Result<(), String> {
     open_named_window(&app, "settings")
+}
+
+#[tauri::command]
+async fn open_about_window(app: tauri::AppHandle) -> Result<(), String> {
+    open_named_window(&app, "about")
 }
 
 #[tauri::command]
@@ -234,6 +246,57 @@ fn handle_main_close(app: tauri::AppHandle<Wry>, state: tauri::State<AppState>, 
     Ok(())
 }
 
+fn check_startup_update(app: &tauri::AppHandle) {
+    let state = app.state::<AppState>();
+    let enabled = state
+        .update_check_on_startup
+        .lock()
+        .map(|v| *v)
+        .unwrap_or(false);
+    if !enabled {
+        return;
+    }
+
+    let app_handle = app.clone();
+    std::thread::spawn(move || {
+        let current_patch: u32 = env!("CARGO_PKG_VERSION")
+            .split('.')
+            .last()
+            .and_then(|s| s.parse().ok())
+            .unwrap_or(0);
+
+        match ureq::get("https://wc.dyblog.online/version.json").call() {
+            Ok(resp) => {
+                if let Ok(json) = resp.into_json::<JsonValue>() {
+                    if let Some(remote) = json["version"].as_u64() {
+                        if remote as u32 > current_patch {
+                            let body = format!(
+                                "当前版本: v{}\n最新版本: 序号 {}\n请前往官网下载更新",
+                                env!("CARGO_PKG_VERSION"),
+                                remote,
+                            );
+                            let _ = app_handle
+                                .notification()
+                                .builder()
+                                .title("WindowsCleaner 有可用更新")
+                                .body(&body)
+                                .show();
+                            crate::logger::info(
+                                "update",
+                                &format!("发现新版本: remote={} current={}", remote, current_patch),
+                                "",
+                            );
+                        }
+                    }
+                }
+            }
+            Err(e) => {
+                crate::logger::warn("update", "检查更新失败", &e.to_string());
+            }
+        }
+    });
+}
+
 fn build_tray(
     app: &tauri::AppHandle<Wry>,
     icon: tauri::image::Image<'_>,
@@ -277,6 +340,7 @@ pub fn run() {
     tauri::Builder::default()
         .manage(AppState::default())
         .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_notification::init())
         .setup(|app| {
             logger::init(&app.handle());
 
@@ -293,7 +357,7 @@ pub fn run() {
             auto_clean::spawn_auto_clean_watcher(app.handle().clone());
 
             // Set taskbar icons for all windows
-            for label in &["main", "custom-clean", "settings"] {
+            for label in &["main", "custom-clean", "settings", "about"] {
                 if let Some(win) = app.get_webview_window(label) {
                     let _ = win.set_icon(win_icon.clone());
                 }
@@ -311,6 +375,15 @@ pub fn run() {
                         let _ = main.show();
                     }
                 }
+            }
+
+            // Delayed startup update check (give notification system time to init)
+            {
+                let handle = app.handle().clone();
+                std::thread::spawn(move || {
+                    std::thread::sleep(std::time::Duration::from_secs(3));
+                    check_startup_update(&handle);
+                });
             }
 
             // Intercept main window close (taskbar X, Alt+F4, etc.)
@@ -342,8 +415,10 @@ pub fn run() {
         })
         .invoke_handler(tauri::generate_handler![
             get_disk_info,
+            fetch_app_version,
             open_custom_clean_window,
             open_settings_window,
+            open_about_window,
             get_startup_settings,
             set_autostart_enabled,
             set_close_behavior,

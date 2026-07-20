@@ -2,7 +2,7 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for app windows",
-  "windows": ["main", "custom-clean", "settings"],
+  "windows": ["main", "custom-clean", "settings", "about"],
   "permissions": [
     "core:default",
     "opener:default",
@@ -17,6 +17,7 @@
     "core:window:allow-set-background-color",
     "core:window:allow-show",
     "core:window:allow-hide",
-    "core:window:allow-set-focus"
+    "core:window:allow-set-focus",
+    "notification:default"
   ]
 }

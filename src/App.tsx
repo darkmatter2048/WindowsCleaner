@@ -9,6 +9,7 @@ import ActionButtons from "./components/ActionButtons/ActionButtons";
 import Footer from "./components/Footer/Footer";
 import CustomCleanWindow from "./components/CustomCleanWindow/CustomCleanWindow";
 import SettingsWindow from "./components/SettingsWindow/SettingsWindow";
+import AboutWindow from "./components/AboutWindow/AboutWindow";
 import { useTheme } from "./contexts/ThemeContext";
 import { loadSettings, saveSettings } from "./constants/settings";
 import type { AppSettings, AppTheme } from "./types/settings";
@@ -43,8 +44,9 @@ function App() {
   useEffect(() => {
     const settings = loadSettings();
 
-    // Sync close behavior to Rust on startup so taskbar close events work
+    // Sync to Rust on startup so taskbar-close and startup-update-check work
     invoke("set_close_behavior", { behavior: settings.closeBehavior }).catch(() => {});
+    invoke("set_update_check_on_startup", { enabled: settings.updateCheckOnStartup }).catch(() => {});
 
     if (i18n.language !== settings.language) {
       void i18n.changeLanguage(settings.language);
@@ -78,6 +80,10 @@ function App() {
 
   if (window.location.hash === "#/settings") {
     return <SettingsWindow />;
+  }
+
+  if (window.location.hash === "#/about") {
+    return <AboutWindow />;
   }
 
   return (

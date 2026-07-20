@@ -41,7 +41,7 @@ export default function Footer() {
   };
 
   const handleAbout = () => {
-    console.log("About");
+    invoke("open_about_window").catch(() => {});
   };
 
   const handleDonate = () => {

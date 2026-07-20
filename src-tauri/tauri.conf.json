@@ -1,7 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "wc",
-  "version": "0.1.0",
   "identifier": "wc.dyblog.online",
   "build": {
     "beforeDevCommand": "node scripts/dev-server.mjs",
@@ -49,6 +48,19 @@
         "minHeight": 500,
         "decorations": false,
         "transparent": false,
+        "center": true,
+        "visible": false
+      },
+      {
+        "label": "about",
+        "title": "关于",
+        "url": "index.html#/about",
+        "width": 400,
+        "height": 460,
+        "resizable": false,
+        "minWidth": 340,
+        "minHeight": 420,
+        "decorations": false,
         "center": true,
         "visible": false
       }

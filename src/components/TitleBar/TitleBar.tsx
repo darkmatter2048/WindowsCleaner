@@ -71,7 +71,9 @@ export default function TitleBar({ showIcon = true, title }: TitleBarProps) {
   const appWindow = getCurrentWindow();
 
   const handleClose = async () => {
-    if (appWindow.label === "custom-clean" || appWindow.label === "settings") {
+    // Only the main window should trigger close-behavior logic;
+    // every other window just hides on close.
+    if (appWindow.label !== "main") {
       await appWindow.hide();
       return;
     }
