@@ -4,8 +4,8 @@ import TitleBar from "../TitleBar/TitleBar";
 import GeneralCleanPanel from "./GeneralCleanPanel";
 import ScheduledCleanPanel from "./ScheduledCleanPanel";
 import AdvancedPanel from "./AdvancedPanel";
+import SoftwareMovePanel from "./SoftwareMovePanel";
 import CustomCleanNav, { type CustomCleanSection } from "./CustomCleanNav";
-import PlaceholderPanel from "./PlaceholderPanel";
 import type { CleanOptionId } from "../../types/clean";
 import { DEFAULT_GENERAL_CLEAN_OPTION_IDS } from "../../constants/cleanOptions";
 
@@ -84,7 +84,7 @@ export default function CustomCleanWindow() {
       case "advanced":
         return <AdvancedPanel />;
       case "softwareMove":
-        return <PlaceholderPanel titleKey="customClean.nav.softwareMove" />;
+        return <SoftwareMovePanel />;
       default:
         return (
           <GeneralCleanPanel

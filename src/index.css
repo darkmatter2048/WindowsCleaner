@@ -77,6 +77,17 @@ body {
   }
 }
 
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -12px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
 /* === Selection === */
 ::selection {
   background: rgba(0, 153, 204, 0.3);

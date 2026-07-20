@@ -1,6 +1,7 @@
 mod advanced;
 mod auto_clean;
 mod clean;
+mod software_move;
 mod winapp2;
 
 use serde::{Deserialize, Serialize};
@@ -237,6 +238,12 @@ pub fn run() {
             advanced::get_page_file_info,
             advanced::set_page_file,
             advanced::reset_page_file_to_system_managed,
+            software_move::scan_software,
+            software_move::get_available_drives,
+            software_move::check_running_processes,
+            software_move::kill_running_processes,
+            software_move::move_software,
+            software_move::undo_software_move,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
