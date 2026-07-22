@@ -44,6 +44,37 @@
   <img src="https://contrib.rocks/image?repo=darkmatter2048/WindowsCleaner" />
 </a>
 
+## 鸣谢
+
+我真的很感谢所有支持我在GitHub上的开源工作的优秀人士和企业。
+
+<table>
+  <tr>
+    <td>
+      <img alt="SignPath" src="https://signpath.org/assets/favicon-50x50.png" />
+    </td>
+    <td>
+    Free code signing on Windows provided by <a href="https://signpath.io">SignPath.io</a>, certficate by <a href="https://signpath.org/">SignPath Foundation</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img alt="乔星欢" src="https://www.qiaoxh.com/favicon.ico" width="50" height="50" />
+    </td>
+    <td>
+    非常感谢<a href="https://www.qiaoxh.com/?from=dyblog.online">乔星欢</a>为dyblog.online提供的免费的CDN服务(<a href="https://www.devpole.com/?from=dyblog.online">DevPole</a>)❤️
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img alt="玄离199" src="https://i0.hdslb.com/bfs/face/8a70069e1dc9ab89c1d688c2cefd3596864315ea.jpg@240w_240h_1c_1s_!web-avatar-search-videos.webp" width="50" height="50" style="border-radius: 50%;" />
+    </td>
+    <td>
+    感谢<a href="https://space.bilibili.com/67079745?from=dyblog.online">玄离199</a>的安利，很意外，也很惊喜🥳
+    </td>
+  </tr>
+</table>
+
 ## 收藏数
 
 <a href="https://www.star-history.com/?repos=darkmatter2048%2FWindowsCleaner&type=date&legend=top-left">
@@ -54,19 +85,59 @@
  </picture>
 </a>
 
-## 赞助商
+## 友情推广
 
-感谢以下赞助商对本项目的支持。
+DaYe的朋友们的主页
 
 <table>
   <tr>
     <td>
-      <img alt="SignPath" src="https://signpath.org/assets/favicon-50x50.png" />
+      <img alt="星之墨辰" src="https://i0.hdslb.com/bfs/face/a4857a7ced78847c725e87b0598f3e09f3ceb094.jpg@240w_240h_1c_1s_!web-avatar-search-videos.webp" width="50" height="50" style="border-radius: 50%;"/>
     </td>
     <td>
-    Free code signing on Windows provided by <a href="https://signpath.io">SignPath.io</a>, certficate by <a href="https://signpath.org/">SignPath Foundation</a>
+    <a href="https://space.bilibili.com/501149848?from=dyblog.online">星之墨辰</a>——互联网中的全能区UP，乃究极宝藏！关注他，你能得到不一样的惊喜！ 合作微信：ZHAO15943546500 粉丝群：149054683</a>
     </td>
-  </tr> 
+  </tr>
+  <tr>
+    <td>
+      <img alt="TC999" src="https://i0.hdslb.com/bfs/face/a584514df6ceaa8f2d5a87360cce8903bceb6aa0.jpg@240w_240h_1c_1s_!web-avatar-search-videos.webp" width="50" height="50" style="border-radius: 50%;"/>
+    </td>
+    <td>
+    <a href="https://space.bilibili.com/648765401">陈生杂物房</a>——WindowsCleaner老版本贡献者之一，佛系UP，随缘更新，外语日本语
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img alt="玄夜" src="https://www.sakuraxy.top/favicon.ico" width="50" height="50"/>
+    </td>
+    <td>
+    <a href="https://www.sakuraxy.top/?from=dyblog.online">玄夜の资源站</a>：专心做好一件事——做最好的资源站
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img alt="蓝创工坊" src="https://lcgf.xyz/logo-white-bg.webp" width="50" height="50" style="border-radius: 50%;" />
+    </td>
+    <td>
+    <a href="https://lcgf.xyz/?from=dyblog.online">蓝创工坊OPC</a>：记录探索如何激发创新，创新如何产生价值，价值如何上升艺术
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img alt="vladelaina" src="https://vladelaina.com/assets/vladelaina.jpg" width="50" height="50" style="border-radius: 50%;" />
+    </td>
+    <td>
+    <a href="https://vladelaina.com/">vladelaina</a>：信仰开源之道，崇尚 Arch 之美，沉溺二次元世界
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img alt="Necream" src="https://avatars.githubusercontent.com/u/99577760?v=4" width="50" height="50" style="border-radius: 50%;" />
+    </td>
+    <td>
+    <a href="https://github.com/Necream">Necream</a>：复刻并尝试二创WindowsCleaner
+    </td>
+  </tr>
 </table>
 
 ## Copyright & License ⚖
