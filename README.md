@@ -70,7 +70,16 @@
       <img alt="玄离199" src="https://i0.hdslb.com/bfs/face/8a70069e1dc9ab89c1d688c2cefd3596864315ea.jpg@240w_240h_1c_1s_!web-avatar-search-videos.webp" width="50" height="50" style="border-radius: 50%;" />
     </td>
     <td>
-    感谢<a href="https://space.bilibili.com/67079745?from=dyblog.online">玄离199</a>的安利，很意外，也很惊喜🥳
+    感谢<a href="https://space.bilibili.com/67079745?from=dyblog.online">玄离199</a>的安利，很意外，也很惊喜🥳<a href="https://www.bilibili.com/video/BV1VmLozrEDE">视频地址</a>
+    </td>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img alt="资源汇社区" src="https://i0.hdslb.com/bfs/face/49155e68a6271ee9f2129ae4318a59454841ca5b.jpg@240w_240h_1c_1s_!web-avatar-search-videos.webp" width="50" height="50" style="border-radius: 50%;" />
+    </td>
+    <td>
+    感谢<a href="https://space.bilibili.com/175870152?from=dyblog.online">资源汇社区</a>的安利🥳<a href="https://www.bilibili.com/video/BV1h3gh6aEbJ">视频地址</a>
     </td>
   </tr>
 </table>
@@ -120,6 +129,14 @@ DaYe的朋友们的主页
     </td>
     <td>
     <a href="https://lcgf.xyz/?from=dyblog.online">蓝创工坊OPC</a>：记录探索如何激发创新，创新如何产生价值，价值如何上升艺术
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img alt="一只莫欣儿" src="https://i0.hdslb.com/bfs/face/36d5f78da5a12f5163efd00c8993151939d6a2e7.jpg@240w_240h_1c_1s_!web-avatar-search-videos.webp" width="50" height="50" style="border-radius: 50%;"/>
+    </td>
+    <td>
+    <a href="https://space.bilibili.com/297566799?from=dyblog.online">一只莫欣儿</a>：我恨人类！！！！一只莫欣儿，成分：开发者、乐子人、动画师、废物</a>
     </td>
   </tr>
   <tr>
