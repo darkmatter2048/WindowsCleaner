@@ -1,6 +1,6 @@
 [package]
 name = "wc"
-version = "6.0.2"
+version = "6.10.2"
 description = "Windows Cleaner"
 authors = ["DaYe"]
 edition = "2021"
