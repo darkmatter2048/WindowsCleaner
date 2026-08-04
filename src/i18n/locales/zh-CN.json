@@ -52,6 +52,7 @@
       "software_distribution": { "title": "更新下载缓存", "description": "清理 Windows Update 下载缓存。" },
       "browser_cache": { "title": "浏览器缓存", "description": "清理 Chrome 和 Edge 的默认缓存目录。" },
       "temp_files_c": { "title": "C 盘临时文件", "description": "递归清理 C 盘上的 .tmp 和 .cache 文件。" },
+      "log_files_c": { "title": "C 盘日志文件", "description": "递归清理 C 盘上的 .log 文件。" },
       "restore_points": { "title": "系统还原点", "description": "删除 C 盘系统还原点。" },
       "hibernation": { "title": "休眠文件", "description": "关闭系统休眠并释放 hiberfil.sys。" },
       "delivery_optimization": { "title": "分发优化缓存", "description": "清理 Delivery Optimization 下载缓存。" },
@@ -63,6 +64,7 @@
       "nvidia_debug_logs": { "title": "NVIDIA 调试日志", "description": "清理 NVIDIA debug.log 文件。" },
       "wps_backups": { "title": "WPS 备份", "description": "清理 WPS 备份目录。" },
       "winapp2": { "title": "软件缓存", "description": "清理常用软件缓存。" },
+      "recycle_bin": { "title": "回收站", "description": "清空 C 盘回收站中的所有文件。" },
       "msp_files": { "title": "清理 .msp 文件", "description": "递归清理磁盘上的 Windows Installer patch 文件。" }
     }
   },

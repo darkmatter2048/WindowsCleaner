@@ -52,6 +52,7 @@
       "software_distribution": { "title": "更新ダウンロードキャッシュ", "description": "Windows Update のダウンロードキャッシュをクリーンします。" },
       "browser_cache": { "title": "ブラウザキャッシュ", "description": "Chrome と Edge のデフォルトキャッシュディレクトリをクリーンします。" },
       "temp_files_c": { "title": "Cドライブ一時ファイル", "description": "Cドライブ上の .tmp および .cache ファイルを再帰的にクリーンします。" },
+      "log_files_c": { "title": "Cドライブログファイル", "description": "Cドライブ上の .log ファイルを再帰的に削除します。" },
       "restore_points": { "title": "システム復元ポイント", "description": "Cドライブのシステム復元ポイントを削除します。" },
       "hibernation": { "title": "休止状態ファイル", "description": "休止状態を無効にして hiberfil.sys を解放します。" },
       "delivery_optimization": { "title": "配信最適化キャッシュ", "description": "Delivery Optimization のダウンロードキャッシュをクリーンします。" },
@@ -63,6 +64,7 @@
       "nvidia_debug_logs": { "title": "NVIDIA デバッグログ", "description": "NVIDIA debug.log ファイルをクリーンします。" },
       "wps_backups": { "title": "WPS バックアップ", "description": "WPS バックアップディレクトリと .bak / .wbk ファイルをクリーンします。" },
       "winapp2": { "title": "ソフトウェアキャッシュ", "description": "検出されたソフトウェアキャッシュルールをクリーンします。" },
+      "recycle_bin": { "title": "ごみ箱", "description": "C ドライブのごみ箱内の全ファイルを空にします。" },
       "msp_files": { "title": ".msp ファイルのクリーン", "description": "ディスク上の Windows Installer パッチファイルを再帰的にクリーンします。" }
     }
   },

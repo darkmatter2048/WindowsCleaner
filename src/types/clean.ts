@@ -22,7 +22,9 @@ export type CleanOptionId =
   | "nvidia_debug_logs"
   | "wps_backups"
   | "winapp2"
-  | "msp_files";
+  | "msp_files"
+  | "recycle_bin"
+  | "log_files_c";
 
 export interface CleanOptionConfig {
   id: CleanOptionId;

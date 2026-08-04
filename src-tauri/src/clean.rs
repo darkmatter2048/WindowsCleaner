@@ -8,7 +8,7 @@ pub struct CleanResult {
     pub errors: Vec<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, Copy)]
+#[derive(Debug, Serialize, Deserialize, Clone, Copy, PartialEq, Eq)]
 #[serde(rename_all = "snake_case")]
 pub enum CleanOption {
     Prefetch,
@@ -30,6 +30,8 @@ pub enum CleanOption {
     WpsBackups,
     Winapp2,
     MspFiles,
+    RecycleBin,
+    LogFilesC,
 }
 
 #[derive(Deserialize)]
@@ -214,9 +216,9 @@ fn clean_restore_points() -> CleanResult {
     result
 }
 
-fn clean_temp_by_ext(root: &Path) -> CleanResult {
+/// Recursively walk `root` and delete files whose extension matches any in `exts`.
+fn clean_c_drive_by_exts(root: &Path, exts: &[&str]) -> CleanResult {
     let mut result = CleanResult::new();
-    let exts = ["tmp", "cache"];
 
     fn walk(dir: &Path, exts: &[&str], result: &mut CleanResult) {
         let entries = match fs::read_dir(dir) {
@@ -238,14 +240,27 @@ fn clean_temp_by_ext(root: &Path) -> CleanResult {
         }
     }
 
-    walk(root, &exts, &mut result);
+    walk(root, exts, &mut result);
     result
+}
+
+fn clean_temp_by_ext(root: &Path) -> CleanResult {
+    clean_c_drive_by_exts(root, &["tmp", "cache"])
 }
 
 fn clean_temp_files_c() -> CleanResult {
     let root = PathBuf::from("C:\\");
     if root.exists() {
         clean_temp_by_ext(&root)
+    } else {
+        CleanResult::new()
+    }
+}
+
+fn clean_log_files_c() -> CleanResult {
+    let root = PathBuf::from("C:\\");
+    if root.exists() {
+        clean_c_drive_by_exts(&root, &["log"])
     } else {
         CleanResult::new()
     }
@@ -451,6 +466,15 @@ fn clean_shader_cache() -> CleanResult {
     result
 }
 
+fn clean_recycle_bin() -> CleanResult {
+    let path = PathBuf::from("C:\\$Recycle.Bin");
+    if path.exists() {
+        clean_folder_contents(&path)
+    } else {
+        CleanResult::new()
+    }
+}
+
 fn clean_nvidia_debug_logs() -> CleanResult {
     let mut result = CleanResult::new();
 
@@ -582,6 +606,8 @@ pub fn run_clean_option(option: CleanOption) -> CleanResult {
         CleanOption::WpsBackups => clean_wps_backups(),
         CleanOption::Winapp2 => crate::winapp2::clean_winapp2(),
         CleanOption::MspFiles => clean_msp_files(),
+        CleanOption::RecycleBin => clean_recycle_bin(),
+        CleanOption::LogFilesC => clean_log_files_c(),
     };
     if result.bytes_freed > 0 || !result.errors.is_empty() {
         crate::logger::info(
@@ -600,7 +626,23 @@ fn run_clean_options(options: &[CleanOption]) -> CleanResult {
     let mut result = CleanResult::new();
     let before = measure_c_free().unwrap_or(0);
 
+    // Optimization: when both TempFilesC and LogFilesC are selected,
+    // merge them into a single C:\ traversal to avoid scanning the disk twice.
+    let has_temp_c = options.contains(&CleanOption::TempFilesC);
+    let has_log_c = options.contains(&CleanOption::LogFilesC);
+    if has_temp_c && has_log_c {
+        result.merge(clean_c_drive_by_exts(
+            &PathBuf::from("C:\\"),
+            &["tmp", "cache", "log"],
+        ));
+    }
+
     for option in options {
+        if has_temp_c && has_log_c {
+            if *option == CleanOption::TempFilesC || *option == CleanOption::LogFilesC {
+                continue; // already handled by the combined traversal above
+            }
+        }
         result.merge(run_clean_option(*option));
     }
 

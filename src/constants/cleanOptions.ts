@@ -8,6 +8,7 @@ export const GENERAL_CLEAN_OPTIONS: CleanOptionConfig[] = [
   { id: "software_distribution", defaultChecked: true },
   { id: "browser_cache", defaultChecked: true },
   { id: "temp_files_c", defaultChecked: true },
+  { id: "log_files_c", defaultChecked: false },
   { id: "restore_points", defaultChecked: true, risky: true },
   { id: "hibernation", defaultChecked: true, risky: true },
   { id: "delivery_optimization", defaultChecked: true },
@@ -19,6 +20,7 @@ export const GENERAL_CLEAN_OPTIONS: CleanOptionConfig[] = [
   { id: "nvidia_debug_logs", defaultChecked: true },
   { id: "wps_backups", defaultChecked: true },
   { id: "winapp2", defaultChecked: true },
+  { id: "recycle_bin", defaultChecked: false },
   { id: "msp_files", defaultChecked: false, risky: true },
 ];
 

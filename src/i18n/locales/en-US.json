@@ -52,6 +52,7 @@
       "software_distribution": { "title": "Update Download Cache", "description": "Clean the Windows Update download cache." },
       "browser_cache": { "title": "Browser Cache", "description": "Clean the default Chrome and Edge cache folders." },
       "temp_files_c": { "title": "C Drive Temp Files", "description": "Recursively clean .tmp and .cache files on C:." },
+      "log_files_c": { "title": "C Drive Log Files", "description": "Recursively clean .log files on C:. " },
       "restore_points": { "title": "Restore Points", "description": "Delete restore points on drive C:." },
       "hibernation": { "title": "Hibernation File", "description": "Turn off hibernation and release hiberfil.sys." },
       "delivery_optimization": { "title": "Delivery Optimization", "description": "Clean the Delivery Optimization cache." },
@@ -63,6 +64,7 @@
       "nvidia_debug_logs": { "title": "NVIDIA Debug Logs", "description": "Clean NVIDIA debug.log files." },
       "wps_backups": { "title": "WPS Backups", "description": "Clean WPS backup folders and .bak / .wbk files." },
       "winapp2": { "title": "Software Cache", "description": "Clean detected software cache rules." },
+      "recycle_bin": { "title": "Recycle Bin", "description": "Empty all files in the C: drive Recycle Bin." },
       "msp_files": { "title": "Recursive .msp Files", "description": "Recursively clean Windows Installer patch files on the disk." }
     }
   },
