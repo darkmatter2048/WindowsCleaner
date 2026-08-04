@@ -49,7 +49,9 @@
       "user_temp": { "title": "User Temp Files", "description": "Clean the current user TEMP directory." },
       "windows_temp": { "title": "Windows Temp Files", "description": "Clean the contents of C:\\Windows\\Temp." },
       "system_logs": { "title": "System Logs", "description": "Clean files under C:\\Windows\\Logs." },
-      "software_distribution": { "title": "Update Download Cache", "description": "Clean the Windows Update download cache." },
+      "software_distribution": { "title": "Update Download Cache", "description": "Clean the Windows Update download cache (including uninstaller leftovers)." },
+      "memory_dumps": { "title": "Memory Dumps", "description": "Delete memory.dmp and Minidump crash dump files." },
+      "old_windows": { "title": "Old Windows Files", "description": "Delete windows.old, $windows.~bt and other upgrade leftovers." },
       "browser_cache": { "title": "Browser Cache", "description": "Clean the default Chrome and Edge cache folders." },
       "temp_files_c": { "title": "C Drive Temp Files", "description": "Recursively clean .tmp and .cache files on C:." },
       "log_files_c": { "title": "C Drive Log Files", "description": "Recursively clean .log files on C:. " },
@@ -65,6 +67,10 @@
       "wps_backups": { "title": "WPS Backups", "description": "Clean WPS backup folders and .bak / .wbk files." },
       "winapp2": { "title": "Software Cache", "description": "Clean detected software cache rules." },
       "recycle_bin": { "title": "Recycle Bin", "description": "Empty all files in the C: drive Recycle Bin." },
+      "node_modules": { "title": "node_modules Dirs", "description": "Recursively delete node_modules directories on C:. " },
+      "scattered_thumbs": { "title": "Scattered Thumbs.db", "description": "Recursively delete Thumbs.db files across C:. " },
+      "bak_files": { "title": "Backup Files (.bak)", "description": "Recursively delete .bak backup files on C:. " },
+      "editor_temp": { "title": "Editor Temp Files (*~)", "description": "Recursively delete editor temp files (*~) on C:. " },
       "msp_files": { "title": "Recursive .msp Files", "description": "Recursively clean Windows Installer patch files on the disk." }
     }
   },

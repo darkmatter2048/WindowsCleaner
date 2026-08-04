@@ -24,7 +24,13 @@ export type CleanOptionId =
   | "winapp2"
   | "msp_files"
   | "recycle_bin"
-  | "log_files_c";
+  | "log_files_c"
+  | "memory_dumps"
+  | "old_windows"
+  | "node_modules"
+  | "scattered_thumbs"
+  | "bak_files"
+  | "editor_temp";
 
 export interface CleanOptionConfig {
   id: CleanOptionId;

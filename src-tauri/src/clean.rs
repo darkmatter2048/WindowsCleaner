@@ -32,6 +32,12 @@ pub enum CleanOption {
     MspFiles,
     RecycleBin,
     LogFilesC,
+    MemoryDumps,
+    OldWindows,
+    NodeModules,
+    ScatteredThumbs,
+    BakFiles,
+    EditorTemp,
 }
 
 #[derive(Deserialize)]
@@ -168,31 +174,100 @@ fn clean_system_logs() -> CleanResult {
     }
 }
 
-fn is_windows_update_active() -> bool {
+fn service_is_running(name: &str) -> bool {
     std::process::Command::new("sc")
-        .args(["query", "wuauserv"])
+        .args(["query", name])
         .output()
         .map(|out| {
-            let text = String::from_utf8_lossy(&out.stdout);
-            text.contains("RUNNING")
+            String::from_utf8_lossy(&out.stdout).contains("RUNNING")
         })
         .unwrap_or(false)
+}
+
+fn stop_service(name: &str, result: &mut CleanResult) {
+    let out = std::process::Command::new("net")
+        .args(["stop", name])
+        .output();
+    match out {
+        Ok(o) if !o.status.success() => {
+            let msg = String::from_utf8_lossy(&o.stderr);
+            result.add_error(format!("net stop {}: {}", name, msg.trim()));
+        }
+        Err(e) => {
+            result.add_error(format!("Cannot stop {}: {}", name, e));
+        }
+        _ => {}
+    }
+}
+
+fn start_service(name: &str, result: &mut CleanResult) {
+    let out = std::process::Command::new("net")
+        .args(["start", name])
+        .output();
+    match out {
+        Ok(o) if !o.status.success() => {
+            let msg = String::from_utf8_lossy(&o.stderr);
+            result.add_error(format!("net start {}: {}", name, msg.trim()));
+        }
+        Err(e) => {
+            result.add_error(format!("Cannot start {}: {}", name, e));
+        }
+        _ => {}
+    }
 }
 
 fn clean_software_distribution() -> CleanResult {
     let mut result = CleanResult::new();
 
-    if is_windows_update_active() {
-        result.add_error("Windows Update is active, skipping SoftwareDistribution cleanup".into());
-        return result;
+    let wuauserv_was_running = service_is_running("wuauserv");
+    let cryptsvc_was_running = service_is_running("cryptsvc");
+    let bits_was_running = service_is_running("BITS");
+    let msiserver_was_running = service_is_running("msiserver");
+
+    // Stop services to release locks on update files
+    if wuauserv_was_running { stop_service("wuauserv", &mut result); }
+    if cryptsvc_was_running { stop_service("cryptsvc", &mut result); }
+    if bits_was_running { stop_service("BITS", &mut result); }
+    if msiserver_was_running { stop_service("msiserver", &mut result); }
+
+    // Clean update caches
+    let sd = windows_dir().join("SoftwareDistribution");
+    if sd.exists() {
+        result.merge(clean_folder_contents(&sd));
+    }
+    let sd_old = windows_dir().join("SoftwareDistribution.old");
+    if sd_old.exists() {
+        result.merge(clean_folder_contents(&sd_old));
+    }
+    let sd_bak = windows_dir().join("SoftwareDistribution.bak");
+    if sd_bak.exists() {
+        result.merge(clean_folder_contents(&sd_bak));
     }
 
-    let path = windows_dir().join("SoftwareDistribution").join("Download");
-    if path.exists() {
-        clean_folder_contents(&path)
-    } else {
-        result
+    // Clean Windows Update uninstallers ($NtUninstallKB*)
+    if let Ok(entries) = fs::read_dir(windows_dir()) {
+        for entry in entries.flatten() {
+            let name = entry.file_name();
+            let name_str = name.to_string_lossy();
+            if name_str.starts_with("$NtUninstallKB") {
+                let path = entry.path();
+                if path.is_dir() {
+                    match fs::remove_dir_all(&path) {
+                        Ok(_) => {}
+                        Err(e) => result.add_error(format!("Cannot delete {}: {}", path.display(), e)),
+                    }
+                }
+            }
+        }
     }
+
+    // Restart services that were running before
+    if wuauserv_was_running { start_service("wuauserv", &mut result); }
+    if cryptsvc_was_running { start_service("cryptsvc", &mut result); }
+    if bits_was_running { start_service("BITS", &mut result); }
+    if msiserver_was_running { start_service("msiserver", &mut result); }
+
+    result
 }
 
 fn clean_restore_points() -> CleanResult {
@@ -362,6 +437,66 @@ fn clean_delivery_optimization() -> CleanResult {
     }
 }
 
+fn clean_memory_dumps() -> CleanResult {
+    let mut result = CleanResult::new();
+
+    let full_dump = windows_dir().join("memory.dmp");
+    if full_dump.is_file() {
+        let size = full_dump.metadata().map(|m| m.len()).unwrap_or(0);
+        match fs::remove_file(&full_dump) {
+            Ok(_) => result.add_freed(size),
+            Err(e) => result.add_error(format!("Cannot delete {}: {}", full_dump.display(), e)),
+        }
+    }
+
+    let minidump = windows_dir().join("Minidump");
+    if minidump.exists() {
+        if let Ok(entries) = fs::read_dir(&minidump) {
+            for entry in entries.flatten() {
+                let p = entry.path();
+                if p.is_file() {
+                    if let Some(ext) = p.extension().and_then(|e| e.to_str()) {
+                        if ext.eq_ignore_ascii_case("dmp") {
+                            let size = entry.metadata().map(|m| m.len()).unwrap_or(0);
+                            match fs::remove_file(&p) {
+                                Ok(_) => result.add_freed(size),
+                                Err(e) => result.add_error(format!("Skip {}: {}", p.display(), e)),
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    result
+}
+
+fn clean_old_windows() -> CleanResult {
+    let mut result = CleanResult::new();
+
+    let system_drive = PathBuf::from(
+        std::env::var("SystemDrive").unwrap_or_else(|_| "C:".into()),
+    );
+
+    let targets = [
+        system_drive.join("windows.old"),
+        system_drive.join("$windows.~bt"),
+        system_drive.join("$windows.~ws"),
+    ];
+
+    for target in &targets {
+        if target.exists() {
+            match fs::remove_dir_all(target) {
+                Ok(_) => {}
+                Err(e) => result.add_error(format!("Cannot delete {}: {}", target.display(), e)),
+            }
+        }
+    }
+
+    result
+}
+
 fn clean_thumbnails() -> CleanResult {
     let path = local_appdata()
         .join("Microsoft")
@@ -475,6 +610,99 @@ fn clean_recycle_bin() -> CleanResult {
     }
 }
 
+// ---------------------------------------------------------------------------
+// Deep Scan helpers – combined traversal for full-disk pattern matching
+// ---------------------------------------------------------------------------
+
+struct DeepScanTargets {
+    node_modules: bool,
+    thumbs_db: bool,
+    bak_files: bool,
+    editor_temp: bool,
+}
+
+fn clean_deep_scan(root: &Path, targets: &DeepScanTargets) -> CleanResult {
+    let mut result = CleanResult::new();
+
+    fn walk(dir: &Path, targets: &DeepScanTargets, result: &mut CleanResult) {
+        let entries = match fs::read_dir(dir) {
+            Ok(e) => e,
+            Err(_) => return,
+        };
+        for entry in entries.flatten() {
+            let path = entry.path();
+            if path.is_dir() {
+                let dir_name = path.file_name().and_then(|n| n.to_str()).unwrap_or("");
+                if targets.node_modules && dir_name.eq_ignore_ascii_case("node_modules") {
+                    match fs::remove_dir_all(&path) {
+                        Ok(_) => {}
+                        Err(e) => result.add_error(format!("Cannot delete {}: {}", path.display(), e)),
+                    }
+                    continue; // skip recursing into the deleted directory
+                }
+                walk(&path, targets, result);
+            } else if let Some(name) = path.file_name().and_then(|n| n.to_str()) {
+                let lower = name.to_lowercase();
+                if targets.thumbs_db && lower == "thumbs.db" {
+                    let size = entry.metadata().map(|m| m.len()).unwrap_or(0);
+                    if fs::remove_file(&path).is_ok() {
+                        result.add_freed(size);
+                    }
+                } else if targets.bak_files && lower.ends_with(".bak") {
+                    let size = entry.metadata().map(|m| m.len()).unwrap_or(0);
+                    if fs::remove_file(&path).is_ok() {
+                        result.add_freed(size);
+                    }
+                } else if targets.editor_temp && lower.ends_with("~") {
+                    let size = entry.metadata().map(|m| m.len()).unwrap_or(0);
+                    if fs::remove_file(&path).is_ok() {
+                        result.add_freed(size);
+                    }
+                }
+            }
+        }
+    }
+
+    walk(root, targets, &mut result);
+    result
+}
+
+fn clean_node_modules() -> CleanResult {
+    let root = PathBuf::from("C:\\");
+    if root.exists() {
+        clean_deep_scan(&root, &DeepScanTargets { node_modules: true, thumbs_db: false, bak_files: false, editor_temp: false })
+    } else {
+        CleanResult::new()
+    }
+}
+
+fn clean_scattered_thumbs() -> CleanResult {
+    let root = PathBuf::from("C:\\");
+    if root.exists() {
+        clean_deep_scan(&root, &DeepScanTargets { node_modules: false, thumbs_db: true, bak_files: false, editor_temp: false })
+    } else {
+        CleanResult::new()
+    }
+}
+
+fn clean_bak_files() -> CleanResult {
+    let root = PathBuf::from("C:\\");
+    if root.exists() {
+        clean_deep_scan(&root, &DeepScanTargets { node_modules: false, thumbs_db: false, bak_files: true, editor_temp: false })
+    } else {
+        CleanResult::new()
+    }
+}
+
+fn clean_editor_temp() -> CleanResult {
+    let root = PathBuf::from("C:\\");
+    if root.exists() {
+        clean_deep_scan(&root, &DeepScanTargets { node_modules: false, thumbs_db: false, bak_files: false, editor_temp: true })
+    } else {
+        CleanResult::new()
+    }
+}
+
 fn clean_nvidia_debug_logs() -> CleanResult {
     let mut result = CleanResult::new();
 
@@ -582,6 +810,8 @@ const QUICK_CLEAN_OPTIONS: &[CleanOption] = &[
     CleanOption::NvidiaDebugLogs,
     CleanOption::WpsBackups,
     CleanOption::Winapp2,
+    CleanOption::MemoryDumps,
+    CleanOption::OldWindows,
 ];
 
 pub fn run_clean_option(option: CleanOption) -> CleanResult {
@@ -608,6 +838,12 @@ pub fn run_clean_option(option: CleanOption) -> CleanResult {
         CleanOption::MspFiles => clean_msp_files(),
         CleanOption::RecycleBin => clean_recycle_bin(),
         CleanOption::LogFilesC => clean_log_files_c(),
+        CleanOption::MemoryDumps => clean_memory_dumps(),
+        CleanOption::OldWindows => clean_old_windows(),
+        CleanOption::NodeModules => clean_node_modules(),
+        CleanOption::ScatteredThumbs => clean_scattered_thumbs(),
+        CleanOption::BakFiles => clean_bak_files(),
+        CleanOption::EditorTemp => clean_editor_temp(),
     };
     if result.bytes_freed > 0 || !result.errors.is_empty() {
         crate::logger::info(
@@ -637,10 +873,42 @@ fn run_clean_options(options: &[CleanOption]) -> CleanResult {
         ));
     }
 
+    // Optimization: collect all deep-scan options into a single C:\ traversal.
+    let has_node_modules = options.contains(&CleanOption::NodeModules);
+    let has_thumbs_db = options.contains(&CleanOption::ScatteredThumbs);
+    let has_bak = options.contains(&CleanOption::BakFiles);
+    let has_editor = options.contains(&CleanOption::EditorTemp);
+    let deep_count = [has_node_modules, has_thumbs_db, has_bak, has_editor]
+        .iter()
+        .filter(|&&x| x)
+        .count();
+    if deep_count > 0 {
+        result.merge(clean_deep_scan(
+            &PathBuf::from("C:\\"),
+            &DeepScanTargets {
+                node_modules: has_node_modules,
+                thumbs_db: has_thumbs_db,
+                bak_files: has_bak,
+                editor_temp: has_editor,
+            },
+        ));
+    }
+
     for option in options {
         if has_temp_c && has_log_c {
             if *option == CleanOption::TempFilesC || *option == CleanOption::LogFilesC {
                 continue; // already handled by the combined traversal above
+            }
+        }
+        if deep_count > 0 {
+            if matches!(
+                *option,
+                CleanOption::NodeModules
+                    | CleanOption::ScatteredThumbs
+                    | CleanOption::BakFiles
+                    | CleanOption::EditorTemp
+            ) {
+                continue; // already handled by the combined deep scan above
             }
         }
         result.merge(run_clean_option(*option));

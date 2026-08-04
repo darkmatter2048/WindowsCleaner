@@ -49,7 +49,9 @@
       "user_temp": { "title": "ユーザー一時ファイル", "description": "現在のユーザーの TEMP ディレクトリをクリーンします。" },
       "windows_temp": { "title": "システム一時ファイル", "description": "C:\\Windows\\Temp の内容をクリーンします。" },
       "system_logs": { "title": "システムログ", "description": "C:\\Windows\\Logs 内のファイルをクリーンします。" },
-      "software_distribution": { "title": "更新ダウンロードキャッシュ", "description": "Windows Update のダウンロードキャッシュをクリーンします。" },
+      "software_distribution": { "title": "更新ダウンロードキャッシュ", "description": "Windows Update のダウンロードキャッシュ（アンインストーラー残りを含む）をクリーンします。" },
+      "memory_dumps": { "title": "メモリダンプ", "description": "memory.dmp と Minidump クラッシュダンプファイルを削除します。" },
+      "old_windows": { "title": "古いWindows残り", "description": "windows.old、$windows.~bt などの大型アップデート残りを削除します。" },
       "browser_cache": { "title": "ブラウザキャッシュ", "description": "Chrome と Edge のデフォルトキャッシュディレクトリをクリーンします。" },
       "temp_files_c": { "title": "Cドライブ一時ファイル", "description": "Cドライブ上の .tmp および .cache ファイルを再帰的にクリーンします。" },
       "log_files_c": { "title": "Cドライブログファイル", "description": "Cドライブ上の .log ファイルを再帰的に削除します。" },
@@ -65,6 +67,10 @@
       "wps_backups": { "title": "WPS バックアップ", "description": "WPS バックアップディレクトリと .bak / .wbk ファイルをクリーンします。" },
       "winapp2": { "title": "ソフトウェアキャッシュ", "description": "検出されたソフトウェアキャッシュルールをクリーンします。" },
       "recycle_bin": { "title": "ごみ箱", "description": "C ドライブのごみ箱内の全ファイルを空にします。" },
+      "node_modules": { "title": "node_modules ディレクトリ", "description": "Cドライブ上の node_modules ディレクトリを再帰的に削除します。" },
+      "scattered_thumbs": { "title": "散らばった Thumbs.db", "description": "Cドライブ上の Thumbs.db ファイルを再帰的に削除します。" },
+      "bak_files": { "title": "バックアップファイル (.bak)", "description": "Cドライブ上の .bak バックアップファイルを再帰的に削除します。" },
+      "editor_temp": { "title": "エディタ一時ファイル (*~)", "description": "Cドライブ上のエディタ一時ファイル（*~）を再帰的に削除します。" },
       "msp_files": { "title": ".msp ファイルのクリーン", "description": "ディスク上の Windows Installer パッチファイルを再帰的にクリーンします。" }
     }
   },

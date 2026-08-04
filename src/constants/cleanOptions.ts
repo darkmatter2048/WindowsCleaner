@@ -6,6 +6,8 @@ export const GENERAL_CLEAN_OPTIONS: CleanOptionConfig[] = [
   { id: "windows_temp", defaultChecked: true },
   { id: "system_logs", defaultChecked: true },
   { id: "software_distribution", defaultChecked: true },
+  { id: "memory_dumps", defaultChecked: true },
+  { id: "old_windows", defaultChecked: true },
   { id: "browser_cache", defaultChecked: true },
   { id: "temp_files_c", defaultChecked: true },
   { id: "log_files_c", defaultChecked: false },
@@ -21,6 +23,10 @@ export const GENERAL_CLEAN_OPTIONS: CleanOptionConfig[] = [
   { id: "wps_backups", defaultChecked: true },
   { id: "winapp2", defaultChecked: true },
   { id: "recycle_bin", defaultChecked: false },
+  { id: "node_modules", defaultChecked: false },
+  { id: "scattered_thumbs", defaultChecked: false },
+  { id: "bak_files", defaultChecked: false },
+  { id: "editor_temp", defaultChecked: false },
   { id: "msp_files", defaultChecked: false, risky: true },
 ];
 
