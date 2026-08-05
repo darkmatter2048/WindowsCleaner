@@ -1,4 +1,4 @@
-import { Component, useState } from "react";
+import { Component, useCallback, useState } from "react";
 import { makeStyles, tokens, Text } from "@fluentui/react-components";
 import TitleBar from "../TitleBar/TitleBar";
 import GeneralCleanPanel from "./GeneralCleanPanel";
@@ -61,14 +61,35 @@ class PanelErrorBoundary extends Component<
   }
 }
 
+const CC_OPTIONS_KEY = "wc-custom-clean-options";
+
+function loadSavedOptions(): CleanOptionId[] {
+  try {
+    const raw = localStorage.getItem(CC_OPTIONS_KEY);
+    if (!raw) return DEFAULT_GENERAL_CLEAN_OPTION_IDS;
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed) && parsed.length > 0) return parsed as CleanOptionId[];
+  } catch { /* ignore */ }
+  return DEFAULT_GENERAL_CLEAN_OPTION_IDS;
+}
+
+function saveOptions(options: CleanOptionId[]) {
+  localStorage.setItem(CC_OPTIONS_KEY, JSON.stringify(options));
+}
+
 export default function CustomCleanWindow() {
   const styles = useStyles();
   const [section, setSection] = useState<CustomCleanSection>("general");
 
   // Lifted state so ScheduledCleanPanel can read the user's selected options
   const [selectedOptions, setSelectedOptions] = useState<CleanOptionId[]>(
-    DEFAULT_GENERAL_CLEAN_OPTION_IDS,
+    loadSavedOptions,
   );
+
+  const handleSelectedOptionsChange = useCallback((options: CleanOptionId[]) => {
+    setSelectedOptions(options);
+    saveOptions(options);
+  }, []);
 
   const renderContent = () => {
     switch (section) {
@@ -76,7 +97,7 @@ export default function CustomCleanWindow() {
         return (
           <GeneralCleanPanel
             selectedOptions={selectedOptions}
-            onSelectedOptionsChange={setSelectedOptions}
+            onSelectedOptionsChange={handleSelectedOptionsChange}
           />
         );
       case "scheduled":
@@ -89,7 +110,7 @@ export default function CustomCleanWindow() {
         return (
           <GeneralCleanPanel
             selectedOptions={selectedOptions}
-            onSelectedOptionsChange={setSelectedOptions}
+            onSelectedOptionsChange={handleSelectedOptionsChange}
           />
         );
     }
