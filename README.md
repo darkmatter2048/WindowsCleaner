@@ -1,5 +1,6 @@
 > [!IMPORTANT]  
-> 
+>
+> ### 🥳 作者最新开源安卓软件[`表情大盗`](https://github.com/darkmatter2048/MemeCapture)正式发行啦！ 
 > ### 🥳 作者开发的多功能图片工具箱[PhotoStudio 3](https://dps.dyblog.online/)正式上线啦！
 
 <div align=center>
@@ -8,15 +9,9 @@
 <h1>Windows Cleaner</h1>
 
 <p>
-<img src="https://img.shields.io/badge/Author-DaYe-orange" alt="Author" />
-<img src="https://img.shields.io/github/languages/count/darkmatter2048/WindowsCleaner" alt="languages-count" />
-<img src="https://img.shields.io/github/languages/top/darkmatter2048/WindowsCleaner?color=yellow" alt="languages-top" />
-<img src="https://img.shields.io/github/last-commit/darkmatter2048/WindowsCleaner" alt="last-commit" />
-</p>
-<p>
+<img src="https://img.shields.io/github/downloads/darkmatter2048/WindowsCleaner/total" alt="downloads" />
 <img src="https://img.shields.io/github/stars/darkmatter2048/WindowsCleaner" alt="stars" />
 <img src="https://img.shields.io/github/v/release/darkmatter2048/WindowsCleaner" alt="latest-release" />
-<img src="https://img.shields.io/github/downloads/darkmatter2048/WindowsCleaner/total" alt="downloads" />
 </p>
 <p>
 <a href="https://dyblog.online/donate"><img src="https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow" alt="Buy Me A Coffee" /></a>
@@ -28,7 +23,7 @@
 
 > [!CAUTION]  
 > 
-> #### 🔔 如有一般性问题请前往[Discussions](https://github.com/darkmatter2048/WindowsCleaner/discussions)讨论区，***Issues* 仅用于错误报告和功能请求。**
+> #### 🔔 如有一般性问题请前往[Discussions](https://github.com/darkmatter2048/WindowsCleaner/discussions)讨论区，***Issues* 仅用于错误报告和功能请求！**
 
 > [!tip]
 >
