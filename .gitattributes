@@ -1,0 +1,29 @@
+# Normalize line endings to LF in the repository, convert to native on checkout.
+# Prevents the "all files modified after switching Windows <-> Linux" problem.
+* text=auto
+
+# Source / config / docs (explicit, for clarity)
+*.rs       text
+*.ts       text
+*.tsx      text
+*.js       text
+*.mjs      text
+*.json     text
+*.css      text
+*.html     text
+*.md       text
+*.yml      text
+*.yaml     text
+*.toml     text
+*.ini      text
+*.svg      text
+.gitignore text
+LICENSE    text
+
+# Binaries — never normalize
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.ico   binary
+*.icns  binary
+*.ttf   binary
