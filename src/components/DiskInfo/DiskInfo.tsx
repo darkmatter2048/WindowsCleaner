@@ -25,7 +25,9 @@ const useStyles = makeStyles({
   label: {
     fontFamily: "'DingTalkJinBu', sans-serif",
     fontSize: "13px",
-    lineHeight: "20px",
+    lineHeight: "normal",
+    minHeight: "20px",
+    whiteSpace: "nowrap",
   },
   labelText: {
     color: tokens.colorNeutralForeground2,
@@ -94,7 +96,7 @@ export default function DiskInfo() {
 
   if (error) {
     return (
-      <div className={styles.container}>
+      <div className={styles.container} data-auto-size-disk>
         <Text className={`${styles.label} ${styles.error}`}>
           {t("disk.totalSpace")}: {error}
         </Text>
@@ -113,7 +115,7 @@ export default function DiskInfo() {
   const usedPctNum = data ? (data.used / data.total) * 100 : 0;
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-auto-size-disk>
       <img src={diskSvg} className={styles.icon} alt="Disk" />
 
       <div className={styles.info}>

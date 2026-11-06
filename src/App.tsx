@@ -14,6 +14,7 @@ import DonateWindow from "./components/DonateWindow/DonateWindow";
 import { useTheme } from "./contexts/ThemeContext";
 import { loadSettings, saveSettings } from "./constants/settings";
 import type { AppSettings, AppTheme } from "./types/settings";
+import { useAutoSizeWindow } from "./hooks/useAutoSizeWindow";
 
 const useStyles = makeStyles({
   root: {
@@ -37,6 +38,9 @@ function App() {
   const { i18n } = useTranslation();
   const { setTheme } = useTheme();
   const [refreshKey, setRefreshKey] = useState(0);
+  const isMainWindow = window.location.hash === "";
+
+  useAutoSizeWindow(isMainWindow);
 
   const handleCleaned = useCallback(() => {
     setRefreshKey((k) => k + 1);
@@ -92,9 +96,9 @@ function App() {
   }
 
   return (
-    <div className={styles.root}>
+    <div className={styles.root} data-auto-size-root>
       <TitleBar />
-      <div className={styles.main}>
+      <div className={styles.main} data-auto-size-main>
         <DiskInfo key={refreshKey} />
         <ActionButtons onCleaned={handleCleaned} />
       </div>

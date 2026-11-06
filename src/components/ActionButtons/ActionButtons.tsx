@@ -38,8 +38,10 @@ const useStyles = makeStyles({
     alignItems: "center",
   },
   button: {
-    width: "220px",
-    height: "80px",
+    width: "max-content",
+    minWidth: "220px",
+    minHeight: "80px",
+    height: "auto",
     fontFamily: "'AlimamaShuHeiTi', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', sans-serif",
     fontSize: "26px",
     fontWeight: 700,
@@ -156,7 +158,7 @@ export default function ActionButtons({ onCleaned }: Props) {
   const busy = cleaning || openingCustom;
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-auto-size-actions>
       <div className={styles.row}>
         <Button
           className={`${styles.button} ${styles.primaryBtn}`}

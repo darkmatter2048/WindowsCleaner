@@ -17,6 +17,60 @@ use winreg::enums::*;
 use winreg::RegKey;
 
 const APP_RUN_KEY: &str = "WindowsCleaner";
+const MAIN_WINDOW_WIDTH: f64 = 320.0;
+const MAIN_WINDOW_HEIGHT: f64 = 400.0;
+
+fn windows_text_scale_factor() -> f64 {
+    let value = RegKey::predef(HKEY_CURRENT_USER)
+        .open_subkey("Software\\Microsoft\\Accessibility")
+        .and_then(|key| key.get_value::<u32, _>("TextScaleFactor"))
+        .unwrap_or(100);
+    (value as f64 / 100.0).clamp(1.0, 3.0)
+}
+
+#[tauri::command]
+fn get_windows_text_scale_factor() -> f64 {
+    windows_text_scale_factor()
+}
+
+fn size_main_window_for_text(window: &tauri::WebviewWindow<Wry>) {
+    let factor = windows_text_scale_factor();
+    logger::info(
+        "window",
+        "Windows text scale",
+        &format!("factor={factor:.2}"),
+    );
+    if factor <= 1.0 {
+        return;
+    }
+
+    let monitor = window.current_monitor().ok().flatten();
+    let max_size = monitor.map(|monitor| {
+        let scale = monitor.scale_factor();
+        let work_area = &monitor.work_area().size;
+        (
+            (work_area.width as f64 / scale - 32.0).max(MAIN_WINDOW_WIDTH),
+            (work_area.height as f64 / scale - 32.0).max(MAIN_WINDOW_HEIGHT),
+        )
+    });
+    let width = (MAIN_WINDOW_WIDTH * factor)
+        .min(max_size.map_or(f64::INFINITY, |size| size.0));
+    let height = (MAIN_WINDOW_HEIGHT * factor)
+        .min(max_size.map_or(f64::INFINITY, |size| size.1));
+
+    if let Err(error) = window.set_size(tauri::LogicalSize::new(width, height)) {
+        logger::error("window", "Failed to resize main window for text scale", &error.to_string());
+    } else {
+        logger::info(
+            "window",
+            "Resized main window for text scale",
+            &format!("width={width:.0}, height={height:.0}"),
+        );
+        if let Err(error) = window.center() {
+            logger::warn("window", "Failed to center resized main window", &error.to_string());
+        }
+    }
+}
 
 #[derive(Default)]
 struct AppState {
@@ -371,6 +425,9 @@ pub fn run() {
             // Apply hide-on-startup config: main is initially hidden,
             // show it only if hide_on_startup is disabled
             {
+                if let Some(main) = app.get_webview_window("main") {
+                    size_main_window_for_text(&main);
+                }
                 let config = load_startup_config(&app.handle());
                 if let Ok(mut hide) = app.state::<AppState>().hide_on_startup.lock() {
                     *hide = config.hide_on_startup;
@@ -419,6 +476,7 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
+            get_windows_text_scale_factor,
             get_disk_info,
             fetch_app_version,
             open_custom_clean_window,

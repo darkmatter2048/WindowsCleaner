@@ -13,7 +13,8 @@ const useStyles = makeStyles({
   titlebar: {
     display: "flex",
     alignItems: "center",
-    height: "36px",
+    minHeight: "36px",
+    height: "auto",
     paddingLeft: tokens.spacingHorizontalM,
     backgroundColor: tokens.colorNeutralBackground2,
     borderBottom: `1px solid ${tokens.colorNeutralStroke1}`,
@@ -36,6 +37,7 @@ const useStyles = makeStyles({
     fontSize: "13px",
     color: tokens.colorNeutralForeground2,
     fontWeight: 400,
+    whiteSpace: "nowrap",
   },
   controls: {
     display: "flex",
@@ -43,6 +45,7 @@ const useStyles = makeStyles({
   },
   controlBtn: {
     width: "46px",
+    minHeight: "36px",
     height: "100%",
     minWidth: "46px",
     borderRadius: "0",
@@ -85,12 +88,12 @@ export default function TitleBar({ showIcon = true, title }: TitleBarProps) {
   const label = title ?? t("titleBar.appName");
 
   return (
-    <div className={styles.titlebar} data-tauri-drag-region>
-      <div className={styles.brand}>
+    <div className={styles.titlebar} data-tauri-drag-region data-auto-size-titlebar>
+      <div className={styles.brand} data-auto-size-brand>
         {showIcon && <img src={appIcon} className={styles.logo} alt="" />}
         <span className={styles.title}>{label}</span>
       </div>
-      <div className={styles.controls}>
+      <div className={styles.controls} data-auto-size-controls>
         <Tooltip content="最小化" relationship="label">
           <Button
             className={styles.controlBtn}

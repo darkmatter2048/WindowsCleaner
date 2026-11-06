@@ -17,6 +17,7 @@ const useStyles = makeStyles({
     fontSize: "12px",
     fontFamily: "'DingTalkJinBu', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', sans-serif",
     color: tokens.colorNeutralForeground3,
+    whiteSpace: "nowrap",
     ":hover": {
       color: tokens.colorBrandForeground1,
     },
@@ -49,7 +50,7 @@ export default function Footer() {
   };
 
   return (
-    <div className={styles.footer}>
+    <div className={styles.footer} data-auto-size-footer>
       <Link className={styles.link} onClick={handleSettings}>
         {t("footer.settings")}
       </Link>
