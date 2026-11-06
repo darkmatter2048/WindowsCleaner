@@ -1,8 +1,8 @@
 use std::collections::HashMap;
-use std::fs;
 use std::path::Path;
 
 use super::clean::CleanResult;
+use crate::file_cleanup::{CleanupPlan, FileFilter};
 
 // ─── INI Parsing ───
 
@@ -10,9 +10,9 @@ use super::clean::CleanResult;
 struct Entry {
     #[allow(dead_code)]
     name: String,
-    detects: Vec<String>,       // registry keys that must exist
-    detect_files: Vec<String>,  // files/folders that must exist
-    file_keys: Vec<String>,     // "path|pattern|options"
+    detects: Vec<String>,            // registry keys that must exist
+    detect_files: Vec<String>,       // files/folders that must exist
+    file_keys: Vec<String>,          // "path|pattern|options"
     reg_keys: Vec<(String, String)>, // (key, value_name)
 }
 
@@ -136,12 +136,8 @@ fn detect(entry: &Entry) -> bool {
 
 fn reg_exists(key: &str) -> bool {
     let hkey = match key {
-        k if k.starts_with("HKCU\\") => {
-            (winreg::enums::HKEY_CURRENT_USER, &k[5..])
-        }
-        k if k.starts_with("HKLM\\") => {
-            (winreg::enums::HKEY_LOCAL_MACHINE, &k[5..])
-        }
+        k if k.starts_with("HKCU\\") => (winreg::enums::HKEY_CURRENT_USER, &k[5..]),
+        k if k.starts_with("HKLM\\") => (winreg::enums::HKEY_LOCAL_MACHINE, &k[5..]),
         k if k.starts_with("HKU\\") => {
             // HKU detection is rare; skip for now
             return false;
@@ -149,136 +145,42 @@ fn reg_exists(key: &str) -> bool {
         _ => return false,
     };
 
-    winreg::RegKey::predef(hkey.0)
-        .open_subkey(hkey.1)
-        .is_ok()
+    winreg::RegKey::predef(hkey.0).open_subkey(hkey.1).is_ok()
 }
 
 // ─── Execution ───
 
-fn exec_file_key(raw: &str) -> CleanResult {
-    let mut result = CleanResult::new();
-
-    // Format: path|pattern|options
-    let parts: Vec<&str> = raw.splitn(3, '|').collect();
-    if parts.len() < 2 {
-        return result;
-    }
-
-    let base = expand_env(parts[0]);
-    let pattern = parts[1];
-    let options = parts.get(2).unwrap_or(&"");
-
-    let base_path = Path::new(&base);
+fn add_file_key(raw: &str, plan: &mut CleanupPlan) {
+    let mut parts = raw.splitn(3, '|');
+    let (Some(base), Some(pattern)) = (parts.next(), parts.next()) else {
+        return;
+    };
+    let options = parts.next().unwrap_or("");
     let recurse = options.contains("RECURSE");
     let remove_self = options.contains("REMOVESELF");
-
-    // If pattern is "*" and RECURSE, clean entire folder
+    let base = expand_env(base);
+    let base = Path::new(&base);
     if pattern == "*" && recurse {
-        if base_path.exists() {
-            return clean_dir_contents(base_path);
-        }
-    }
-
-    // If pattern is "*" without RECURSE, clean files in this dir only
-    if pattern == "*" {
-        if base_path.exists() {
-            return clean_dir_files_only(base_path);
-        }
-    }
-
-    // Pattern-based cleanup
-    clean_matching_files(base_path, pattern, recurse, &mut result);
-
-    // REMOVESELF: delete the base directory itself if empty
-    if remove_self && base_path.exists() {
-        let _ = fs::remove_dir(base_path);
-    }
-
-    result
-}
-
-fn clean_dir_contents(dir: &Path) -> CleanResult {
-    let mut result = CleanResult::new();
-    let entries = match fs::read_dir(dir) {
-        Ok(e) => e,
-        Err(e) => {
-            result.add_error(format!("Cannot read {}: {}", dir.display(), e));
-            return result;
-        }
-    };
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.is_dir() {
-            match fs::remove_dir_all(&path) {
-                Ok(_) => {}
-                Err(e) => {
-                    result.add_error(format!("Cannot delete {}: {}", path.display(), e))
-                }
-            }
-        } else {
-            let size = entry.metadata().map(|m| m.len()).unwrap_or(0);
-            match fs::remove_file(&path) {
-                Ok(_) => result.add_freed(size),
-                Err(_) => {} // locked
-            }
-        }
-    }
-    result
-}
-
-fn clean_dir_files_only(dir: &Path) -> CleanResult {
-    let mut result = CleanResult::new();
-    let entries = match fs::read_dir(dir) {
-        Ok(e) => e,
-        Err(e) => {
-            result.add_error(format!("Cannot read {}: {}", dir.display(), e));
-            return result;
-        }
-    };
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.is_file() {
-            let size = entry.metadata().map(|m| m.len()).unwrap_or(0);
-            match fs::remove_file(&path) {
-                Ok(_) => result.add_freed(size),
-                Err(_) => {}
-            }
-        }
-    }
-    result
-}
-
-fn clean_matching_files(dir: &Path, pattern: &str, recurse: bool, result: &mut CleanResult) {
-    if !dir.exists() || !dir.is_dir() {
-        return;
-    }
-
-    let entries = match fs::read_dir(dir) {
-        Ok(e) => e,
-        Err(_) => return,
-    };
-
-    for entry in entries.flatten() {
-        let path = entry.path();
-        if path.is_dir() && recurse {
-            clean_matching_files(&path, pattern, recurse, result);
-        } else if path.is_file() {
-            if let Some(name) = path.file_name().and_then(|n| n.to_str()) {
-                if wildmatch(name, pattern) {
-                    let size = entry.metadata().map(|m| m.len()).unwrap_or(0);
-                    match fs::remove_file(&path) {
-                        Ok(_) => result.add_freed(size),
-                        Err(_) => {}
-                    }
-                }
-            }
-        }
+        plan.add_rule(
+            base,
+            FileFilter::Pattern("*".into()),
+            true,
+            true,
+            remove_self,
+        );
+    } else {
+        plan.add_rule(
+            base,
+            FileFilter::Pattern(pattern.into()),
+            recurse,
+            false,
+            remove_self,
+        );
     }
 }
 
 /// Simple wildcard match: supports * and ?
-fn wildmatch(name: &str, pattern: &str) -> bool {
+pub(crate) fn wildmatch(name: &str, pattern: &str) -> bool {
     let name = name.to_lowercase();
     let pattern = pattern.to_lowercase();
 
@@ -351,24 +253,33 @@ fn exec_reg_key(key: &str, value: &str) {
 
 const WINAPP2_INI: &str = include_str!("../resources/Winapp2.ini");
 
-/// Scan installed software via winapp2.ini and clean their caches.
-/// Only cleans entries whose Detect conditions match (software is actually installed).
-#[tauri::command]
-pub fn clean_winapp2() -> CleanResult {
-    let mut result = CleanResult::new();
-
-    let entries = parse_and_detect(WINAPP2_INI);
-
-    for entry in entries {
-        // Execute file cleanup rules
-        for fk in &entry.file_keys {
-            result.merge(exec_file_key(fk));
+/// Add detected file rules before the shared cleanup traversal starts.
+pub(crate) fn append_file_rules(plan: &mut CleanupPlan) -> Vec<(String, String)> {
+    let mut registry_keys = Vec::new();
+    for entry in parse_and_detect(WINAPP2_INI) {
+        for key in &entry.file_keys {
+            add_file_key(key, plan);
         }
-        // Execute registry cleanup rules
-        for (key, value) in &entry.reg_keys {
-            exec_reg_key(key, value);
-        }
+        registry_keys.extend(entry.reg_keys);
     }
+    registry_keys
+}
 
-    result
+pub(crate) fn clean_registry_keys(keys: &[(String, String)]) {
+    for (key, value) in keys {
+        exec_reg_key(key, value);
+    }
+}
+
+#[tauri::command]
+pub async fn clean_winapp2() -> CleanResult {
+    tauri::async_runtime::spawn_blocking(|| {
+        crate::clean::run_clean_options(&[crate::clean::CleanOption::Winapp2])
+    })
+    .await
+    .unwrap_or_else(|_| {
+        let mut result = CleanResult::new();
+        result.add_error("Winapp2 clean task panicked".into());
+        result
+    })
 }

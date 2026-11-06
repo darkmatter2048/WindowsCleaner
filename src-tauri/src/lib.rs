@@ -1,6 +1,7 @@
 mod advanced;
 mod auto_clean;
 mod clean;
+mod file_cleanup;
 mod logger;
 mod software_move;
 mod winapp2;

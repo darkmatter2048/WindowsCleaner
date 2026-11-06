@@ -4,7 +4,7 @@ use std::path::PathBuf;
 use sysinfo::Disks;
 use tauri::Manager;
 
-use crate::clean::{run_clean_option, CleanOption, CleanResult};
+use crate::clean::{run_clean_options, CleanOption};
 
 // ---------------------------------------------------------------------------
 // Settings
@@ -185,14 +185,7 @@ fn run_auto_clean_if_needed(app: &tauri::AppHandle) {
         return;
     }
 
-    // Run clean synchronously then update last clean time
-    let mut result = CleanResult {
-        bytes_freed: 0,
-        errors: Vec::new(),
-    };
-    for option in &settings.options {
-        result.merge(run_clean_option(*option));
-    }
+    let result = run_clean_options(&settings.options);
 
     let mut updated = load_settings(app);
     updated.last_clean_time = today_string();
