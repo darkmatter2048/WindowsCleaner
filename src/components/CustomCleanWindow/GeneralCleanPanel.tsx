@@ -134,12 +134,13 @@ function formatFreed(bytes: number): string {
 interface Props {
   selectedOptions: CleanOptionId[];
   onSelectedOptionsChange: (options: CleanOptionId[]) => void;
+  cleaning: boolean;
+  onCleaningChange: (cleaning: boolean) => void;
 }
 
-export default function GeneralCleanPanel({ selectedOptions, onSelectedOptionsChange }: Props) {
+export default function GeneralCleanPanel({ selectedOptions, onSelectedOptionsChange, cleaning, onCleaningChange }: Props) {
   const styles = useStyles();
   const { t } = useTranslation();
-  const [cleaning, setCleaning] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [supportError, setSupportError] = useState<string | null>(null);
   const [dialogResult, setDialogResult] = useState<{ ok: boolean; message: string }>({
@@ -150,6 +151,7 @@ export default function GeneralCleanPanel({ selectedOptions, onSelectedOptionsCh
   const selectedSet = useMemo(() => new Set(selectedOptions), [selectedOptions]);
 
   const toggleOption = (id: CleanOptionId, checked: boolean) => {
+    if (cleaning) return;
     if (checked) {
       if (!selectedOptions.includes(id)) onSelectedOptionsChange([...selectedOptions, id]);
     } else {
@@ -158,9 +160,9 @@ export default function GeneralCleanPanel({ selectedOptions, onSelectedOptionsCh
   };
 
   const runClean = async () => {
-    if (selectedOptions.length === 0) return;
+    if (cleaning || selectedOptions.length === 0) return;
 
-    setCleaning(true);
+    onCleaningChange(true);
     setSupportError(null);
     try {
       const result = await invoke<CleanResult>("clean_selected", {
@@ -180,7 +182,7 @@ export default function GeneralCleanPanel({ selectedOptions, onSelectedOptionsCh
         message: `${t("clean.failed")}: ${String(err)}`,
       });
     } finally {
-      setCleaning(false);
+      onCleaningChange(false);
       setDialogOpen(true);
     }
   };
@@ -208,6 +210,7 @@ export default function GeneralCleanPanel({ selectedOptions, onSelectedOptionsCh
           <label className={styles.option} key={option.id}>
             <Checkbox
               checked={selectedSet.has(option.id)}
+              disabled={cleaning}
               onChange={(_, data) => toggleOption(option.id, Boolean(data.checked))}
             />
             <span className={styles.optionText}>

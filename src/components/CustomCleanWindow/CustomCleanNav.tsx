@@ -6,6 +6,7 @@ export type CustomCleanSection = "general" | "scheduled" | "advanced" | "softwar
 interface Props {
   selected: CustomCleanSection;
   onSelect: (section: CustomCleanSection) => void;
+  disabled: boolean;
 }
 
 const useStyles = makeStyles({
@@ -26,7 +27,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CustomCleanNav({ selected, onSelect }: Props) {
+export default function CustomCleanNav({ selected, onSelect, disabled }: Props) {
   const styles = useStyles();
   const { t } = useTranslation();
 
@@ -45,6 +46,7 @@ export default function CustomCleanNav({ selected, onSelect }: Props) {
           appearance={selected === item.key ? "primary" : "subtle"}
           className={`${styles.item} ${selected === item.key ? styles.active : ""}`}
           onClick={() => onSelect(item.key)}
+          disabled={disabled}
         >
           {item.label}
         </Button>

@@ -80,6 +80,7 @@ function saveOptions(options: CleanOptionId[]) {
 export default function CustomCleanWindow() {
   const styles = useStyles();
   const [section, setSection] = useState<CustomCleanSection>("general");
+  const [cleaning, setCleaning] = useState(false);
 
   // Lifted state so ScheduledCleanPanel can read the user's selected options
   const [selectedOptions, setSelectedOptions] = useState<CleanOptionId[]>(
@@ -98,6 +99,8 @@ export default function CustomCleanWindow() {
           <GeneralCleanPanel
             selectedOptions={selectedOptions}
             onSelectedOptionsChange={handleSelectedOptionsChange}
+            cleaning={cleaning}
+            onCleaningChange={setCleaning}
           />
         );
       case "scheduled":
@@ -111,6 +114,8 @@ export default function CustomCleanWindow() {
           <GeneralCleanPanel
             selectedOptions={selectedOptions}
             onSelectedOptionsChange={handleSelectedOptionsChange}
+            cleaning={cleaning}
+            onCleaningChange={setCleaning}
           />
         );
     }
@@ -120,7 +125,7 @@ export default function CustomCleanWindow() {
     <div className={styles.root}>
       <TitleBar showIcon={false} title="自定义清理" />
       <div className={styles.body}>
-        <CustomCleanNav selected={section} onSelect={setSection} />
+        <CustomCleanNav selected={section} onSelect={setSection} disabled={cleaning} />
         <main className={styles.content}>
           <PanelErrorBoundary key={section}>{renderContent()}</PanelErrorBoundary>
         </main>
