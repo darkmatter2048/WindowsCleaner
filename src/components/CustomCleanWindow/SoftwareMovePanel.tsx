@@ -63,6 +63,9 @@ const useStyles = makeStyles({
   },
   // Risk warning
   riskBox: {
+    width: "100%",
+    boxSizing: "border-box",
+    overflowWrap: "anywhere",
     padding: tokens.spacingHorizontalM,
     borderRadius: tokens.borderRadiusMedium,
     backgroundColor: "#3d1f1f",
@@ -198,20 +201,65 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     gap: tokens.spacingHorizontalS,
+    textAlign: "center",
   },
-  processDialogBody: {
+  processDialogActions: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    gap: tokens.spacingHorizontalS,
+    paddingTop: tokens.spacingVerticalS,
+  },
+  processDialogContent: {
+    width: "100%",
+    minWidth: 0,
+    minHeight: 0,
+    margin: 0,
+    padding: 0,
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
+    alignItems: "stretch",
+    gap: tokens.spacingVerticalL,
+    overflowY: "auto",
+    boxSizing: "border-box",
+  },
+  processDialogSurface: {
+    width: "min(560px, calc(100vw - 32px))",
+    minWidth: 0,
+    maxHeight: "calc(100vh - 32px)",
+    overflow: "hidden",
+    boxSizing: "border-box",
+  },
+  processDialogLayout: {
+    width: "100%",
+    minWidth: 0,
+    maxHeight: "calc(100vh - 80px)",
+    display: "flex",
+    flexDirection: "column",
     gap: tokens.spacingVerticalL,
   },
+  processChecking: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: tokens.spacingHorizontalS,
+  },
   processDialogDesc: {
+    width: "100%",
+    overflowWrap: "anywhere",
+    display: "block",
     fontSize: "14px",
     lineHeight: "22px",
     textAlign: "center",
     color: tokens.colorNeutralForeground2,
   },
   processList: {
+    width: "100%",
+    minWidth: 0,
+    maxHeight: "clamp(120px, 30vh, 260px)",
+    flexShrink: 0,
+    overflowY: "auto",
+    boxSizing: "border-box",
     display: "flex",
     flexDirection: "column",
     gap: "6px",
@@ -219,9 +267,9 @@ const useStyles = makeStyles({
     borderRadius: tokens.borderRadiusLarge,
     backgroundColor: tokens.colorNeutralBackground1,
     border: `1px solid ${tokens.colorNeutralStroke1}`,
-    minWidth: "280px",
   },
   processItem: {
+    minWidth: 0,
     display: "flex",
     alignItems: "center",
     gap: tokens.spacingHorizontalS,
@@ -239,11 +287,16 @@ const useStyles = makeStyles({
     fontSize: "14px",
     fontWeight: 600,
     flex: 1,
+    minWidth: 0,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
   },
   processPid: {
     fontSize: "12px",
     color: tokens.colorNeutralForeground3,
     fontFamily: "monospace",
+    flexShrink: 0,
   },
 });
 
@@ -253,12 +306,16 @@ const useStyles = makeStyles({
 
 interface SoftwareInfo {
   key: string;
+  displayName: string;
   displayPath: string;
+  sourcePath: string;
+  version?: string | null;
   sizeBytes: number;
   fileCount: number;
   exists: boolean;
   isMoved: boolean;
   movedTo: string | null;
+  recoveryState: string;
 }
 
 interface DriveInfo {
@@ -282,6 +339,7 @@ interface ProcessInfo {
 interface MoveResult {
   skippedFiles: string[];
   junctionCreated: boolean;
+  recoveryRequired: boolean;
 }
 
 type MoveState =
@@ -326,11 +384,12 @@ export default function SoftwareMovePanel() {
     message: string;
   } | null>(null);
 
-  // Map app key to translated name
-  const appName = useCallback(
-    (key: string) => t(`softwareMove.apps.${key}`, key),
-    [t],
-  );
+  const appName = useCallback((app: SoftwareInfo) => app.displayName || app.key, []);
+
+  const refresh = useCallback(async () => {
+    const software = await invoke<SoftwareInfo[]>("scan_software").catch(() => [] as SoftwareInfo[]);
+    setApps(software.filter((item) => item.exists));
+  }, []);
 
   // -------------------- Initial scan --------------------
   useEffect(() => {
@@ -388,21 +447,19 @@ export default function SoftwareMovePanel() {
     setNotification(null);
 
     try {
-      await invoke<MoveResult>("move_software", {
+      const result = await invoke<MoveResult>("move_software", {
         key: app.key,
-        sourcePathTemplate: app.displayPath,
+        sourcePath: app.sourcePath,
         targetDrive,
+        displayName: app.displayName,
+        version: app.version ?? null,
       });
-      setApps((prev) =>
-        prev.map((a) =>
-          a.key === app.key
-            ? { ...a, isMoved: true, movedTo: `${targetDrive}:\\MovedApps\\${app.key}` }
-            : a,
-        ),
-      );
+      await refresh();
       setNotification({
         type: "success",
-        message: t("softwareMove.moveSuccess", { name: appName(app.key) }),
+        message: result.recoveryRequired
+          ? t("softwareMove.moveSuccessWithRecovery", { name: appName(app) })
+          : t("softwareMove.moveSuccess", { name: appName(app) }),
       });
       setTimeout(() => setNotification(null), 4000);
     } catch (e) {
@@ -417,7 +474,7 @@ export default function SoftwareMovePanel() {
     setMoveState({ phase: "confirming", app, checking: true, runningProcs: [] });
 
     const procs = await invoke<ProcessInfo[]>("check_running_processes", {
-      key: app.key,
+      sourcePath: app.sourcePath,
     }).catch(() => [] as ProcessInfo[]);
 
     if (procs.length === 0) {
@@ -434,7 +491,7 @@ export default function SoftwareMovePanel() {
     const app = moveState.app;
 
     // Kill processes
-    await invoke("kill_running_processes", { key: app.key }).catch(() => {});
+    await invoke("kill_running_processes", { sourcePath: app.sourcePath }).catch(() => {});
 
     // Proceed with move
     executeMove(app);
@@ -448,16 +505,12 @@ export default function SoftwareMovePanel() {
     try {
       await invoke("undo_software_move", {
         key: app.key,
-        sourcePathTemplate: app.displayPath,
+        sourcePath: app.sourcePath,
       });
-      setApps((prev) =>
-        prev.map((a) =>
-          a.key === app.key ? { ...a, isMoved: false, movedTo: null } : a,
-        ),
-      );
+      await refresh();
       setNotification({
         type: "success",
-        message: t("softwareMove.undoSuccess", { name: appName(app.key) }),
+        message: t("softwareMove.undoSuccess", { name: appName(app) }),
       });
       setTimeout(() => setNotification(null), 4000);
     } catch (e) {
@@ -556,8 +609,15 @@ export default function SoftwareMovePanel() {
                 return (
                   <div key={app.key} className={styles.appRow}>
                     <div className={styles.appInfo}>
-                      <Text className={styles.appName}>{appName(app.key)}</Text>
+                      <Text className={styles.appName}>{appName(app)}</Text>
                       <Text className={styles.appPath}>{app.displayPath}</Text>
+                      {app.recoveryState !== "normal" && (
+                        <Text className={styles.fileCount}>
+                          {t(`softwareMove.recovery.${app.recoveryState}`, {
+                            defaultValue: app.recoveryState,
+                          })}
+                        </Text>
+                      )}
                       {app.fileCount > 0 && (
                         <Text className={styles.fileCount}>
                           {app.fileCount.toLocaleString()} {t("softwareMove.files")}
@@ -578,7 +638,13 @@ export default function SoftwareMovePanel() {
                           size="small"
                           appearance="primary"
                           icon={<ArrowSwap24Regular />}
-                          disabled={!targetDrive || moveState.phase !== "idle"}
+                          disabled={
+                            !targetDrive ||
+                            moveState.phase !== "idle" ||
+                            app.recoveryState === "sourceMissing" ||
+                            app.recoveryState === "sourceAndTarget" ||
+                            app.recoveryState === "linkTargetMissing"
+                          }
                           onClick={() =>
                             confirmAndCheckProcesses(app)
                           }
@@ -608,7 +674,7 @@ export default function SoftwareMovePanel() {
                   <div key={app.key} className={`${styles.appRow} ${styles.movedRow}`}>
                     <div className={styles.appInfo}>
                       <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                        <Text className={styles.appName}>{appName(app.key)}</Text>
+                        <Text className={styles.appName}>{appName(app)}</Text>
                         <span className={styles.movedTag}>
                           <CheckmarkCircle24Regular style={{ fontSize: "14px" }} />
                           {t("softwareMove.movedTag")}
@@ -617,6 +683,13 @@ export default function SoftwareMovePanel() {
                       <Text className={styles.appPath}>
                         {app.movedTo || app.displayPath}
                       </Text>
+                      {app.recoveryState !== "moved" && (
+                        <Text className={styles.fileCount}>
+                          {t(`softwareMove.recovery.${app.recoveryState}`, {
+                            defaultValue: app.recoveryState,
+                          })}
+                        </Text>
+                      )}
                     </div>
                     <Text className={styles.sizeText}>{formatBytes(app.sizeBytes)}</Text>
                     <div>
@@ -649,59 +722,53 @@ export default function SoftwareMovePanel() {
           open={moveState.phase === "confirming"}
           onOpenChange={() => setMoveState({ phase: "idle" })}
         >
-          <DialogSurface>
+          <DialogSurface className={styles.processDialogSurface}>
             {moveState.phase === "confirming" &&
               moveState.checking &&
               moveState.runningProcs.length === 0 && (
-                <>
+                <DialogBody className={styles.processDialogLayout}>
                   <DialogTitle>{t("softwareMove.confirmTitle")}</DialogTitle>
-                  <DialogContent>
-                    <DialogBody>
-                      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                        <Spinner size="tiny" />
-                        <Text>{t("softwareMove.checkingProcesses")}</Text>
-                      </div>
-                    </DialogBody>
+                  <DialogContent className={styles.processDialogContent}>
+                    <div className={styles.processChecking}>
+                      <Spinner size="tiny" />
+                      <Text>{t("softwareMove.checkingProcesses")}</Text>
+                    </div>
                   </DialogContent>
-                </>
+                </DialogBody>
               )}
 
             {moveState.phase === "confirming" &&
               !moveState.checking &&
               moveState.runningProcs.length > 0 && (
-                <>
+                <DialogBody className={styles.processDialogLayout}>
                   <DialogTitle>
                     <div className={styles.processDialogTitle}>
                       <Warning24Regular style={{ color: "var(--colorPaletteRedForeground1)", fontSize: "20px" }} />
                       <Text style={{ fontWeight: 700 }}>{t("softwareMove.processesRunningTitle")}</Text>
                     </div>
                   </DialogTitle>
-                  <DialogContent>
-                    <DialogBody>
-                      <div className={styles.processDialogBody}>
-                        <Text className={styles.processDialogDesc}>
-                          {t("softwareMove.processesRunningContent", {
-                            name: appName(moveState.app.key),
-                          })}
-                        </Text>
-                        <div className={styles.processList}>
-                          {moveState.runningProcs.map((p) => (
-                            <div key={p.pid} className={styles.processItem}>
-                              <span className={styles.processDot} />
-                              <Text className={styles.processName}>{p.name}</Text>
-                              <Text className={styles.processPid}>PID {p.pid}</Text>
-                            </div>
-                          ))}
+                  <DialogContent className={styles.processDialogContent}>
+                    <Text className={styles.processDialogDesc}>
+                      {t("softwareMove.processesRunningContent", {
+                        name: appName(moveState.app),
+                      })}
+                    </Text>
+                    <div className={styles.processList}>
+                      {moveState.runningProcs.map((p) => (
+                        <div key={p.pid} className={styles.processItem}>
+                          <span className={styles.processDot} />
+                          <Text className={styles.processName}>{p.name}</Text>
+                          <Text className={styles.processPid}>PID {p.pid}</Text>
                         </div>
-                        <div className={styles.riskBox}>
-                          <Text className={styles.riskText} style={{ display: "block", textAlign: "center" }}>
-                            {t("softwareMove.forceCloseWarning")}
-                          </Text>
-                        </div>
-                      </div>
-                    </DialogBody>
+                      ))}
+                    </div>
+                    <div className={styles.riskBox}>
+                      <Text className={styles.riskText} style={{ display: "block", textAlign: "center" }}>
+                        {t("softwareMove.forceCloseWarning")}
+                      </Text>
+                    </div>
                   </DialogContent>
-                  <DialogActions>
+                  <DialogActions className={styles.processDialogActions}>
                     <DialogTrigger disableButtonEnhancement>
                       <Button appearance="secondary">{t("softwareMove.cancel")}</Button>
                     </DialogTrigger>
@@ -713,7 +780,7 @@ export default function SoftwareMovePanel() {
                       {t("softwareMove.forceCloseAndContinue")}
                     </Button>
                   </DialogActions>
-                </>
+                </DialogBody>
               )}
           </DialogSurface>
         </Dialog>

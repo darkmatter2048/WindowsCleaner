@@ -3,6 +3,7 @@ mod auto_clean;
 mod clean;
 mod file_cleanup;
 mod logger;
+#[path = "software_move_engine.rs"]
 mod software_move;
 mod winapp2;
 
