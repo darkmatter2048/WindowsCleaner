@@ -1,8 +1,3 @@
-> [!IMPORTANT]  
->
-> ### 🥳 作者最新开源安卓软件[`表情大盗`](https://github.com/darkmatter2048/MemeCapture)正式发行啦！ 
-> ### 🥳 作者开发的多功能图片工具箱[PhotoStudio 3](https://dps.dyblog.online/)正式上线啦！
-
 <div align=center>
 <img src="src-tauri/icons/logo.png" width="150" height="150">
 
@@ -24,10 +19,6 @@
 > [!CAUTION]  
 > 
 > #### 🔔 如有一般性问题请前往[Discussions](https://github.com/darkmatter2048/WindowsCleaner/discussions)讨论区，***Issues* 仅用于错误报告和功能请求！**
-
-> [!tip]
->
-> #### 🪜🧱 从[中国大陆地区](https://pan.quark.cn/s/03e706cb753a)下载最新版Windows Cleaner
 
 ## 主界面
 
@@ -151,6 +142,13 @@ DaYe的朋友们的主页
     </td>
   </tr>
 </table>
+
+> [!IMPORTANT]  
+>
+> ### 🥳 作者最新开源视频制作工具[`简辑`](https://github.com/darkmatter2048/JianJi)正式上线啦！
+> ### 🥳 作者最新开源安卓软件[`表情大盗`](https://github.com/darkmatter2048/MemeCapture)正式发行啦！ 
+> ### 🥳 作者开发的多功能图片工具箱[PhotoStudio 3](https://dps.dyblog.online/)正式上线啦！
+
 
 ## Copyright & License ⚖
 
