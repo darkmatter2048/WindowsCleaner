@@ -1,6 +1,22 @@
-import { makeStyles, tokens, Link } from "@fluentui/react-components";
+import { useState } from "react";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogBody,
+  DialogContent,
+  DialogSurface,
+  DialogTitle,
+  DialogTrigger,
+  Link,
+  makeStyles,
+  Text,
+  tokens,
+} from "@fluentui/react-components";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
+import { openFreeSupport } from "../../constants/support";
+import FreeSupportButton from "../Support/FreeSupportButton";
 
 const useStyles = makeStyles({
   footer: {
@@ -27,11 +43,26 @@ const useStyles = makeStyles({
     fontSize: "12px",
     userSelect: "none",
   },
+  supportSurface: {
+    width: "min(360px, calc(100vw - 24px))",
+    maxWidth: "calc(100vw - 24px)",
+  },
+  supportOptions: {
+    display: "flex",
+    flexDirection: "column",
+    gap: tokens.spacingVerticalM,
+  },
+  supportError: {
+    color: tokens.colorPaletteRedForeground1,
+    fontSize: "12px",
+  },
 });
 
 export default function Footer() {
   const styles = useStyles();
   const { t } = useTranslation();
+  const [supportOpen, setSupportOpen] = useState(false);
+  const [supportError, setSupportError] = useState<string | null>(null);
 
   const handleSettings = async () => {
     try {
@@ -45,8 +76,26 @@ export default function Footer() {
     invoke("open_about_window").catch(() => {});
   };
 
-  const handleDonate = () => {
-    invoke("open_donate_window").catch(() => {});
+  const handleFreeSupport = () => {
+    setSupportOpen(false);
+    window.requestAnimationFrame(() => {
+      openFreeSupport().catch((error) => {
+        console.error("Failed to open support page", error);
+        setSupportError(t("support.openFailed"));
+        setSupportOpen(true);
+      });
+    });
+  };
+
+  const handleDirectDonate = () => {
+    setSupportOpen(false);
+    window.requestAnimationFrame(() => {
+      invoke("open_donate_window").catch((error) => {
+        console.error("Failed to open donation window", error);
+        setSupportError(t("support.donateOpenFailed"));
+        setSupportOpen(true);
+      });
+    });
   };
 
   return (
@@ -59,9 +108,35 @@ export default function Footer() {
         {t("footer.about")}
       </Link>
       <span className={styles.separator}>|</span>
-      <Link className={styles.link} onClick={handleDonate}>
+      <Link className={styles.link} onClick={() => { setSupportError(null); setSupportOpen(true); }}>
         {t("footer.donate")}
       </Link>
+
+      <Dialog
+        open={supportOpen}
+        onOpenChange={(_, data) => {
+          setSupportOpen(data.open);
+          if (!data.open) setSupportError(null);
+        }}
+      >
+        <DialogSurface className={styles.supportSurface}>
+          <DialogBody>
+            <DialogTitle>{t("support.chooseTitle")}</DialogTitle>
+            <DialogContent className={styles.supportOptions}>
+              <FreeSupportButton fill onClick={handleFreeSupport} />
+              <Button appearance="secondary" onClick={handleDirectDonate}>
+                {t("support.direct")}
+              </Button>
+              {supportError && <Text className={styles.supportError} role="alert">{supportError}</Text>}
+            </DialogContent>
+            <DialogActions>
+              <DialogTrigger disableButtonEnhancement>
+                <Button appearance="subtle">{t("support.cancel")}</Button>
+              </DialogTrigger>
+            </DialogActions>
+          </DialogBody>
+        </DialogSurface>
+      </Dialog>
     </div>
   );
 }

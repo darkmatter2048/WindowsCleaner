@@ -1,4 +1,5 @@
 import { makeStyles, tokens } from "@fluentui/react-components";
+import { useTranslation } from "react-i18next";
 import TitleBar from "../TitleBar/TitleBar";
 import donateQr from "../../assets/donate.png";
 
@@ -28,13 +29,14 @@ const useStyles = makeStyles({
 
 export default function DonateWindow() {
   const styles = useStyles();
+  const { t } = useTranslation();
 
   return (
     <div className={styles.root}>
-      <TitleBar showIcon={false} title="捐赠" />
+      <TitleBar showIcon={false} title={t("support.wechatCode")} />
 
       <div className={styles.content}>
-        <img src={donateQr} alt="赞赏码" className={styles.qr} />
+        <img src={donateQr} alt={t("support.wechatCode")} className={styles.qr} />
       </div>
     </div>
   );

@@ -20,6 +20,8 @@ import {
 } from "@fluentui/react-icons";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
+import FreeSupportButton from "../Support/FreeSupportButton";
+import { openFreeSupport } from "../../constants/support";
 import type { CleanResult } from "../../types/clean";
 
 const useStyles = makeStyles({
@@ -87,6 +89,16 @@ const useStyles = makeStyles({
     fontFamily: "'DingTalkJinBu', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Segoe UI', sans-serif",
     fontSize: "16px",
   },
+  dialogActions: {
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
+  supportError: {
+    display: "block",
+    marginTop: tokens.spacingVerticalS,
+    color: tokens.colorPaletteRedForeground1,
+    fontSize: "12px",
+  },
 });
 
 function formatFreed(bytes: number): string {
@@ -112,6 +124,7 @@ export default function ActionButtons({ onCleaned }: Props) {
   const [cleaning, setCleaning] = useState(false);
   const [openingCustom, setOpeningCustom] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [supportError, setSupportError] = useState<string | null>(null);
   const [dialogResult, setDialogResult] = useState<{
     ok: boolean;
     message: string;
@@ -119,6 +132,7 @@ export default function ActionButtons({ onCleaned }: Props) {
 
   const doQuickClean = async () => {
     setCleaning(true);
+    setSupportError(null);
     try {
       const result = await invoke<CleanResult>("quick_clean");
       const freed = formatFreed(result.bytes_freed);
@@ -142,6 +156,7 @@ export default function ActionButtons({ onCleaned }: Props) {
 
   const openCustomClean = async () => {
     setOpeningCustom(true);
+    setSupportError(null);
     try {
       await invoke("open_custom_clean_window");
     } catch (err) {
@@ -156,6 +171,17 @@ export default function ActionButtons({ onCleaned }: Props) {
   };
 
   const busy = cleaning || openingCustom;
+
+  const handleFreeSupport = () => {
+    setDialogOpen(false);
+    window.requestAnimationFrame(() => {
+      openFreeSupport().catch((error) => {
+        console.error("Failed to open support page", error);
+        setSupportError(t("support.openFailed"));
+        setDialogOpen(true);
+      });
+    });
+  };
 
   return (
     <div className={styles.container} data-auto-size-actions>
@@ -194,8 +220,10 @@ export default function ActionButtons({ onCleaned }: Props) {
             </DialogTitle>
             <DialogContent>
               <span className={styles.freedText}>{dialogResult.message}</span>
+              {supportError && <span className={styles.supportError} role="alert">{supportError}</span>}
             </DialogContent>
-            <DialogActions>
+            <DialogActions className={styles.dialogActions}>
+              {dialogResult.ok && <FreeSupportButton onClick={handleFreeSupport} />}
               <DialogTrigger disableButtonEnhancement>
                 <Button appearance="primary">{t("clean.ok")}</Button>
               </DialogTrigger>

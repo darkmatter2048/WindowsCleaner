@@ -20,6 +20,8 @@ import {
 } from "@fluentui/react-icons";
 import { invoke } from "@tauri-apps/api/core";
 import { useTranslation } from "react-i18next";
+import FreeSupportButton from "../Support/FreeSupportButton";
+import { openFreeSupport } from "../../constants/support";
 import { GENERAL_CLEAN_OPTIONS, DEFAULT_GENERAL_CLEAN_OPTION_IDS } from "../../constants/cleanOptions";
 import type { CleanOptionId, CleanResult } from "../../types/clean";
 
@@ -104,6 +106,16 @@ const useStyles = makeStyles({
   dialogErr: {
     color: tokens.colorPaletteRedForeground1,
   },
+  dialogActions: {
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
+  supportError: {
+    display: "block",
+    marginTop: tokens.spacingVerticalS,
+    color: tokens.colorPaletteRedForeground1,
+    fontSize: "12px",
+  },
 });
 
 function formatFreed(bytes: number): string {
@@ -129,6 +141,7 @@ export default function GeneralCleanPanel({ selectedOptions, onSelectedOptionsCh
   const { t } = useTranslation();
   const [cleaning, setCleaning] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [supportError, setSupportError] = useState<string | null>(null);
   const [dialogResult, setDialogResult] = useState<{ ok: boolean; message: string }>({
     ok: true,
     message: "",
@@ -148,6 +161,7 @@ export default function GeneralCleanPanel({ selectedOptions, onSelectedOptionsCh
     if (selectedOptions.length === 0) return;
 
     setCleaning(true);
+    setSupportError(null);
     try {
       const result = await invoke<CleanResult>("clean_selected", {
         request: { options: selectedOptions },
@@ -169,6 +183,17 @@ export default function GeneralCleanPanel({ selectedOptions, onSelectedOptionsCh
       setCleaning(false);
       setDialogOpen(true);
     }
+  };
+
+  const handleFreeSupport = () => {
+    setDialogOpen(false);
+    window.requestAnimationFrame(() => {
+      openFreeSupport().catch((error) => {
+        console.error("Failed to open support page", error);
+        setSupportError(t("support.openFailed"));
+        setDialogOpen(true);
+      });
+    });
   };
 
   return (
@@ -222,8 +247,12 @@ export default function GeneralCleanPanel({ selectedOptions, onSelectedOptionsCh
                 <ErrorCircle24Regular className={`${styles.dialogIcon} ${styles.dialogErr}`} />
               )}
             </DialogTitle>
-            <DialogContent>{dialogResult.message}</DialogContent>
-            <DialogActions>
+            <DialogContent>
+              {dialogResult.message}
+              {supportError && <Text className={styles.supportError} role="alert">{supportError}</Text>}
+            </DialogContent>
+            <DialogActions className={styles.dialogActions}>
+              {dialogResult.ok && <FreeSupportButton onClick={handleFreeSupport} />}
               <DialogTrigger disableButtonEnhancement>
                 <Button appearance="primary">{t("clean.ok")}</Button>
               </DialogTrigger>

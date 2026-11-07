@@ -15,6 +15,15 @@
     "about": "について",
     "donate": "寄付"
   },
+  "support": {
+    "chooseTitle": "応援方法を選択",
+    "free": "無料で応援❤️",
+    "direct": "直接寄付する",
+    "wechatCode": "WeChat 寄付コード",
+    "cancel": "キャンセル",
+    "openFailed": "無料応援ページを開けませんでした。後でもう一度お試しください。",
+    "donateOpenFailed": "WeChat の寄付コードを開けませんでした。後でもう一度お試しください。"
+  },
   "titleBar": {
     "appName": "WindowsCleaner"
   },
