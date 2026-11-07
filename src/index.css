@@ -30,7 +30,7 @@ body,
 #root {
   height: 100%;
   overflow: hidden;
-  background: #1b1b1b;
+  background: var(--app-background, #1b1b1b);
 }
 
 body {

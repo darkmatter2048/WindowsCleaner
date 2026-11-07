@@ -75,7 +75,6 @@
     },
     "theme": {
       "title": "Theme",
-      "restartHint": "(restart to apply)",
       "system": "Follow system",
       "dark": "Dark",
       "light": "Light"

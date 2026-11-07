@@ -179,7 +179,7 @@ export default function SettingsWindow() {
                     if (data.optionValue) changeTheme(data.optionValue as AppTheme);
                   }}
                 >
-                  <Option value="system" text={`${t("settings.theme.system")} ${t("settings.theme.restartHint")}`}>{t("settings.theme.system")} {t("settings.theme.restartHint")}</Option>
+                  <Option value="system">{t("settings.theme.system")}</Option>
                   <Option value="dark">{t("settings.theme.dark")}</Option>
                   <Option value="light">{t("settings.theme.light")}</Option>
                 </Dropdown>

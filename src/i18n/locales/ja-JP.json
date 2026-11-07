@@ -75,7 +75,6 @@
     },
     "theme": {
       "title": "テーマ",
-      "restartHint": "（再起動後に適用）",
       "system": "システムに従う",
       "dark": "ダーク",
       "light": "ライト"
