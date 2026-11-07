@@ -3,6 +3,8 @@
 
 <h1>Windows Cleaner</h1>
 
+[English version](README.en.md)
+
 <p>
 <img src="https://img.shields.io/github/downloads/darkmatter2048/WindowsCleaner/total" alt="downloads" />
 <img src="https://img.shields.io/github/stars/darkmatter2048/WindowsCleaner" alt="stars" />
