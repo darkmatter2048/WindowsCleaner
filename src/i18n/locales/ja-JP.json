@@ -178,22 +178,26 @@
   },
   "advanced": {
     "title": "詳細設定",
+    "statusUnavailable": "システム状態を取得できません",
+    "changeFailed": "設定が反映されませんでした: {{error}}",
     "defender": {
       "title": "Windows Defender",
-      "desc": "Windows Defender のリアルタイム保護とアンチスパイウェアを無効にします。",
-      "enabled": "有効",
-      "disabled": "無効",
+      "desc": "Defender のリアルタイム保護を切り替えます。改ざん防止機能やデバイスポリシーにより変更できない場合があります。",
+      "enabled": "リアルタイム保護は有効",
+      "disabled": "リアルタイム保護は無効",
       "turnOn": "有効のままにする（推奨）",
       "turnOff": "Defender を無効にする",
-      "risk": "⚠ 警告：Windows Defender を無効にすると、システムがウイルスやマルウェアの脅威にさらされます。信頼できる別のアンチウイルスソフトウェアがインストールされていることを確認してください。"
+      "risk": "⚠ 警告：リアルタイム保護を無効にすると、マルウェア感染のリスクが高まります。Windows が後で自動的に再有効化する場合があります。"
     },
     "update": {
       "title": "Windows Update",
-      "desc": "Windows Update サービスを停止して無効にします。",
-      "enabled": "自動更新中",
-      "disabled": "無効",
+      "desc": "Windows Update ポリシーで自動更新を無効にします。手動での更新確認は引き続き可能です。",
+      "enabled": "自動更新の無効化ポリシーなし",
+      "disabled": "自動更新の無効化ポリシーあり",
+      "serviceDisabled": "更新サービスが無効（旧設定）",
       "turnOn": "自動更新を維持（推奨）",
       "turnOff": "自動更新を無効にする",
+      "legacyServiceDisabled": "以前の設定で Windows Update のサービスが無効になっています。自動更新を有効にする前に、サービスの起動設定を復元してください。",
       "risk": "⚠ 警告：Windows Update を無効にすると、セキュリティパッチや機能更新が適用されなくなります。既知の脆弱性に対してシステムが無防備になる可能性があります。定期的に手動で更新を確認してください。"
     },
     "folders": {

@@ -178,22 +178,26 @@
   },
   "advanced": {
     "title": "Advanced Options",
+    "statusUnavailable": "System status unavailable",
+    "changeFailed": "Setting did not take effect: {{error}}",
     "defender": {
       "title": "Windows Defender",
-      "desc": "Disable Windows Defender real-time protection and anti-spyware.",
-      "enabled": "Enabled",
-      "disabled": "Disabled",
+      "desc": "Control Defender real-time protection. Tamper Protection or device policy may block changes.",
+      "enabled": "Real-time protection on",
+      "disabled": "Real-time protection off",
       "turnOn": "Keep enabled (recommended)",
       "turnOff": "Disable Defender",
-      "risk": "⚠ Warning: Disabling Windows Defender exposes your system to viruses and malware. Ensure you have another reliable antivirus installed."
+      "risk": "⚠ Warning: Turning off real-time protection increases malware risk. Windows may turn it back on later."
     },
     "update": {
       "title": "Windows Update",
-      "desc": "Stop and disable the Windows Update service.",
-      "enabled": "Auto-updating",
-      "disabled": "Disabled",
+      "desc": "Turn off automatic updates through Windows Update policy. Manual checks remain available.",
+      "enabled": "No disable policy set",
+      "disabled": "Disable policy set",
+      "serviceDisabled": "Update service disabled (older setting)",
       "turnOn": "Keep auto-update (recommended)",
       "turnOff": "Disable auto-update",
+      "legacyServiceDisabled": "One or more Windows Update services were disabled by an older setting. Restore their startup settings before enabling automatic updates.",
       "risk": "⚠ Warning: Disabling Windows Update prevents security patches and feature updates. Your system may be vulnerable to known exploits. Check for updates manually on a regular basis."
     },
     "folders": {

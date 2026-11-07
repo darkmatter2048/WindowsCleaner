@@ -178,22 +178,26 @@
   },
   "advanced": {
     "title": "高级选项",
+    "statusUnavailable": "无法读取系统状态",
+    "changeFailed": "设置未生效：{{error}}",
     "defender": {
       "title": "Windows Defender",
-      "desc": "关闭 Windows Defender 实时保护和反间谍软件功能。",
-      "enabled": "已启用",
-      "disabled": "已关闭",
+      "desc": "控制 Defender 实时保护。系统防篡改保护或设备策略可能阻止修改。",
+      "enabled": "实时保护已开启",
+      "disabled": "实时保护已关闭",
       "turnOn": "保持启用（推荐）",
       "turnOff": "关闭 Defender",
-      "risk": "⚠ 风险提示：关闭 Windows Defender 会使系统暴露于病毒和恶意软件威胁之下。请确保已安装其他可靠的杀毒软件。"
+      "risk": "⚠ 风险提示：关闭实时保护会增加病毒和恶意软件风险。Windows 可能稍后自动重新开启。"
     },
     "update": {
       "title": "Windows 更新",
-      "desc": "停止并禁用 Windows Update 服务。",
-      "enabled": "自动更新中",
-      "disabled": "已禁用",
+      "desc": "通过 Windows 更新策略关闭自动更新；仍可手动检查更新。",
+      "enabled": "未设置关闭自动更新策略",
+      "disabled": "已设置关闭自动更新策略",
+      "serviceDisabled": "更新服务已禁用（旧设置）",
       "turnOn": "保持自动更新（推荐）",
       "turnOff": "关闭自动更新",
+      "legacyServiceDisabled": "检测到一个或多个 Windows 更新服务已被旧设置禁用。开启自动更新前，请恢复服务的启动配置。",
       "risk": "⚠ 风险提示：关闭 Windows 更新将无法获取安全补丁和功能更新，系统可能面临已知漏洞的威胁。建议定期手动检查更新。"
     },
     "folders": {

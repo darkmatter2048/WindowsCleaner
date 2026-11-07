@@ -1,4 +1,7 @@
 use serde::{Deserialize, Serialize};
+use std::io::ErrorKind;
+use std::os::windows::process::CommandExt;
+use std::process::Command;
 use tauri::Emitter;
 use winreg::enums::*;
 use winreg::RegKey;
@@ -10,23 +13,24 @@ use winreg::RegKey;
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AdvancedStatus {
-    pub defender_disabled: bool,
-    pub update_disabled: bool,
+    pub defender_disabled: Option<bool>,
+    pub update_disabled: Option<bool>,
+    pub update_service_disabled: Option<bool>,
     pub page_file: PageFileInfo,
 }
 
 #[tauri::command]
 pub async fn get_advanced_status() -> Result<AdvancedStatus, String> {
     tauri::async_runtime::spawn_blocking(move || {
-        let defender_disabled = get_defender_status_raw()?;
-        let update_disabled = match get_update_status_raw() {
-            Ok(s) => s.disabled,
-            Err(_) => false,
-        };
+        let defender_disabled = get_defender_status_raw().ok();
+        let update_status = get_update_status_raw().ok();
+        let update_disabled = update_status.as_ref().map(|s| s.disabled);
+        let update_service_disabled = update_status.as_ref().map(|s| s.service_disabled);
         let page_file = get_page_file_info_raw()?;
         Ok(AdvancedStatus {
             defender_disabled,
             update_disabled,
+            update_service_disabled,
             page_file,
         })
     })
@@ -37,21 +41,40 @@ pub async fn get_advanced_status() -> Result<AdvancedStatus, String> {
 }
 
 fn get_defender_status_raw() -> Result<bool, String> {
-    let hklm = RegKey::predef(HKEY_LOCAL_MACHINE);
-    match hklm.open_subkey(DEFENDER_KEY) {
-        Ok(k) => {
-            let val: u32 = k.get_value("DisableAntiSpyware").unwrap_or(0);
-            Ok(val == 1)
-        }
-        Err(_) => Ok(false),
+    let output = run_defender_command(
+        "$ErrorActionPreference = 'Stop'; $status = Get-MpComputerStatus; \
+         if ($null -eq $status) { throw 'Defender status unavailable' }; \
+         [Console]::Out.WriteLine($status.RealTimeProtectionEnabled)",
+    )?;
+    match output.trim().to_ascii_lowercase().as_str() {
+        "true" => Ok(false),
+        "false" => Ok(true),
+        _ => Err("Unexpected Defender status response".into()),
     }
 }
 
+fn run_defender_command(script: &str) -> Result<String, String> {
+    const CREATE_NO_WINDOW: u32 = 0x0800_0000;
+    let output = Command::new("powershell.exe")
+        .args(["-NoProfile", "-NonInteractive", "-Command", script])
+        .creation_flags(CREATE_NO_WINDOW)
+        .output()
+        .map_err(|e| format!("Could not run Windows Defender command: {e}"))?;
+    if !output.status.success() {
+        let error = String::from_utf8_lossy(&output.stderr);
+        return Err(format!("Windows Defender command failed: {}", error.trim()));
+    }
+    Ok(String::from_utf8_lossy(&output.stdout).into_owned())
+}
+
 fn get_update_status_raw() -> Result<UpdateStatus, String> {
-    let disabled = read_service_disabled("wuauserv");
+    let policy_disabled = read_update_policy_disabled()?;
+    let service_disabled = read_service_disabled("wuauserv")?
+        || read_service_disabled("UsoSvc")?
+        || read_service_disabled("WaaSMedicSvc")?;
     Ok(UpdateStatus {
-        disabled,
-        service_running: !disabled,
+        disabled: policy_disabled || service_disabled,
+        service_disabled,
     })
 }
 
@@ -78,43 +101,31 @@ fn get_page_file_info_raw() -> Result<PageFileInfo, String> {
 // Windows Defender
 // ---------------------------------------------------------------------------
 
-const DEFENDER_KEY: &str = "SOFTWARE\\Policies\\Microsoft\\Windows Defender";
-
 #[tauri::command]
 pub fn get_defender_status() -> Result<bool, String> {
-    let hklm = RegKey::predef(HKEY_LOCAL_MACHINE);
-    let key = hklm.open_subkey(DEFENDER_KEY);
-    match key {
-        Ok(k) => {
-            let val: u32 = k.get_value("DisableAntiSpyware").unwrap_or(0);
-            Ok(val == 1)
-        }
-        Err(_) => Ok(false), // key doesn't exist = defender is ON (not disabled)
-    }
+    get_defender_status_raw()
 }
 
 #[tauri::command]
-pub fn set_defender_disabled(disabled: bool) -> Result<(), String> {
-    let hklm = RegKey::predef(HKEY_LOCAL_MACHINE);
-    let (key, _) = hklm.create_subkey(DEFENDER_KEY).map_err(|e| e.to_string())?;
-
-    if disabled {
-        key.set_value("DisableAntiSpyware", &1u32)
-            .map_err(|e| format!("Failed to disable Defender: {}", e))?;
-        let _ = key.set_value("DisableRealtimeMonitoring", &1u32);
-        let _ = key.set_value("DisableBehaviorMonitoring", &1u32);
-        let _ = key.set_value("DisableOnAccessProtection", &1u32);
-        let _ = key.set_value("DisableScanOnRealtimeEnable", &1u32);
-        crate::logger::warn("defender", "已关闭 Windows Defender", "");
-    } else {
-        let _ = key.delete_value("DisableAntiSpyware");
-        let _ = key.delete_value("DisableRealtimeMonitoring");
-        let _ = key.delete_value("DisableBehaviorMonitoring");
-        let _ = key.delete_value("DisableOnAccessProtection");
-        let _ = key.delete_value("DisableScanOnRealtimeEnable");
-        crate::logger::info("defender", "已恢复 Windows Defender", "");
-    }
-    Ok(())
+pub async fn set_defender_disabled(disabled: bool) -> Result<bool, String> {
+    tauri::async_runtime::spawn_blocking(move || {
+        let value = if disabled { "$true" } else { "$false" };
+        run_defender_command(&format!(
+            "$ErrorActionPreference = 'Stop'; Set-MpPreference -DisableRealtimeMonitoring {value} -ErrorAction Stop"
+        ))?;
+        let actual = get_defender_status_raw()?;
+        if actual != disabled {
+            return Err("Windows did not apply the Defender change. Check Tamper Protection or device policy.".into());
+        }
+        if disabled {
+            crate::logger::warn("defender", "已关闭 Windows Defender 实时保护", "");
+        } else {
+            crate::logger::info("defender", "已恢复 Windows Defender 实时保护", "");
+        }
+        Ok(actual)
+    })
+    .await
+    .map_err(|e| e.to_string())?
 }
 
 // ---------------------------------------------------------------------------
@@ -122,54 +133,82 @@ pub fn set_defender_disabled(disabled: bool) -> Result<(), String> {
 // ---------------------------------------------------------------------------
 
 #[derive(Serialize)]
+#[serde(rename_all = "camelCase")]
 pub struct UpdateStatus {
     pub disabled: bool,
-    pub service_running: bool,
+    pub service_disabled: bool,
 }
 
-/// Read service Start value from registry — no process spawn.
-/// HKLM\SYSTEM\CurrentControlSet\Services\<name>\Start:
-///   2=AUTO, 3=MANUAL, 4=DISABLED
-fn read_service_disabled(name: &str) -> bool {
+const UPDATE_POLICY_KEY: &str = "SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsUpdate\\AU";
+
+fn read_service_disabled(name: &str) -> Result<bool, String> {
     let hklm = RegKey::predef(HKEY_LOCAL_MACHINE);
     let path = format!("SYSTEM\\CurrentControlSet\\Services\\{}", name);
-    hklm.open_subkey(&path)
-        .ok()
-        .and_then(|k| k.get_value::<u32, _>("Start").ok())
-        .map(|v| v == 4)
-        .unwrap_or(false)
+    let key = hklm
+        .open_subkey(&path)
+        .map_err(|e| format!("Could not read {name}: {e}"))?;
+    let start: u32 = key
+        .get_value("Start")
+        .map_err(|e| format!("Could not read {name} startup type: {e}"))?;
+    Ok(start == 4)
 }
 
-/// Write service Start value via registry — no process spawn.
-fn write_service_disabled(name: &str, disabled: bool) -> Result<(), String> {
+fn read_update_policy_disabled() -> Result<bool, String> {
     let hklm = RegKey::predef(HKEY_LOCAL_MACHINE);
-    let path = format!("SYSTEM\\CurrentControlSet\\Services\\{}", name);
-    let (key, _) = hklm.create_subkey(&path).map_err(|e| e.to_string())?;
-    let start_val: u32 = if disabled { 4 } else { 2 }; // 4=DISABLED, 2=AUTO
-    key.set_value("Start", &start_val)
-        .map_err(|e| format!("Failed to set {} Start: {}", name, e))
+    let key = match hklm.open_subkey(UPDATE_POLICY_KEY) {
+        Ok(key) => key,
+        Err(e) if e.kind() == ErrorKind::NotFound => return Ok(false),
+        Err(e) => return Err(format!("Could not read Windows Update policy: {e}")),
+    };
+    match key.get_value::<u32, _>("NoAutoUpdate") {
+        Ok(value) => Ok(value == 1),
+        Err(e) if e.kind() == ErrorKind::NotFound => Ok(false),
+        Err(e) => Err(format!("Could not read automatic update setting: {e}")),
+    }
 }
 
 #[tauri::command]
 pub fn get_update_status() -> Result<UpdateStatus, String> {
-    let disabled = read_service_disabled("wuauserv");
-    Ok(UpdateStatus {
-        disabled,
-        service_running: !disabled,
-    })
+    get_update_status_raw()
 }
 
 #[tauri::command]
-pub fn set_update_disabled(disabled: bool) -> Result<(), String> {
-    write_service_disabled("wuauserv", disabled)?;
-    let _ = write_service_disabled("UsoSvc", disabled);
-    let _ = write_service_disabled("WaaSMedicSvc", disabled);
+pub fn set_update_disabled(disabled: bool) -> Result<UpdateStatus, String> {
+    let hklm = RegKey::predef(HKEY_LOCAL_MACHINE);
     if disabled {
-        crate::logger::warn("update", "已禁用 Windows Update", "");
+        let (key, _) = hklm
+            .create_subkey(UPDATE_POLICY_KEY)
+            .map_err(|e| format!("Could not open Windows Update policy: {e}"))?;
+        key.set_value("NoAutoUpdate", &1u32)
+            .map_err(|e| format!("Could not disable automatic updates: {e}"))?;
     } else {
-        crate::logger::info("update", "已恢复 Windows Update", "");
+        match hklm.open_subkey_with_flags(UPDATE_POLICY_KEY, KEY_SET_VALUE) {
+            Ok(key) => match key.delete_value("NoAutoUpdate") {
+                Ok(()) => (),
+                Err(e) if e.kind() == ErrorKind::NotFound => (),
+                Err(e) => return Err(format!("Could not restore automatic updates: {e}")),
+            },
+            Err(e) if e.kind() == ErrorKind::NotFound => (),
+            Err(e) => return Err(format!("Could not open Windows Update policy: {e}")),
+        }
     }
-    Ok(())
+    if read_update_policy_disabled()? != disabled {
+        return Err("Windows did not apply the automatic update policy.".into());
+    }
+    let status = get_update_status_raw()?;
+    if status.disabled != disabled {
+        return Err(if status.service_disabled {
+            "One or more Windows Update services are still disabled by an older service setting.".into()
+        } else {
+            "Windows did not apply the automatic update policy.".into()
+        });
+    }
+    if disabled {
+        crate::logger::warn("update", "已关闭 Windows 自动更新", "");
+    } else {
+        crate::logger::info("update", "已恢复 Windows 自动更新", "");
+    }
+    Ok(status)
 }
 
 // ---------------------------------------------------------------------------

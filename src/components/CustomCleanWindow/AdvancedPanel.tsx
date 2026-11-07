@@ -127,6 +127,16 @@ const useStyles = makeStyles({
     backgroundColor: tokens.colorPaletteRedBackground2,
     color: tokens.colorPaletteRedForeground1,
   },
+  statusUnknown: {
+    backgroundColor: tokens.colorNeutralBackground4,
+    color: tokens.colorNeutralForeground2,
+  },
+  statusError: {
+    display: "block",
+    fontSize: "12px",
+    color: tokens.colorPaletteRedForeground1,
+    overflowWrap: "anywhere",
+  },
   vmInputGroup: {
     display: "flex",
     flexDirection: "column",
@@ -180,13 +190,19 @@ const useStyles = makeStyles({
 // ---------------------------------------------------------------------------
 
 interface AdvancedStatus {
-  defenderDisabled: boolean;
-  updateDisabled: boolean;
+  defenderDisabled: boolean | null;
+  updateDisabled: boolean | null;
+  updateServiceDisabled: boolean | null;
   pageFile: {
     initialMb: number;
     maxMb: number;
     systemManaged: boolean;
   };
+}
+
+interface UpdateStatus {
+  disabled: boolean;
+  serviceDisabled: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -198,8 +214,13 @@ export default function AdvancedPanel() {
   const { t } = useTranslation();
 
   const [loading, setLoading] = useState(true);
-  const [defenderDisabled, setDefenderDisabled] = useState(false);
-  const [updateDisabled, setUpdateDisabled] = useState(false);
+  const [defenderDisabled, setDefenderDisabled] = useState<boolean | null>(null);
+  const [updateDisabled, setUpdateDisabled] = useState<boolean | null>(null);
+  const [updateServiceDisabled, setUpdateServiceDisabled] = useState(false);
+  const [defenderBusy, setDefenderBusy] = useState(false);
+  const [updateBusy, setUpdateBusy] = useState(false);
+  const [defenderError, setDefenderError] = useState<string | null>(null);
+  const [updateError, setUpdateError] = useState<string | null>(null);
   const [pfSystemManaged, setPfSystemManaged] = useState(true);
   const [pfInitial, setPfInitial] = useState("2048");
   const [pfMax, setPfMax] = useState("4096");
@@ -268,6 +289,7 @@ export default function AdvancedPanel() {
           if (!mounted) return;
           setDefenderDisabled(s.defenderDisabled);
           setUpdateDisabled(s.updateDisabled);
+          setUpdateServiceDisabled(s.updateServiceDisabled === true);
           setPageFile(s.pageFile);
           setPfSystemManaged(s.pageFile.systemManaged);
           if (!s.pageFile.systemManaged && s.pageFile.initialMb > 0) {
@@ -283,31 +305,35 @@ export default function AdvancedPanel() {
 
   // -------- Defender --------
   const toggleDefender = async (disable: boolean) => {
-    setDefenderDisabled(disable);
-    const ok = await invoke("set_defender_disabled", { disabled: disable })
-      .then(() => true)
-      .catch(() => false);
-    if (!ok) {
-      setDefenderDisabled(!disable);
-      return;
+    setDefenderBusy(true);
+    setDefenderError(null);
+    try {
+      const actual = await invoke<boolean>("set_defender_disabled", { disabled: disable });
+      setDefenderDisabled(actual);
+    } catch (error) {
+      setDefenderError(t("advanced.changeFailed", { error: String(error) }));
+      setDefenderDisabled(await invoke<boolean>("get_defender_status").catch(() => null));
+    } finally {
+      setDefenderBusy(false);
     }
-    // Re-read to confirm
-    const actual = await invoke<boolean>("get_defender_status").catch(() => !disable);
-    if (actual !== disable) setDefenderDisabled(actual);
   };
 
   // -------- Update --------
   const toggleUpdate = async (disable: boolean) => {
-    setUpdateDisabled(disable);
-    const ok = await invoke("set_update_disabled", { disabled: disable })
-      .then(() => true)
-      .catch(() => false);
-    if (!ok) {
-      setUpdateDisabled(!disable);
-      return;
+    setUpdateBusy(true);
+    setUpdateError(null);
+    try {
+      const actual = await invoke<UpdateStatus>("set_update_disabled", { disabled: disable });
+      setUpdateDisabled(actual.disabled);
+      setUpdateServiceDisabled(actual.serviceDisabled);
+    } catch (error) {
+      setUpdateError(t("advanced.changeFailed", { error: String(error) }));
+      const actual = await invoke<UpdateStatus>("get_update_status").catch(() => null);
+      setUpdateDisabled(actual?.disabled ?? null);
+      setUpdateServiceDisabled(actual?.serviceDisabled ?? false);
+    } finally {
+      setUpdateBusy(false);
     }
-    const actual = await invoke<{ disabled: boolean }>("get_update_status").catch(() => null);
-    if (actual && actual.disabled !== disable) setUpdateDisabled(actual.disabled);
   };
 
   // -------- Page File --------
@@ -395,17 +421,21 @@ export default function AdvancedPanel() {
           </div>
           <Text className={styles.sectionDesc}>{t("advanced.defender.desc")}</Text>
 
-          {loading ? (
+          {loading || defenderBusy ? (
             <Spinner size="tiny" />
           ) : (
             <span
-              className={`${styles.statusBadge} ${defenderDisabled ? styles.statusOff : styles.statusOn}`}
+              className={`${styles.statusBadge} ${defenderDisabled === null ? styles.statusUnknown : defenderDisabled ? styles.statusOff : styles.statusOn}`}
             >
-              {defenderDisabled
+              {defenderDisabled === null
+                ? t("advanced.statusUnavailable")
+                : defenderDisabled
                 ? t("advanced.defender.disabled")
                 : t("advanced.defender.enabled")}
             </span>
           )}
+
+          {defenderError && <Text className={styles.statusError} role="alert">{defenderError}</Text>}
 
           <div className={styles.riskBox}>
             <Text className={styles.riskText}>{t("advanced.defender.risk")}</Text>
@@ -413,9 +443,10 @@ export default function AdvancedPanel() {
 
           <div className={styles.row}>
             <Switch
-              checked={defenderDisabled}
+              checked={defenderDisabled === true}
+              disabled={loading || defenderBusy || defenderDisabled === null}
               onChange={(_, data) => toggleDefender(Boolean(data.checked))}
-              label={defenderDisabled
+              label={defenderDisabled === true
                 ? t("advanced.defender.turnOff")
                 : t("advanced.defender.turnOn")}
             />
@@ -432,17 +463,26 @@ export default function AdvancedPanel() {
           </div>
           <Text className={styles.sectionDesc}>{t("advanced.update.desc")}</Text>
 
-          {loading ? (
+          {loading || updateBusy ? (
             <Spinner size="tiny" />
           ) : (
             <span
-              className={`${styles.statusBadge} ${updateDisabled ? styles.statusOff : styles.statusOn}`}
+              className={`${styles.statusBadge} ${updateDisabled === null ? styles.statusUnknown : updateDisabled ? styles.statusOff : styles.statusOn}`}
             >
-              {updateDisabled
+              {updateDisabled === null
+                ? t("advanced.statusUnavailable")
+                : updateServiceDisabled
+                ? t("advanced.update.serviceDisabled")
+                : updateDisabled
                 ? t("advanced.update.disabled")
                 : t("advanced.update.enabled")}
             </span>
           )}
+
+          {updateServiceDisabled && (
+            <Text className={styles.statusError}>{t("advanced.update.legacyServiceDisabled")}</Text>
+          )}
+          {updateError && <Text className={styles.statusError} role="alert">{updateError}</Text>}
 
           <div className={styles.riskBox}>
             <Text className={styles.riskText}>{t("advanced.update.risk")}</Text>
@@ -450,9 +490,10 @@ export default function AdvancedPanel() {
 
           <div className={styles.row}>
             <Switch
-              checked={updateDisabled}
+              checked={updateDisabled === true}
+              disabled={loading || updateBusy || updateDisabled === null}
               onChange={(_, data) => toggleUpdate(Boolean(data.checked))}
-              label={updateDisabled
+              label={updateDisabled === true
                 ? t("advanced.update.turnOff")
                 : t("advanced.update.turnOn")}
             />
