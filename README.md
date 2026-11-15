@@ -47,14 +47,6 @@
   </tr>
   <tr>
     <td>
-      <img alt="乔星欢" src="https://www.qiaoxh.com/favicon.ico" width="50" height="50" />
-    </td>
-    <td>
-    非常感谢<a href="https://www.qiaoxh.com/?from=dyblog.online">乔星欢</a>为dyblog.online提供的免费的CDN服务(<a href="https://www.devpole.com/?from=dyblog.online">DevPole</a>)❤️
-    </td>
-  </tr>
-  <tr>
-    <td>
       <img alt="玄离199" src="https://i0.hdslb.com/bfs/face/8a70069e1dc9ab89c1d688c2cefd3596864315ea.jpg@240w_240h_1c_1s_!web-avatar-search-videos.webp" width="50" height="50" style="border-radius: 50%;" />
     </td>
     <td>

@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Local promotional video project and rendered assets
+/promo/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
