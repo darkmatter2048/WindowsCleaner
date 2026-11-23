@@ -362,10 +362,6 @@ function formatBytes(bytes: number): string {
   return `${(bytes / 1024).toFixed(0)} KB`;
 }
 
-function formatDriveInfo(d: DriveInfo): string {
-  return `${d.letter}: (${formatBytes(d.freeBytes)} free)`;
-}
-
 // ---------------------------------------------------------------------------
 // Component
 // ---------------------------------------------------------------------------
@@ -385,6 +381,9 @@ export default function SoftwareMovePanel() {
   } | null>(null);
 
   const appName = useCallback((app: SoftwareInfo) => app.displayName || app.key, []);
+
+  const formatDriveInfo = (d: DriveInfo): string =>
+    `${d.letter}: (${t("softwareMove.driveFree", { size: formatBytes(d.freeBytes) })})`;
 
   const refresh = useCallback(async () => {
     const software = await invoke<SoftwareInfo[]>("scan_software").catch(() => [] as SoftwareInfo[]);
@@ -620,7 +619,10 @@ export default function SoftwareMovePanel() {
                       )}
                       {app.fileCount > 0 && (
                         <Text className={styles.fileCount}>
-                          {app.fileCount.toLocaleString()} {t("softwareMove.files")}
+                          {t("softwareMove.files", {
+                            count: app.fileCount,
+                            formattedCount: app.fileCount.toLocaleString(),
+                          })}
                         </Text>
                       )}
                     </div>

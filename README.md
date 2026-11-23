@@ -3,7 +3,7 @@
 
 <h1>Windows Cleaner</h1>
 
-[English version](README.en.md)
+[English version](README.en.md) | [Русская версия](README.ru.md)
 
 <p>
 <img src="https://img.shields.io/github/downloads/darkmatter2048/WindowsCleaner/total" alt="downloads" />

@@ -1,5 +1,6 @@
 import { Component, useCallback, useState } from "react";
 import { makeStyles, tokens, Text } from "@fluentui/react-components";
+import { useTranslation } from "react-i18next";
 import TitleBar from "../TitleBar/TitleBar";
 import GeneralCleanPanel from "./GeneralCleanPanel";
 import ScheduledCleanPanel from "./ScheduledCleanPanel";
@@ -31,10 +32,10 @@ const useStyles = makeStyles({
 
 // Prevent a single panel crash from blanking the entire window
 class PanelErrorBoundary extends Component<
-  { children: React.ReactNode },
+  { children: React.ReactNode; errorTitle: string },
   { hasError: boolean; errorMsg: string }
 > {
-  constructor(props: { children: React.ReactNode }) {
+  constructor(props: { children: React.ReactNode; errorTitle: string }) {
     super(props);
     this.state = { hasError: false, errorMsg: "" };
   }
@@ -49,7 +50,7 @@ class PanelErrorBoundary extends Component<
       return (
         <div style={{ padding: 24 }}>
           <Text style={{ color: "var(--colorNeutralForeground3)", display: "block", marginBottom: 8 }}>
-            Something went wrong displaying this panel.
+            {this.props.errorTitle}
           </Text>
           <Text style={{ fontSize: 12, color: "var(--colorPaletteRedForeground1)", whiteSpace: "pre-wrap" }}>
             {this.state.errorMsg}
@@ -79,6 +80,7 @@ function saveOptions(options: CleanOptionId[]) {
 
 export default function CustomCleanWindow() {
   const styles = useStyles();
+  const { t } = useTranslation();
   const [section, setSection] = useState<CustomCleanSection>("general");
   const [cleaning, setCleaning] = useState(false);
 
@@ -123,11 +125,13 @@ export default function CustomCleanWindow() {
 
   return (
     <div className={styles.root}>
-      <TitleBar showIcon={false} title="自定义清理" />
+      <TitleBar showIcon={false} title={t("customClean.windowTitle")} />
       <div className={styles.body}>
         <CustomCleanNav selected={section} onSelect={setSection} disabled={cleaning} />
         <main className={styles.content}>
-          <PanelErrorBoundary key={section}>{renderContent()}</PanelErrorBoundary>
+          <PanelErrorBoundary key={section} errorTitle={t("customClean.panelError")}>
+            {renderContent()}
+          </PanelErrorBoundary>
         </main>
       </div>
     </div>

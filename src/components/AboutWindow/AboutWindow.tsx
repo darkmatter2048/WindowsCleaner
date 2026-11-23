@@ -12,6 +12,7 @@ import {
   CheckmarkCircle24Regular,
 } from "@fluentui/react-icons";
 import { invoke } from "@tauri-apps/api/core";
+import { useTranslation } from "react-i18next";
 import TitleBar from "../TitleBar/TitleBar";
 
 const useStyles = makeStyles({
@@ -90,6 +91,7 @@ const VERSION_URL = "https://wc.dyblog.online/version.json";
 
 export default function AboutWindow() {
   const styles = useStyles();
+  const { t } = useTranslation();
   const [version, setVersion] = useState("");
   const [checking, setChecking] = useState(false);
   const [updateMsg, setUpdateMsg] = useState("");
@@ -111,21 +113,21 @@ export default function AboutWindow() {
       const currentPatch = parseInt(version.split(".").pop() || "0", 10);
       if (info.version > currentPatch) {
         setUpdateOk(true);
-        setUpdateMsg(`发现新版本 v${info.version}，请前往官网下载更新`);
+        setUpdateMsg(t("about.updateAvailable", { version: info.version }));
       } else {
         setUpdateOk(true);
-        setUpdateMsg("已是最新版本");
+        setUpdateMsg(t("about.upToDate"));
       }
     } catch {
       setUpdateOk(false);
-      setUpdateMsg("检查更新失败");
+      setUpdateMsg(t("about.updateFailed"));
     }
     setChecking(false);
   };
 
   return (
     <div className={styles.root}>
-      <TitleBar showIcon={false} title="关于" />
+      <TitleBar showIcon={false} title={t("about.windowTitle")} />
 
       <div className={styles.content}>
         <Text className={styles.appName}>WindowsCleaner</Text>
@@ -135,13 +137,13 @@ export default function AboutWindow() {
 
         <div className={styles.links}>
           <Link className={styles.link} href="https://wc.dyblog.online/" target="_blank">
-            官网：wc.dyblog.online
+            {t("about.website")}
           </Link>
           <Link className={styles.link} href="https://dyblog.online/" target="_blank">
-            作者主页：dyblog.online
+            {t("about.authorHome")}
           </Link>
           <Link className={styles.link} href="https://space.bilibili.com/1847808902" target="_blank">
-            作者B站：Mr_Jacek
+            {t("about.authorBilibili")}
           </Link>
         </div>
 
@@ -152,7 +154,7 @@ export default function AboutWindow() {
             disabled={checking}
             onClick={checkUpdate}
           >
-            检查更新
+            {t("about.checkUpdates")}
           </Button>
           {checking && <Spinner size="tiny" />}
           {updateMsg && (
@@ -179,8 +181,8 @@ export default function AboutWindow() {
         </div>
 
         <div className={styles.meta}>
-          <Text className={styles.metaText}>版权所有 &copy; DaYe</Text>
-          <Text className={styles.metaText}>许可证：CC BY-NC-SA 4.0</Text>
+          <Text className={styles.metaText}>{t("about.copyright")}</Text>
+          <Text className={styles.metaText}>{t("about.license")}</Text>
         </div>
       </div>
     </div>

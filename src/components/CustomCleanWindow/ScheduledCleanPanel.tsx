@@ -251,7 +251,7 @@ export default function ScheduledCleanPanel({ selectedOptions }: Props) {
           <button
             className={styles.toastDismiss}
             onClick={() => setToastVisible(false)}
-            aria-label="Dismiss"
+            aria-label={t("common.dismiss")}
           >
             <Dismiss24Regular fontSize={14} />
           </button>

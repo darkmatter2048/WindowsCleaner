@@ -1,10 +1,14 @@
 {
   "_meta": { "nativeName": "English" },
+  "common": {
+    "dismiss": "Dismiss"
+  },
   "disk": {
     "totalSpace": "C: Drive Total",
     "freeSpace": "Free Space",
     "usedSpace": "Used Space",
-    "unit": "GB"
+    "unit": "GB",
+    "iconAlt": "Disk"
   },
   "buttons": {
     "quickClean": "Quick Clean",
@@ -25,7 +29,9 @@
     "donateOpenFailed": "Could not open the WeChat appreciation code. Please try again."
   },
   "titleBar": {
-    "appName": "WindowsCleaner"
+    "appName": "WindowsCleaner",
+    "minimize": "Minimize",
+    "close": "Close"
   },
   "clean": {
     "cleaning": "Cleaning...",
@@ -38,6 +44,8 @@
     "opening": "Opening...",
     "openFailed": "Failed to open custom clean window",
     "placeholder": "This feature is under development",
+    "windowTitle": "Custom Clean",
+    "panelError": "Something went wrong displaying this panel.",
     "nav": {
       "general": "General Clean",
       "scheduled": "Scheduled",
@@ -48,10 +56,14 @@
       "title": "General Clean",
       "subtitle": "Choose the items you want to clean.",
       "selected": "{{count}} items selected",
+      "selected_one": "{{count}} item selected",
+      "selected_other": "{{count}} items selected",
       "selectAll": "Select All",
       "reset": "Reset Defaults",
       "run": "Start Cleaning",
-      "errors": "{{count}} items returned errors"
+      "errors": "{{count}} items returned errors",
+      "errors_one": "{{count}} item returned an error",
+      "errors_other": "{{count}} items returned errors"
     },
     "options": {
       "prefetch": { "title": "Prefetch Cache", "description": "Clean .pf files under C:\\Windows\\Prefetch." },
@@ -78,6 +90,7 @@
     }
   },
   "settings": {
+    "windowTitle": "Settings",
     "loading": "Loading settings...",
     "language": {
       "title": "Language"
@@ -141,7 +154,10 @@
     "appName": "Application",
     "size": "Size",
     "action": "Action",
-    "files": "files",
+    "files": "{{formattedCount}} files",
+    "files_one": "{{formattedCount}} file",
+    "files_other": "{{formattedCount}} files",
+    "driveFree": "{{size}} free",
     "move": "Move",
     "undo": "Undo",
     "movedTag": "Moved",
@@ -160,6 +176,8 @@
     "forceCloseWarning": "Force closing will immediately terminate the application. Unsaved data may be lost. Files that remain locked during copy will be skipped.",
     "forceCloseAndContinue": "Force close & continue",
     "moveSuccessWithSkipped": "{{name}} moved, but {{count}} files were locked and skipped",
+    "moveSuccessWithSkipped_one": "{{name}} moved, but {{count}} file was locked and skipped",
+    "moveSuccessWithSkipped_other": "{{name}} moved, but {{count}} files were locked and skipped",
     "recovery": {
       "moved": "Move completed",
       "sourceAndTarget": "Both the source folder and target copy are present",
@@ -216,6 +234,9 @@
       "move": "Move",
       "undo": "Undo",
       "scanning": "Calculating folder sizes...",
+      "calculating": "Calculating...",
+      "movedTo": "{{name}} moved to {{drive}}:",
+      "restoredTo": "{{name}} restored to {{drive}}:",
       "noneOnC": "All user folders are already on other drives."
     },
     "virtualMemory": {
@@ -228,5 +249,17 @@
       "maximum": "Maximum size",
       "apply": "Apply"
     }
+  },
+  "about": {
+    "windowTitle": "About",
+    "website": "Official website: wc.dyblog.online",
+    "authorHome": "Author's website: dyblog.online",
+    "authorBilibili": "Author on Bilibili: Mr_Jacek",
+    "checkUpdates": "Check for updates",
+    "updateAvailable": "New version v{{version}} found. Please visit the website to download the update.",
+    "upToDate": "You're up to date",
+    "updateFailed": "Failed to check for updates",
+    "copyright": "Copyright © DaYe",
+    "license": "License: CC BY-NC-SA 4.0"
   }
 }
