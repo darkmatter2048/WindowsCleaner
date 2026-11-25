@@ -3,6 +3,8 @@
 
 <h1>Windows Cleaner</h1>
 
+[简体中文](README.md) | [Русская версия](README.ru.md)
+
 <p>
 <img src="https://img.shields.io/github/downloads/darkmatter2048/WindowsCleaner/total" alt="downloads" />
 <img src="https://img.shields.io/github/stars/darkmatter2048/WindowsCleaner" alt="stars" />
@@ -57,6 +59,14 @@ Thank you to everyone who supports this open-source project on GitHub and to the
     </td>
     <td>
     Thanks to <a href="https://space.bilibili.com/175870152?from=dyblog.online">Yuanlai Ruci</a> for the help. Watch the <a href="https://www.bilibili.com/video/BV1h3gh6aEbJ">video</a>.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img alt="HungrySharkNet" src="https://avatars.githubusercontent.com/u/43377427?v=4" width="50" height="50" style="border-radius: 50%;" />
+    </td>
+    <td>
+      Thanks to <a href="https://github.com/HungrySharkNet">HungrySharkNet</a> (Alexander Balashov) for the Russian localization and documentation.
     </td>
   </tr>
 </table>

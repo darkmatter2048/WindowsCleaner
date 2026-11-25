@@ -1,10 +1,14 @@
 {
   "_meta": { "nativeName": "日本語" },
+  "common": {
+    "dismiss": "閉じる"
+  },
   "disk": {
     "totalSpace": "Cドライブ総容量",
     "freeSpace": "空き容量",
     "usedSpace": "使用容量",
-    "unit": "GB"
+    "unit": "GB",
+    "iconAlt": "ディスク"
   },
   "buttons": {
     "quickClean": "クイッククリーン",
@@ -25,7 +29,9 @@
     "donateOpenFailed": "WeChat の寄付コードを開けませんでした。後でもう一度お試しください。"
   },
   "titleBar": {
-    "appName": "WindowsCleaner"
+    "appName": "WindowsCleaner",
+    "minimize": "最小化",
+    "close": "閉じる"
   },
   "clean": {
     "cleaning": "クリーン中...",
@@ -38,6 +44,8 @@
     "opening": "開いています...",
     "openFailed": "カスタムクリーンウィンドウを開けませんでした",
     "placeholder": "この機能は開発中です",
+    "windowTitle": "カスタムクリーン",
+    "panelError": "このパネルの表示中にエラーが発生しました。",
     "nav": {
       "general": "一般クリーン",
       "scheduled": "定期クリーン",
@@ -48,10 +56,12 @@
       "title": "一般クリーン",
       "subtitle": "クリーンする項目を選択してください",
       "selected": "{{count}} 項目選択済み",
+      "selected_other": "{{count}} 項目選択済み",
       "selectAll": "すべて選択",
       "reset": "デフォルトに戻す",
       "run": "クリーン開始",
-      "errors": "{{count}} 項目でエラーが発生しました"
+      "errors": "{{count}} 項目でエラーが発生しました",
+      "errors_other": "{{count}} 項目でエラーが発生しました"
     },
     "options": {
       "prefetch": { "title": "プリフェッチキャッシュ", "description": "C:\\Windows\\Prefetch 内の .pf ファイルを削除します。" },
@@ -78,6 +88,7 @@
     }
   },
   "settings": {
+    "windowTitle": "設定",
     "loading": "設定を読み込み中...",
     "language": {
       "title": "言語"
@@ -141,7 +152,9 @@
     "appName": "アプリケーション",
     "size": "サイズ",
     "action": "操作",
-    "files": "ファイル",
+    "files": "{{formattedCount}} ファイル",
+    "files_other": "{{formattedCount}} ファイル",
+    "driveFree": "空き {{size}}",
     "move": "移動",
     "undo": "元に戻す",
     "movedTag": "移動済み",
@@ -160,6 +173,7 @@
     "forceCloseWarning": "強制終了するとアプリケーションがすぐに終了します。保存されていないデータは失われる可能性があります。コピー中にロックされたままのファイルはスキップされます。",
     "forceCloseAndContinue": "強制終了して続行",
     "moveSuccessWithSkipped": "{{name}} を移動しましたが、{{count}} 個のファイルがロックされていました",
+    "moveSuccessWithSkipped_other": "{{name}} を移動しましたが、{{count}} 個のファイルがロックされていました",
     "recovery": {
       "moved": "移動が完了しました",
       "sourceAndTarget": "元のフォルダーと移動先のコピーが両方存在します",
@@ -216,6 +230,9 @@
       "move": "移動",
       "undo": "元に戻す",
       "scanning": "フォルダーサイズを計算中...",
+      "calculating": "計算中...",
+      "movedTo": "{{name}} を {{drive}}: ドライブに移動しました",
+      "restoredTo": "{{name}} を {{drive}}: ドライブに戻しました",
       "noneOnC": "すべてのユーザーフォルダーは既に他のドライブにあります。"
     },
     "virtualMemory": {
@@ -228,5 +245,17 @@
       "maximum": "最大サイズ",
       "apply": "適用"
     }
+  },
+  "about": {
+    "windowTitle": "について",
+    "website": "公式サイト：wc.dyblog.online",
+    "authorHome": "作者サイト：dyblog.online",
+    "authorBilibili": "作者のBilibili：Mr_Jacek",
+    "checkUpdates": "更新を確認",
+    "updateAvailable": "新しいバージョン v{{version}} があります。公式サイトから更新してください。",
+    "upToDate": "最新バージョンです",
+    "updateFailed": "更新の確認に失敗しました",
+    "copyright": "Copyright © DaYe",
+    "license": "ライセンス：CC BY-NC-SA 4.0"
   }
 }

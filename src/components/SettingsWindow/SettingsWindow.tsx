@@ -141,7 +141,7 @@ export default function SettingsWindow() {
 
   return (
     <div className={styles.root}>
-      <TitleBar showIcon={false} title="设置" />
+      <TitleBar showIcon={false} title={t("settings.windowTitle")} />
       <div className={styles.content}>
         {loading ? (
           <Spinner label={t("settings.loading")} />

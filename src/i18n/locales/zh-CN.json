@@ -1,10 +1,14 @@
 {
   "_meta": { "nativeName": "简体中文" },
+  "common": {
+    "dismiss": "关闭"
+  },
   "disk": {
     "totalSpace": "C盘总空间",
     "freeSpace": "剩余空间",
     "usedSpace": "已用空间",
-    "unit": "GB"
+    "unit": "GB",
+    "iconAlt": "磁盘"
   },
   "buttons": {
     "quickClean": "小白一键清",
@@ -25,7 +29,9 @@
     "donateOpenFailed": "无法打开微信赞赏码，请稍后重试。"
   },
   "titleBar": {
-    "appName": "WindowsCleaner"
+    "appName": "WindowsCleaner",
+    "minimize": "最小化",
+    "close": "关闭"
   },
   "clean": {
     "cleaning": "清理中...",
@@ -38,6 +44,8 @@
     "opening": "打开中...",
     "openFailed": "打开自定义清理窗口失败",
     "placeholder": "该功能正在开发中",
+    "windowTitle": "自定义清理",
+    "panelError": "显示此面板时出错。",
     "nav": {
       "general": "常规清理",
       "scheduled": "定期清理",
@@ -48,10 +56,12 @@
       "title": "常规清理",
       "subtitle": "勾选你想要清理的项目",
       "selected": "已选择 {{count}} 项",
+      "selected_other": "已选择 {{count}} 项",
       "selectAll": "全选",
       "reset": "重置默认",
       "run": "开始清理",
-      "errors": "还有 {{count}} 个项目返回了错误"
+      "errors": "还有 {{count}} 个项目返回了错误",
+      "errors_other": "还有 {{count}} 个项目返回了错误"
     },
     "options": {
       "prefetch": { "title": "预读取缓存", "description": "清理 C:\\Windows\\Prefetch 中的 .pf 文件。" },
@@ -78,6 +88,7 @@
     }
   },
   "settings": {
+    "windowTitle": "设置",
     "loading": "正在加载设置...",
     "language": {
       "title": "语言"
@@ -141,7 +152,9 @@
     "appName": "软件",
     "size": "大小",
     "action": "操作",
-    "files": "个文件",
+    "files": "{{formattedCount}} 个文件",
+    "files_other": "{{formattedCount}} 个文件",
+    "driveFree": "可用 {{size}}",
     "move": "搬家",
     "undo": "撤销",
     "movedTag": "已搬迁",
@@ -160,6 +173,7 @@
     "forceCloseWarning": "强制关闭进程将立即终止对应软件，未保存的数据可能丢失。文件复制过程中仍被锁定的文件将被跳过。",
     "forceCloseAndContinue": "强制关闭并继续",
     "moveSuccessWithSkipped": "{{name}} 已搬迁，但有 {{count}} 个文件被占用跳过",
+    "moveSuccessWithSkipped_other": "{{name}} 已搬迁，但有 {{count}} 个文件被占用跳过",
     "recovery": {
       "moved": "已完成搬迁",
       "sourceAndTarget": "检测到源目录与目标副本同时存在",
@@ -216,6 +230,9 @@
       "move": "迁移",
       "undo": "还原",
       "scanning": "正在计算文件夹大小...",
+      "calculating": "正在计算...",
+      "movedTo": "{{name}} 已迁移到 {{drive}}: 盘",
+      "restoredTo": "{{name}} 已还原到 {{drive}}: 盘",
       "noneOnC": "所有文件夹已在其他驱动器，无需迁移。"
     },
     "virtualMemory": {
@@ -228,5 +245,17 @@
       "maximum": "最大值",
       "apply": "应用"
     }
+  },
+  "about": {
+    "windowTitle": "关于",
+    "website": "官网：wc.dyblog.online",
+    "authorHome": "作者主页：dyblog.online",
+    "authorBilibili": "作者B站：Mr_Jacek",
+    "checkUpdates": "检查更新",
+    "updateAvailable": "发现新版本 v{{version}}，请前往官网下载更新",
+    "upToDate": "已是最新版本",
+    "updateFailed": "检查更新失败",
+    "copyright": "版权所有 © DaYe",
+    "license": "许可证：CC BY-NC-SA 4.0"
   }
 }

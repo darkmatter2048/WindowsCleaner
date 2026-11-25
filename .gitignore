@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Local scratch and build artifacts
+/tmp/
+
 # Local promotional video project and rendered assets
 /promo/
 

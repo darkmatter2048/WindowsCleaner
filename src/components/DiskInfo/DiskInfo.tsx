@@ -116,7 +116,7 @@ export default function DiskInfo() {
 
   return (
     <div className={styles.container} data-auto-size-disk>
-      <img src={diskSvg} className={styles.icon} alt="Disk" />
+      <img src={diskSvg} className={styles.icon} alt={t("disk.iconAlt")} />
 
       <div className={styles.info}>
         {/* Total */}

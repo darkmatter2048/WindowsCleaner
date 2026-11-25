@@ -361,7 +361,10 @@ export default function AdvancedPanel() {
       });
       setFolderNotification({
         type: "success",
-        message: `${folder.displayName} 已迁移到 D: 盘`,
+        message: t("advanced.folders.movedTo", {
+          name: folder.displayName,
+          drive: "D",
+        }),
       });
       setTimeout(() => setFolderNotification(null), 4000);
     } catch (e) {
@@ -386,7 +389,10 @@ export default function AdvancedPanel() {
       });
       setFolderNotification({
         type: "success",
-        message: `${folder.displayName} 已还原到 C 盘`,
+        message: t("advanced.folders.restoredTo", {
+          name: folder.displayName,
+          drive: "C",
+        }),
       });
       setTimeout(() => setFolderNotification(null), 4000);
     } catch (e) {
@@ -616,7 +622,7 @@ export default function AdvancedPanel() {
                     {f.currentPath}
                   </Text>
                   <Text style={{ fontSize: "12px", color: "var(--colorNeutralForeground2)" }}>
-                    {folderSizesLoading ? "Calculating..." : sizeStr}
+                    {folderSizesLoading ? t("advanced.folders.calculating") : sizeStr}
                   </Text>
                 </div>
                 {isMoving ? (

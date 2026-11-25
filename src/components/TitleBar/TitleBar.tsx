@@ -94,24 +94,24 @@ export default function TitleBar({ showIcon = true, title }: TitleBarProps) {
         <span className={styles.title}>{label}</span>
       </div>
       <div className={styles.controls} data-auto-size-controls>
-        <Tooltip content="最小化" relationship="label">
+        <Tooltip content={t("titleBar.minimize")} relationship="label">
           <Button
             className={styles.controlBtn}
             appearance="transparent"
             size="small"
             icon={<Subtract16Regular />}
             onClick={() => appWindow.minimize()}
-            aria-label="Minimize"
+            aria-label={t("titleBar.minimize")}
           />
         </Tooltip>
-        <Tooltip content="关闭" relationship="label">
+        <Tooltip content={t("titleBar.close")} relationship="label">
           <Button
             className={`${styles.controlBtn} ${styles.closeBtn}`}
             appearance="transparent"
             size="small"
             icon={<Dismiss16Regular />}
             onClick={() => void handleClose()}
-            aria-label="Close"
+            aria-label={t("titleBar.close")}
           />
         </Tooltip>
       </div>
